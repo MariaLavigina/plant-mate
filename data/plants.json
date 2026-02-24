@@ -1,0 +1,236 @@
+[
+  {
+    "id": 1,
+    "name": "Snake Plant",
+    "traits": [1, 3],
+    "description": "Hardy plant that survives low light and irregular watering.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "25%", "left": "35%" },
+        "title": "Sword-Shaped Leaves",
+        "content": "Thick, upright leaves store water, making this plant drought-tolerant and perfect for forgetful waterers."
+      },
+      {
+        "id": 2,
+        "position": { "top": "55%", "left": "50%" },
+        "title": "Air Purifying",
+        "content": "Snake plants filter toxins like formaldehyde and benzene from the air, even at night."
+      },
+      {
+        "id": 3,
+        "position": { "top": "75%", "left": "40%" },
+        "title": "Shallow Roots",
+        "content": "Compact root system means it doesn't need frequent repotting and thrives in smaller pots."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Aloe Vera",
+    "traits": [1, 2],
+    "description": "Easy-care succulent that loves bright light.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "20%", "left": "40%" },
+        "title": "Healing Gel",
+        "content": "The gel inside the leaves can soothe burns, cuts, and skin irritations naturally."
+      },
+      {
+        "id": 2,
+        "position": { "top": "50%", "left": "30%" },
+        "title": "Water Storage",
+        "content": "Thick succulent leaves retain moisture, requiring infrequent watering - every 2-3 weeks."
+      },
+      {
+        "id": 3,
+        "position": { "top": "75%", "left": "45%" },
+        "title": "Sun Lover",
+        "content": "Thrives in bright, indirect light and can tolerate some direct sunlight."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Fiddle Leaf Fig",
+    "traits": [2, 8],
+    "description": "Decorative plant that needs attention and bright light.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "15%", "left": "35%" },
+        "title": "Large Fiddle Leaves",
+        "content": "Signature violin-shaped leaves can grow up to 12 inches long, making a bold statement."
+      },
+      {
+        "id": 2,
+        "position": { "top": "45%", "left": "50%" },
+        "title": "Light Sensitive",
+        "content": "Needs bright, indirect light and should be rotated regularly for even growth."
+      },
+      {
+        "id": 3,
+        "position": { "top": "70%", "left": "40%" },
+        "title": "Watering Needs",
+        "content": "Water when top 2 inches of soil are dry. Overwatering causes brown spots on leaves."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Calathea",
+    "traits": [4, 6, 5],
+    "description": "High-maintenance plant that needs humidity and careful watering.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "30%", "left": "40%" },
+        "title": "Prayer Plant Movement",
+        "content": "Leaves fold up at night and open during the day - a fascinating natural rhythm."
+      },
+      {
+        "id": 2,
+        "position": { "top": "50%", "left": "55%" },
+        "title": "Pattern Varieties",
+        "content": "Stunning leaf patterns in combinations of green, pink, purple, and white make each plant unique."
+      },
+      {
+        "id": 3,
+        "position": { "top": "75%", "left": "35%" },
+        "title": "Humidity Lover",
+        "content": "Requires 50-60% humidity. Mist regularly or use a humidifier to prevent crispy leaf edges."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Pothos",
+    "traits": [1, 5, 7],
+    "description": "Fast-growing vine that adapts to many light conditions.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "25%", "left": "30%" },
+        "title": "Trailing Vines",
+        "content": "Vines can grow 10+ feet long, perfect for hanging baskets or training along shelves."
+      },
+      {
+        "id": 2,
+        "position": { "top": "50%", "left": "50%" },
+        "title": "Air Purifier",
+        "content": "Removes indoor air pollutants like formaldehyde, xylene, and benzene."
+      },
+      {
+        "id": 3,
+        "position": { "top": "70%", "left": "40%" },
+        "title": "Easy Propagation",
+        "content": "Simply cut a stem and place in water - roots will grow in 1-2 weeks."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Spider Plant",
+    "traits": [1, 3, 7],
+    "description": "Pet-safe plant that grows quickly and is easy to care for.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "30%", "left": "45%" },
+        "title": "Arching Leaves",
+        "content": "Long, graceful striped leaves arch outward creating a fountain-like appearance."
+      },
+      {
+        "id": 2,
+        "position": { "top": "55%", "left": "35%" },
+        "title": "Baby Spiderettes",
+        "content": "Produces mini plantlets (babies) on long stems that can be propagated easily."
+      },
+      {
+        "id": 3,
+        "position": { "top": "75%", "left": "50%" },
+        "title": "Pet Safe",
+        "content": "Non-toxic to cats and dogs, though pets may still be attracted to the dangling leaves."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Monstera Deliciosa",
+    "traits": [2, 7, 8],
+    "description": "Popular decorative plant with large leaves and fast growth.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "20%", "left": "40%" },
+        "title": "Swiss Cheese Holes",
+        "content": "Iconic holes (fenestrations) develop as the plant matures, helping it withstand wind in nature."
+      },
+      {
+        "id": 2,
+        "position": { "top": "50%", "left": "50%" },
+        "title": "Aerial Roots",
+        "content": "Brown aerial roots absorb moisture from the air and help the plant climb in the wild."
+      },
+      {
+        "id": 3,
+        "position": { "top": "75%", "left": "35%" },
+        "title": "Fast Grower",
+        "content": "Can produce a new leaf every 4-6 weeks during growing season with proper care."
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Peace Lily",
+    "traits": [5, 6],
+    "description": "Elegant plant that prefers low light and high humidity.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "25%", "left": "40%" },
+        "title": "White Blooms",
+        "content": "Elegant white spathes (not true flowers) bloom several times a year with proper care."
+      },
+      {
+        "id": 2,
+        "position": { "top": "55%", "left": "50%" },
+        "title": "Glossy Leaves",
+        "content": "Dark green, glossy leaves droop when thirsty - the plant tells you when it needs water."
+      },
+      {
+        "id": 3,
+        "position": { "top": "75%", "left": "35%" },
+        "title": "Low Light Tolerant",
+        "content": "One of the few flowering plants that thrives in shady spots with minimal natural light."
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "zz Plant",
+    "traits": [1, 5],
+    "description": "Extremely low-maintenance plant that thrives in low light.",
+    "hotspots": [
+      {
+        "id": 1,
+        "position": { "top": "30%", "left": "40%" },
+        "title": "Waxy Leaves",
+        "content": "Glossy, waxy coating helps retain moisture and gives the plant its signature shine."
+      },
+      {
+        "id": 2,
+        "position": { "top": "55%", "left": "50%" },
+        "title": "Rhizome Roots",
+        "content": "Underground rhizomes store water, allowing the plant to survive weeks without watering."
+      },
+      {
+        "id": 3,
+        "position": { "top": "75%", "left": "35%" },
+        "title": "Drought Tolerant",
+        "content": "Nearly indestructible - can tolerate neglect, low light, and irregular watering."
+      }
+    ]
+  }
+]

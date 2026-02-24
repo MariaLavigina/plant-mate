@@ -1,0 +1,10 @@
+[
+  { "id": 1, "name": "Low-maintenance" },
+  { "id": 2, "name": "Bright light" },
+  { "id": 3, "name": "Pet-friendly" },
+  { "id": 4, "name": "High-maintenance" },
+  { "id": 5, "name": "Low light" },
+  { "id": 6, "name": "High humidity" },
+  { "id": 7, "name": "Fast growing" },
+  { "id": 8, "name": "Decorative / Statement plant" }
+]

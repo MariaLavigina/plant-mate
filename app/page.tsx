@@ -1,65 +1,118 @@
-import Image from "next/image";
+// app/page.tsx
+"use client"; // still needed because you use useContext
+
+import { useContext } from "react";
+import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar";
+import { DarkModeContext } from "./ClientProviders"; 
 
 export default function Home() {
+  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const router = useRouter();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div
+      className={`relative min-h-screen transition-colors duration-500 ${
+        darkMode
+          ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]"
+          : "bg-gradient-to-b from-[#A75B2B] to-white"
+      }`}
+    >
+      {/* Navbar */}
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+
+      {/* Desktop Layout */}
+      <div className="hidden md:flex relative px-6 md:px-12 lg:px-20 xl:px-28 2xl:px-36 flex-row items-center justify-center min-h-[calc(100vh-64px)] pt-0">
+        {/* Text Container */}
+        <div className="flex flex-col justify-center w-1/3 pr-6 z-10">
+          <div className="max-w-md">
+            <h1
+              className={`font-heading mb-4 leading-snug drop-shadow-lg text-[clamp(2rem,5vw,5rem)] ${
+                darkMode ? "text-white" : "text-[#2B0707]"
+              }`}
+            >
+              PlantMate+
+            </h1>
+
+            <p
+              className={`font-sans mb-3 leading-relaxed drop-shadow-md text-[clamp(0.875rem,2vw,1.25rem)] ${
+                darkMode ? "text-white" : "text-[#2B0707]"
+              }`}
+            >
+              PlantMate matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just
+              plants you'll actually keep alive.
+            </p>
+
+            <p
+              className={`font-sans mb-6 leading-relaxed drop-shadow-md text-[clamp(0.875rem,2vw,1.25rem)] ${
+                darkMode ? "text-white" : "text-[#2B0707]"
+              }`}
+            >
+              Take our quick quiz and meet your perfect plant match.
+            </p>
+
+            <button
+              onClick={() => router.push("/quiz")}
+              className={`px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-4 border-2 font-bold rounded-full transition-all duration-300 shadow-2xl hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] backdrop-blur-md text-[clamp(0.875rem,1.5vw,1.25rem)] ${
+                darkMode
+                  ? "bg-[#20083D]/50 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-[#20083D]"
+                  : "bg-white/50 border-[#2B0707] text-[#2B0707] hover:bg-[#2B0707] hover:text-white"
+              }`}
+            >
+              Find Your Plant Match
+            </button>
+          </div>
+        </div>
+
+        {/* SVG Image */}
+        <div className="flex-1 flex justify-end items-end z-0 pointer-events-none">
+          <img
+            src={
+              darkMode
+                ? "/images/desktop-images/plants-dark-mode.svg"
+                : "/images/desktop-images/plants-light-mode.svg"
+            }
+            alt="Plants"
+            className="h-auto w-auto max-w-[105%] object-contain transition-all duration-500"
+          />
+        </div>
+      </div>
+
+      {/* Mobile version */}
+      <div className="md:hidden relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+        <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl mb-6 mt-10 text-white">
+          PlantMate+
+        </h1>
+
+        <p className="font-sans text-lg sm:text-xl lg:text-2xl mb-8 text-white">
+          PlantMate matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just
+          plants you'll actually keep alive. Take our quick quiz and meet your perfect plant match.
+        </p>
+      </div>
+
+      {/* Mobile image at bottom */}
+      <div className="block md:hidden absolute bottom-0 left-0 right-0">
+        <img
+          src={
+            darkMode
+              ? "/images/mobile-images/plant-dark-mobile.svg"
+              : "/images/mobile-images/plant-light-mobile.svg"
+          }
+          alt="Plants"
+          className="w-full scale-90 origin-bottom plant-hover-animation"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+
+        <button
+          onClick={() => router.push("/quiz")}
+          className={`absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[85%] px-6 py-5 text-lg border-2 font-semibold rounded-full transition-all duration-300 shadow-2xl whitespace-nowrap backdrop-blur-md ${
+            darkMode
+              ? "bg-[#20083D]/40 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#20083D]"
+              : "bg-white/30 border-[#210E4A] text-[#210E4A] hover:bg-[#210E4A]/80 hover:text-white"
+          }`}
+        >
+          Find Your Plant Match
+        </button>
+      </div>
     </div>
   );
 }
