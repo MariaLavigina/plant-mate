@@ -1,67 +1,50 @@
-// app/quiz/page.tsx (or wherever your quiz page lives)
 "use client";
 
 import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "../../components/Navbar"; // adjust if needed
-import { DarkModeContext } from "../ClientProviders"; // ✅ correct import
+import Navbar from "../../components/Navbar";
+import { DarkModeContext } from "../ClientProviders";
+import { pageBg, primaryText, primaryButton } from "../../lib/styles";
+import { QUIZ_RESULTS_KEY } from "../../lib/constants";
+import { SelectedAnswers } from "../../types";
 import quizQuestions from "../../data/quiz_questions.json";
 
-type SelectedAnswers = { [key: number]: number }; // questionId -> answerId
-
 export default function Quiz() {
-  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const { darkMode } = useContext(DarkModeContext);
   const router = useRouter();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({});
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === quizQuestions.length - 1;
+  const hasAnswered = !!selectedAnswers[currentQuestion.id];
 
-  const handleSelect = (answerId: number) => {
+  const handleSelectAnswer = (answerId: number) => {
     setSelectedAnswers({ ...selectedAnswers, [currentQuestion.id]: answerId });
   };
 
   const handleNext = () => {
-    if (currentQuestionIndex < quizQuestions.length - 1) {
+    if (!isLastQuestion) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // save results to localStorage or context for results page
-      localStorage.setItem("quizResults", JSON.stringify(selectedAnswers));
+      localStorage.setItem(QUIZ_RESULTS_KEY, JSON.stringify(selectedAnswers));
       router.push("/results");
     }
   };
 
   return (
-    <div
-      className={`flex flex-col min-h-screen px-4 sm:px-6 lg:px-8 py-10 transition-colors duration-500 ${
-        darkMode
-          ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]"
-          : "bg-gradient-to-b from-[#A75B2B] to-[#F4E5FB]"
-      }`}
-    >
-      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+    <div className={`flex flex-col min-h-screen px-4 sm:px-6 lg:px-8 py-10 ${pageBg(darkMode)}`}>
+      <Navbar />
 
-      <div
-        className={`max-w-xl w-full mx-auto p-6 sm:p-8 rounded-lg shadow-2xl mt-20 backdrop-blur-md border-2 ${
-          darkMode
-            ? "bg-white/10 border-[#65F0CD]/30"
-            : "bg-white/30 border-[#210E4A]/30"
-        }`}
-      >
-        <h2
-          className={`text-xl sm:text-2xl font-bold mb-4 ${
-            darkMode ? "text-white" : "text-[#210E4A]"
-          }`}
-        >
+      <div className={`max-w-xl w-full mx-auto p-6 sm:p-8 rounded-lg shadow-2xl mt-20 backdrop-blur-md border-2 ${
+        darkMode ? "bg-white/10 border-[#65F0CD]/30" : "bg-white/30 border-[#210E4A]/30"
+      }`}>
+        <h2 className={`text-xl sm:text-2xl font-bold mb-4 ${primaryText(darkMode)}`}>
           Question {currentQuestionIndex + 1} of {quizQuestions.length}
         </h2>
 
-        <p
-          className={`mb-6 text-base sm:text-lg ${
-            darkMode ? "text-white" : "text-[#210E4A]"
-          }`}
-        >
+        <p className={`mb-6 text-base sm:text-lg ${primaryText(darkMode)}`}>
           {currentQuestion.question}
         </p>
 
@@ -69,7 +52,7 @@ export default function Quiz() {
           {currentQuestion.answers.map((answer) => (
             <button
               key={answer.id}
-              onClick={() => handleSelect(answer.id)}
+              onClick={() => handleSelectAnswer(answer.id)}
               className={`text-left p-3 sm:p-4 border-2 rounded-lg transition-all duration-200 backdrop-blur-sm ${
                 selectedAnswers[currentQuestion.id] === answer.id
                   ? darkMode
@@ -87,18 +70,14 @@ export default function Quiz() {
 
         <button
           onClick={handleNext}
-          disabled={!selectedAnswers[currentQuestion.id]}
+          disabled={!hasAnswered}
           className={`mt-6 w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-all duration-200 border-2 ${
-            selectedAnswers[currentQuestion.id]
-              ? darkMode
-                ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3]"
-                : "bg-[#210E4A] border-[#210E4A] text-[#65F0CD] hover:bg-[#2D1260]"
+            hasAnswered
+              ? primaryButton(darkMode)
               : "bg-gray-400/30 border-gray-400/50 cursor-not-allowed text-gray-600"
           }`}
         >
-          {currentQuestionIndex < quizQuestions.length - 1
-            ? "Next Question"
-            : "See My Plant Match"}
+          {isLastQuestion ? "See My Plant Match" : "Next Question"}
         </button>
       </div>
     </div>

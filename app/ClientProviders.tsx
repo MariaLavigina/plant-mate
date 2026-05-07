@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useState, useEffect, ReactNode } from "react";
+import { DARK_MODE_KEY } from "../lib/constants";
 
 export const DarkModeContext = createContext({
   darkMode: false,
@@ -12,18 +13,15 @@ interface ClientProvidersProps {
 }
 
 export default function ClientProviders({ children }: ClientProvidersProps) {
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("darkMode") === "true";
-    }
-    return false;
-  });
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if (darkMode) document.body.classList.add("dark-mode");
-    else document.body.classList.remove("dark-mode");
+    const stored = localStorage.getItem(DARK_MODE_KEY) === "true";
+    setDarkMode(stored);
+  }, []);
 
-    localStorage.setItem("darkMode", darkMode.toString());
+  useEffect(() => {
+    localStorage.setItem(DARK_MODE_KEY, darkMode.toString());
   }, [darkMode]);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);

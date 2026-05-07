@@ -1,7 +1,11 @@
-"use client"
-import { useState, useEffect } from "react";
+"use client";
+import { useState, useEffect, useContext } from "react";
+import { DarkModeContext } from "../app/ClientProviders";
+import { USER_KEY } from "../lib/constants";
 
 export default function AuthModal({ type = "login", onClose }) {
+  const { darkMode } = useContext(DarkModeContext);
+
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,7 +17,6 @@ export default function AuthModal({ type = "login", onClose }) {
   const [resetMessage, setResetMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Prevent background scroll
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => (document.body.style.overflow = "auto");
@@ -24,15 +27,11 @@ export default function AuthModal({ type = "login", onClose }) {
     setLoading(true);
     setMessage("");
 
-    const url =
-      type === "login"
-        ? "http://localhost:5000/login"
-        : "http://localhost:5000/register";
-
-    const body =
-      type === "login"
-        ? { email, password }
-        : { name, lastName, email, phone, password };
+    const base = process.env.NEXT_PUBLIC_API_URL;
+    const url = type === "login" ? `${base}/login` : `${base}/register`;
+    const body = type === "login"
+      ? { email, password }
+      : { name, lastName, email, phone, password };
 
     try {
       const res = await fetch(url, {
@@ -45,11 +44,11 @@ export default function AuthModal({ type = "login", onClose }) {
       setMessage(data.message);
 
       if (res.ok && type === "login") {
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem(USER_KEY, JSON.stringify(data.user));
         onClose();
       }
-    } catch (err) {
-      setMessage("Server error");
+    } catch {
+      setMessage("Server error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -61,7 +60,7 @@ export default function AuthModal({ type = "login", onClose }) {
     setResetMessage("");
 
     try {
-      const res = await fetch("http://localhost:5000/reset-password", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resetEmail }),
@@ -69,151 +68,87 @@ export default function AuthModal({ type = "login", onClose }) {
 
       const data = await res.json();
       setResetMessage(data.message);
-    } catch (err) {
-      setResetMessage("Server error");
+    } catch {
+      setResetMessage("Server error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  const inputClass = `w-full px-4 py-2.5 rounded-lg border-2 outline-none transition-all duration-200 ${
+    darkMode
+      ? "bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-[#65F0CD]"
+      : "bg-white border-[#210E4A]/20 text-[#210E4A] placeholder-[#210E4A]/40 focus:border-[#210E4A]"
+  }`;
+
+  const buttonClass = `w-full py-2.5 rounded-lg font-semibold transition-all duration-200 border-2 ${
+    darkMode
+      ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3]"
+      : "bg-[#210E4A] border-[#210E4A] text-[#65F0CD] hover:bg-[#2D1260]"
+  }`;
+
+  const linkClass = `mt-4 text-sm cursor-pointer text-center ${
+    darkMode ? "text-[#65F0CD] hover:text-white" : "text-[#210E4A] hover:text-[#2D1260]"
+  }`;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center 
-                    bg-black/70 backdrop-blur-sm animate-fadeIn">
-     <div className="bg-white dark:bg-gray-800 w-[92%] max-w-md rounded-2xl shadow-2xl p-8 relative 
-                text-gray-900 dark:text-gray-100 transform animate-scaleIn transition-all">
-
-
-        {/* Close Button */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+      <div className={`w-[92%] max-w-md rounded-2xl shadow-2xl p-8 relative ${
+        darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#210E4A]"
+      }`}>
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 
-                     hover:text-gray-700 dark:hover:text-white
-                     text-xl transition"
+          className={`absolute top-4 right-4 text-xl transition hover:scale-110 ${
+            darkMode ? "text-white/50 hover:text-white" : "text-[#210E4A]/40 hover:text-[#210E4A]"
+          }`}
         >
           ✕
         </button>
 
         {!showReset ? (
           <>
-            <h2 className="text-2xl font-bold mb-6 text-center">
+            <h2 className="text-2xl font-bold mb-6 text-center font-caveat">
               {type === "login" ? "Welcome Back" : "Create Account"}
             </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               {type === "register" && (
                 <>
-                  <input
-                    placeholder="First Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="input"
-                  />
-                  <input
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                    className="input"
-                  />
-                  <input
-                    placeholder="Phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                    className="input"
-                  />
+                  <input placeholder="First Name" value={name} onChange={(e) => setName(e.target.value)} required className={inputClass} />
+                  <input placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required className={inputClass} />
+                  <input placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required className={inputClass} />
                 </>
               )}
+              <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className={inputClass} />
+              <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className={inputClass} />
 
-              <input
-                placeholder="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="input"
-              />
-
-              <input
-                placeholder="Password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="input"
-              />
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="mt-2 bg-blue-600 hover:bg-blue-700 
-                           text-white py-2.5 rounded-lg 
-                           font-medium transition duration-200
-                           disabled:opacity-60"
-              >
-                {loading
-                  ? "Please wait..."
-                  : type === "login"
-                  ? "Login"
-                  : "Register"}
+              <button type="submit" disabled={loading} className={`mt-2 ${buttonClass} disabled:opacity-60`}>
+                {loading ? "Please wait..." : type === "login" ? "Login" : "Register"}
               </button>
             </form>
 
             {type === "login" && (
-              <p
-                className="mt-4 text-sm text-blue-600 
-                           hover:underline cursor-pointer text-center"
-                onClick={() => setShowReset(true)}
-              >
+              <p className={linkClass} onClick={() => setShowReset(true)}>
                 Forgot your password?
               </p>
             )}
 
-            {message && (
-              <p className="mt-4 text-sm text-center text-red-500">
-                {message}
-              </p>
-            )}
+            {message && <p className="mt-4 text-sm text-center text-red-400">{message}</p>}
           </>
         ) : (
           <>
-            <h2 className="text-2xl font-bold mb-6 text-center">
-              Reset Password
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-center font-caveat">Reset Password</h2>
 
             <form onSubmit={handleReset} className="flex flex-col gap-4">
-              <input
-                placeholder="Enter your email"
-                type="email"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                required
-                className="input"
-              />
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 
-                           text-white py-2.5 rounded-lg 
-                           font-medium transition duration-200"
-              >
+              <input placeholder="Enter your email" type="email" value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} required className={inputClass} />
+              <button type="submit" disabled={loading} className={buttonClass}>
                 {loading ? "Sending..." : "Send Reset Link"}
               </button>
             </form>
 
-            {resetMessage && (
-              <p className="mt-4 text-sm text-center text-green-500">
-                {resetMessage}
-              </p>
-            )}
+            {resetMessage && <p className="mt-4 text-sm text-center text-green-400">{resetMessage}</p>}
 
-            <p
-              className="mt-4 text-sm text-blue-600 
-                         hover:underline cursor-pointer text-center"
-              onClick={() => setShowReset(false)}
-            >
+            <p className={linkClass} onClick={() => setShowReset(false)}>
               Back to Login
             </p>
           </>

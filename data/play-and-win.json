@@ -1,0 +1,252 @@
+[
+  {
+    "question": "Which houseplant is famously hard to kill and can survive low light?",
+    "choices": ["Aloe Vera", "Snake Plant", "Orchid", "Bonsai"],
+    "answer": "Snake Plant"
+  },
+  {
+    "question": "How often should most succulents be watered?",
+    "choices": ["Daily", "Once a week", "Only when soil is dry", "Every hour"],
+    "answer": "Only when soil is dry"
+  },
+  {
+    "question": "Which plant can purify indoor air according to NASA studies?",
+    "choices": ["Spider Plant", "Rose", "Cactus", "Tulip"],
+    "answer": "Spider Plant"
+  },
+  {
+    "question": "What is the main cause of a plant’s leaves turning yellow?",
+    "choices": ["Overwatering", "Talking to it too much", "Music", "Air pollution"],
+    "answer": "Overwatering"
+  },
+  {
+    "question": "Which plant grows fastest?",
+    "choices": ["Bamboo", "Bonsai", "Cactus", "Lavender"],
+    "answer": "Bamboo"
+  },
+  {
+    "question": "A pothos plant is famous for:",
+    "choices": ["Being edible", "Climbing and trailing easily", "Smelling like chocolate", "Changing colors"],
+    "answer": "Climbing and trailing easily"
+  },
+  {
+    "question": "Why do orchids like high humidity?",
+    "choices": ["They love to dance in the rain", "Their roots absorb water from the air", "They produce oxygen better", "It prevents sunlight"],
+    "answer": "Their roots absorb water from the air"
+  },
+  {
+    "question": "What is a “self-watering” plant pot best for?",
+    "choices": ["Forgetful plant owners", "Making plants grow faster than sunlight", "Producing fruit", "Keeping plants awake at night"],
+    "answer": "Forgetful plant owners"
+  },
+  {
+    "question": "Which indoor plant can survive in almost any light condition?",
+    "choices": ["Snake Plant", "Rose", "Cactus", "Lavender"],
+    "answer": "Snake Plant"
+  },
+  {
+    "question": "Aloe Vera is famous for:",
+    "choices": ["Healing minor burns", "Making perfume", "Producing oxygen only at night", "Attracting butterflies"],
+    "answer": "Healing minor burns"
+  },
+  {
+    "question": "Which plant can “eat” insects?",
+    "choices": ["Venus Flytrap", "Sunflower", "Fern", "Rose"],
+    "answer": "Venus Flytrap"
+  },
+  {
+    "question": "Bamboo is technically:",
+    "choices": ["A tree", "A grass", "A shrub", "A flower"],
+    "answer": "A grass"
+  },
+  {
+    "question": "Which flower is known for opening at night?",
+    "choices": ["Moonflower", "Daisy", "Lily", "Tulip"],
+    "answer": "Moonflower"
+  },
+  {
+    "question": "What makes the corpse flower so famous?",
+    "choices": ["Its massive size", "Its scent (like rotting meat)", "It glows in the dark", "It blooms every day"],
+    "answer": "Its scent (like rotting meat)"
+  },
+  {
+    "question": "Sunflowers are special because they:",
+    "choices": ["Follow the sun", "Can make coffee", "Are purple", "Live underground"],
+    "answer": "Follow the sun"
+  },
+  {
+    "question": "Which plant is considered lucky in many cultures?",
+    "choices": ["Money Tree", "Rose", "Cactus", "Orchid"],
+    "answer": "Money Tree"
+  },
+  {
+    "question": "Lavender is mostly used for:",
+    "choices": ["Perfume and calming scent", "Food coloring", "Building houses", "Making tea only"],
+    "answer": "Perfume and calming scent"
+  },
+  {
+    "question": "Which plant can live for hundreds of years?",
+    "choices": ["Bristlecone Pine", "Sunflower", "Cactus", "Bamboo"],
+    "answer": "Bristlecone Pine"
+  },
+  {
+    "question": "Which flower is used to celebrate Día de los Muertos in Mexico?",
+    "choices": ["Marigold", "Tulip", "Rose", "Orchid"],
+    "answer": "Marigold"
+  },
+  {
+    "question": "What is the main reason plants have flowers?",
+    "choices": ["To look pretty", "To attract pollinators", "To make humans happy", "To produce oxygen"],
+    "answer": "To attract pollinators"
+  },
+  {
+    "question": "Which plant can soothe a sore throat or cough?",
+    "choices": ["Peppermint", "Tulip", "Rose", "Aloe Vera"],
+    "answer": "Peppermint"
+  },
+  {
+    "question": "Chamomile tea is made from:",
+    "choices": ["Flowers", "Roots", "Leaves", "Stems"],
+    "answer": "Flowers"
+  },
+  {
+    "question": "Which plant is known as a natural anti-inflammatory?",
+    "choices": ["Turmeric", "Rose", "Cactus", "Sunflower"],
+    "answer": "Turmeric"
+  },
+  {
+    "question": "Garlic is not only food but also:",
+    "choices": ["Natural medicine", "Poison", "Perfume", "A tea leaf"],
+    "answer": "Natural medicine"
+  },
+  {
+    "question": "Which plant can repel mosquitoes naturally?",
+    "choices": ["Citronella", "Orchid", "Rose", "Fern"],
+    "answer": "Citronella"
+  },
+  {
+    "question": "Echinacea is often used to:",
+    "choices": ["Boost immunity", "Make perfume", "Make furniture", "Attract bees"],
+    "answer": "Boost immunity"
+  },
+  {
+    "question": "Which edible plant is also considered a “superfood”?",
+    "choices": ["Kale", "Cactus", "Fern", "Lily"],
+    "answer": "Kale"
+  },
+  {
+    "question": "Aloe Vera gel can also be used on:",
+    "choices": ["Minor cuts and burns", "Cooking soup", "Cleaning floors", "Dyeing fabrics"],
+    "answer": "Minor cuts and burns"
+  },
+  {
+    "question": "Which plant can help with digestion when brewed as tea?",
+    "choices": ["Ginger", "Tulip", "Rose", "Cactus"],
+    "answer": "Ginger"
+  },
+  {
+    "question": "Which spice comes from the bark of a tree?",
+    "choices": ["Cinnamon", "Saffron", "Turmeric", "Basil"],
+    "answer": "Cinnamon"
+  },
+  {
+    "question": "Which plant is traditionally used as a Christmas decoration?",
+    "choices": ["Poinsettia", "Sunflower", "Orchid", "Lavender"],
+    "answer": "Poinsettia"
+  },
+  {
+    "question": "Mistletoe is famous for:",
+    "choices": ["Hanging in doorways for kisses", "Baking", "Making perfume", "Medicine"],
+    "answer": "Hanging in doorways for kisses"
+  },
+  {
+    "question": "The plant used to celebrate Chinese New Year is:",
+    "choices": ["Lucky Bamboo", "Rose", "Fern", "Tulip"],
+    "answer": "Lucky Bamboo"
+  },
+  {
+    "question": "Which flower is used in Diwali celebrations?",
+    "choices": ["Marigold", "Orchid", "Rose", "Lavender"],
+    "answer": "Marigold"
+  },
+  {
+    "question": "Which plant is symbolic of Thanksgiving in the U.S.?",
+    "choices": ["Corn", "Rose", "Orchid", "Sunflower"],
+    "answer": "Corn"
+  },
+  {
+    "question": "The shamrock is a national symbol of which country?",
+    "choices": ["Ireland", "Mexico", "Japan", "Egypt"],
+    "answer": "Ireland"
+  },
+  {
+    "question": "Which flower is commonly given on Valentine’s Day?",
+    "choices": ["Rose", "Daisy", "Fern", "Cactus"],
+    "answer": "Rose"
+  },
+  {
+    "question": "Holly is commonly associated with which holiday?",
+    "choices": ["Christmas", "Easter", "Halloween", "Thanksgiving"],
+    "answer": "Christmas"
+  },
+  {
+    "question": "Which plant is known as the “flower of love” in many cultures?",
+    "choices": ["Rose", "Tulip", "Sunflower", "Orchid"],
+    "answer": "Rose"
+  },
+  {
+    "question": "Which edible plant is traditionally carved for Halloween?",
+    "choices": ["Pumpkin", "Cabbage", "Fern", "Onion"],
+    "answer": "Pumpkin"
+  },
+  {
+    "question": "Bamboo can grow how fast in ideal conditions?",
+    "choices": ["1 inch per day", "1 foot per day", "1 meter per day", "1 mm per day"],
+    "answer": "1 foot per day"
+  },
+  {
+    "question": "Which plant’s leaves are used in sushi?",
+    "choices": ["Nori", "Rose", "Fern", "Sunflower"],
+    "answer": "Nori"
+  },
+  {
+    "question": "Which plant can survive completely underwater for a long time?",
+    "choices": ["Water Lily", "Cactus", "Aloe Vera", "Sunflower"],
+    "answer": "Water Lily"
+  },
+  {
+    "question": "Which flower can actually smell like chocolate?",
+    "choices": ["Chocolate Cosmos", "Rose", "Lily", "Orchid"],
+    "answer": "Chocolate Cosmos"
+  },
+  {
+    "question": "Which plant is used to make tequila?",
+    "choices": ["Blue Agave", "Sunflower", "Rose", "Cactus"],
+    "answer": "Blue Agave"
+  },
+  {
+    "question": "The world’s largest flower is:",
+    "choices": ["Rafflesia", "Sunflower", "Orchid", "Titan Arum"],
+    "answer": "Rafflesia"
+  },
+  {
+    "question": "Which plant is carnivorous besides Venus Flytrap?",
+    "choices": ["Pitcher Plant", "Rose", "Tulip", "Cactus"],
+    "answer": "Pitcher Plant"
+  },
+  {
+    "question": "Which plant can grow in desert and store water?",
+    "choices": ["Cactus", "Fern", "Tulip", "Bamboo"],
+    "answer": "Cactus"
+  },
+  {
+    "question": "Which plant has leaves that fold when touched?",
+    "choices": ["Mimosa Pudica", "Sunflower", "Aloe Vera", "Lavender"],
+    "answer": "Mimosa Pudica"
+  },
+  {
+    "question": "Which plant is both decorative and edible in salads?",
+    "choices": ["Nasturtium", "Cactus", "Rose", "Fern"],
+    "answer": "Nasturtium"
+  }
+]
