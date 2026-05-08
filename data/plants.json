@@ -13,12 +13,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "55%", "left": "50%" },
-        "title": "Air Purifying",
-        "content": "Snake plants filter toxins like formaldehyde and benzene from the air, even at night."
-      },
-      {
-        "id": 3,
         "position": { "top": "75%", "left": "40%" },
         "title": "Shallow Roots",
         "content": "Compact root system means it doesn't need frequent repotting and thrives in smaller pots."
@@ -39,12 +33,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "50%", "left": "30%" },
-        "title": "Water Storage",
-        "content": "Thick succulent leaves retain moisture, requiring infrequent watering - every 2-3 weeks."
-      },
-      {
-        "id": 3,
         "position": { "top": "75%", "left": "45%" },
         "title": "Sun Lover",
         "content": "Thrives in bright, indirect light and can tolerate some direct sunlight."
@@ -65,12 +53,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "45%", "left": "50%" },
-        "title": "Light Sensitive",
-        "content": "Needs bright, indirect light and should be rotated regularly for even growth."
-      },
-      {
-        "id": 3,
         "position": { "top": "70%", "left": "40%" },
         "title": "Watering Needs",
         "content": "Water when top 2 inches of soil are dry. Overwatering causes brown spots on leaves."
@@ -91,12 +73,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "50%", "left": "55%" },
-        "title": "Pattern Varieties",
-        "content": "Stunning leaf patterns in combinations of green, pink, purple, and white make each plant unique."
-      },
-      {
-        "id": 3,
         "position": { "top": "75%", "left": "35%" },
         "title": "Humidity Lover",
         "content": "Requires 50-60% humidity. Mist regularly or use a humidifier to prevent crispy leaf edges."
@@ -117,12 +93,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "50%", "left": "50%" },
-        "title": "Air Purifier",
-        "content": "Removes indoor air pollutants like formaldehyde, xylene, and benzene."
-      },
-      {
-        "id": 3,
         "position": { "top": "70%", "left": "40%" },
         "title": "Easy Propagation",
         "content": "Simply cut a stem and place in water - roots will grow in 1-2 weeks."
@@ -143,12 +113,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "55%", "left": "35%" },
-        "title": "Baby Spiderettes",
-        "content": "Produces mini plantlets (babies) on long stems that can be propagated easily."
-      },
-      {
-        "id": 3,
         "position": { "top": "75%", "left": "50%" },
         "title": "Pet Safe",
         "content": "Non-toxic to cats and dogs, though pets may still be attracted to the dangling leaves."
@@ -169,12 +133,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "50%", "left": "50%" },
-        "title": "Aerial Roots",
-        "content": "Brown aerial roots absorb moisture from the air and help the plant climb in the wild."
-      },
-      {
-        "id": 3,
         "position": { "top": "75%", "left": "35%" },
         "title": "Fast Grower",
         "content": "Can produce a new leaf every 4-6 weeks during growing season with proper care."
@@ -195,12 +153,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "55%", "left": "50%" },
-        "title": "Glossy Leaves",
-        "content": "Dark green, glossy leaves droop when thirsty - the plant tells you when it needs water."
-      },
-      {
-        "id": 3,
         "position": { "top": "75%", "left": "35%" },
         "title": "Low Light Tolerant",
         "content": "One of the few flowering plants that thrives in shady spots with minimal natural light."
@@ -221,12 +173,6 @@
       },
       {
         "id": 2,
-        "position": { "top": "55%", "left": "50%" },
-        "title": "Rhizome Roots",
-        "content": "Underground rhizomes store water, allowing the plant to survive weeks without watering."
-      },
-      {
-        "id": 3,
         "position": { "top": "75%", "left": "35%" },
         "title": "Drought Tolerant",
         "content": "Nearly indestructible - can tolerate neglect, low light, and irregular watering."

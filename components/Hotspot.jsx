@@ -16,17 +16,21 @@ export default function Hotspot({ position, onClick, isHidden }) {
         left: position.left,
         transform: "translate(-50%, -50%)",
       }}
-      className={`group w-10 h-10 md:w-10 lg:w-12 xl:w-14 md:h-10 lg:h-12 xl:h-14 rounded-full border-2 flex items-center justify-center
-        transition-all duration-300 hover:scale-110 z-30 animate-pulse hover:animate-none active:scale-95
-        ${darkMode
-          ? "bg-[#65F0CD]/20 border-[#65F0CD] hover:bg-[#65F0CD]/40 backdrop-blur-sm"
-          : "bg-white/30 border-[#210E4A] hover:bg-white/50 backdrop-blur-sm"
-        }`}
+      className="group relative w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center z-30 transition-transform duration-300 hover:scale-125 active:scale-95"
       aria-label="View plant information"
     >
-      <span className={`text-2xl md:text-xl lg:text-2xl xl:text-3xl font-bold leading-none ${darkMode ? "text-[#65F0CD]" : "text-[#210E4A]"}`}>
-        +
-      </span>
+      {/* Pulsing outer ring */}
+      <span
+        className={`absolute inset-0 rounded-full animate-ping opacity-50 ${darkMode ? "bg-[#65F0CD]" : "bg-[#2D6A4F]"}`}
+      />
+      {/* Static ring */}
+      <span
+        className={`absolute inset-0 rounded-full opacity-30 ${darkMode ? "bg-[#65F0CD]" : "bg-[#2D6A4F]"}`}
+      />
+      {/* Inner dot */}
+      <span
+        className={`relative w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full shadow-lg ${darkMode ? "bg-[#65F0CD]" : "bg-[#2D6A4F]"}`}
+      />
     </button>
   );
 }

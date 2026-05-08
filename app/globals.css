@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+@theme {
+  --font-heading: var(--font-akaya), system-ui;
+  --font-caveat: var(--font-akaya), system-ui;
+  --font-sans: "Quicksand", sans-serif;
+  --font-comic: "Comic Relief", system-ui;
+}

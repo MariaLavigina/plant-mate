@@ -8,8 +8,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Quicksand', 'sans-serif'],
-        heading: ['Quicksand', 'sans-serif'],
-        caveat: ['Caveat', 'cursive'],
+        heading: ['Akaya Kanadaka', 'system-ui'],
+        caveat: ['Akaya Kanadaka', 'system-ui'],
         comic: ['Comic Relief', 'system-ui'],
       },
       colors: {

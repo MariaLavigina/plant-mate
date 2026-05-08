@@ -2,11 +2,11 @@ export const pageBg = (darkMode: boolean) =>
   `transition-colors duration-500 ${
     darkMode
       ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]"
-      : "bg-gradient-to-b from-[#A75B2B] to-[#F4E5FB]"
+      : "bg-gradient-to-b from-[#F4FBF0] via-[#F5C6D8] to-[#A75B2B]"
   }`;
 
 export const primaryText = (darkMode: boolean) =>
-  darkMode ? "text-white" : "text-[#210E4A]";
+  darkMode ? "text-white" : "text-[#1E3D2A]";
 
 export const accentText = (darkMode: boolean) =>
   darkMode ? "text-[#65F0CD]" : "text-[#210E4A]";

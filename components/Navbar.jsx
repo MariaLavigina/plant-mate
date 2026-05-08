@@ -28,19 +28,20 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [authModal, setAuthModal] = useState(null);
 
-  const navLinkClass = "text-[#E2CFFA] hover:text-[#65F0CD] font-medium";
-  const authButtonClass = "text-[#65F0CD] hover:text-[#E2CFFA] font-medium";
+  const navLinkClass = darkMode ? "text-[#E2CFFA] hover:text-[#65F0CD]" : "text-[#1E3D2A] hover:text-[#4CAF82]";
+  const authButtonClass = darkMode ? "text-[#65F0CD] hover:text-[#E2CFFA] font-semibold uppercase tracking-widest text-sm" : "text-[#3A8A52] hover:text-[#4CAF82] font-semibold uppercase tracking-widest text-sm";
+  const iconClass = darkMode ? "text-[#65F0CD] hover:text-[#E2CFFA]" : "text-[#1E3D2A] hover:text-[#4CAF82]";
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#210E4A]/90 to-transparent backdrop-blur-sm">
+      <nav className={`fixed top-0 left-0 right-0 z-50 ${darkMode ? "bg-gradient-to-b from-[#210E4A]/90 to-transparent backdrop-blur-sm" : "bg-[#F4FBF0]"}`}>
         <div className="pl-8 md:pl-12 lg:pl-16 xl:pl-20 2xl:pl-28 pr-4 sm:pr-6 lg:pr-8">
           <div className="flex items-center h-16">
 
             {/* Mobile Hamburger */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-[#65F0CD] focus:outline-none mr-4"
+              className={`md:hidden focus:outline-none mr-4 ${iconClass}`}
             >
               <svg className="h-6 w-6" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
@@ -54,28 +55,39 @@ export default function Navbar() {
               ))}
               <button onClick={() => setAuthModal("register")} className={authButtonClass}>Register</button>
               <button onClick={() => setAuthModal("login")} className={authButtonClass}>Login</button>
-              <button onClick={toggleDarkMode} className="text-[#65F0CD] hover:text-[#E2CFFA] focus:outline-none p-2" aria-label="Toggle dark mode">
+              <button onClick={toggleDarkMode} className={`focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
                 <DarkModeIcon darkMode={darkMode} />
               </button>
             </div>
 
             {/* Mobile Dark Mode Toggle */}
-            <button onClick={toggleDarkMode} className="md:hidden ml-auto text-[#65F0CD] hover:text-[#E2CFFA] focus:outline-none p-2" aria-label="Toggle dark mode">
+            <button onClick={toggleDarkMode} className={`md:hidden ml-auto focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
               <DarkModeIcon darkMode={darkMode} />
             </button>
           </div>
-
-          {/* Mobile Menu */}
-          {isOpen && (
-            <div className="md:hidden pb-4 flex flex-col space-y-4">
-              {NAV_LINKS.map(({ href, label }) => (
-                <Link key={href} href={href} onClick={() => setIsOpen(false)} className={navLinkClass}>{label}</Link>
-              ))}
-              <button onClick={() => setAuthModal("register")} className={authButtonClass}>Register</button>
-              <button onClick={() => setAuthModal("login")} className={authButtonClass}>Login</button>
-            </div>
-          )}
         </div>
+
+        {/* Mobile Menu — full width, outside the padded container */}
+        {isOpen && (
+          <div className="md:hidden flex flex-col px-6 pb-4" style={{ backgroundColor: darkMode ? "rgba(33,14,74,0.97)" : "rgba(244,251,240,0.97)" }}>
+            {NAV_LINKS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setIsOpen(false)}
+                className={`${navLinkClass} py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"} tracking-wide`}
+              >{label}</Link>
+            ))}
+            <button
+              onClick={() => setAuthModal("register")}
+              className={`${authButtonClass} py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"} text-left tracking-wide`}
+            >Register</button>
+            <button
+              onClick={() => setAuthModal("login")}
+              className={`${authButtonClass} py-4 text-left tracking-wide`}
+            >Login</button>
+          </div>
+        )}
       </nav>
 
       {authModal && <AuthModal type={authModal} onClose={() => setAuthModal(null)} />}

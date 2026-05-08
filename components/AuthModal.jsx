@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../app/ClientProviders";
 import { USER_KEY } from "../lib/constants";
 
-export default function AuthModal({ type = "login", onClose }) {
+export default function AuthModal({ type = "login", onClose, reason }) {
   const { darkMode } = useContext(DarkModeContext);
 
   const [name, setName] = useState("");
@@ -107,9 +107,19 @@ export default function AuthModal({ type = "login", onClose }) {
 
         {!showReset ? (
           <>
-            <h2 className="text-2xl font-bold mb-6 text-center font-caveat">
+            <h2 className="text-2xl font-bold mb-4 text-center font-caveat">
               {type === "login" ? "Welcome Back" : "Create Account"}
             </h2>
+
+            {type === "register" && reason === "badge" && (
+              <div className={`mb-4 px-4 py-3 rounded-xl text-sm text-center font-comic ${
+                darkMode
+                  ? "bg-[#65F0CD]/10 text-[#65F0CD] border border-[#65F0CD]/20"
+                  : "bg-[#2D6A4F]/8 text-[#2D6A4F] border border-[#2D6A4F]/20"
+              }`}>
+                🏆 Create your free account to earn your plant badge and save your results!
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               {type === "register" && (
