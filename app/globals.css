@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+html, body {
+  overflow-x: hidden;
+}
+
+/* Breathing fade between image 4 and 5 on contact page */
+@keyframes breathe {
+  0%, 100% { opacity: 0; }
+  40%, 60% { opacity: 1; }
+}
+
 @theme {
   --font-heading: var(--font-akaya), system-ui;
   --font-caveat: var(--font-akaya), system-ui;

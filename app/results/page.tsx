@@ -35,6 +35,17 @@ export default function Results() {
     5: "🌙", 6: "💧", 7: "🚀", 8: "✨",
   };
 
+  const TRAIT_COLORS: Record<number, { text: string; bg: string }> = {
+    1: { text: "#86EFAC", bg: "rgba(134,239,172,0.12)" },  // Low-maintenance: sage green
+    2: { text: "#FCD34D", bg: "rgba(252,211,77,0.12)" },   // Bright light: amber
+    3: { text: "#C4B5FD", bg: "rgba(196,181,253,0.12)" },  // Pet-friendly: lavender
+    4: { text: "#FDA4AF", bg: "rgba(253,164,175,0.12)" },  // High-maintenance: rose
+    5: { text: "#93C5FD", bg: "rgba(147,197,253,0.12)" },  // Low light: steel blue
+    6: { text: "#67E8F9", bg: "rgba(103,232,249,0.12)" },  // High humidity: cyan
+    7: { text: "#A3E635", bg: "rgba(163,230,53,0.12)" },   // Fast growing: lime
+    8: { text: "#FDE68A", bg: "rgba(253,230,138,0.12)" },  // Decorative: gold
+  };
+
   useEffect(() => {
     if (bestMatch) {
       const t = setTimeout(() => setRevealed(true), 50);
@@ -145,7 +156,7 @@ export default function Results() {
                 <>
                   {/* 2 — Description */}
                   <div className={`w-full transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "150ms" }}>
-                    <p className={`font-comic text-sm sm:text-base lg:text-sm xl:text-base leading-relaxed lg:max-w-lg xl:max-w-xl ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}>
+                    <p className={`font-comic text-base sm:text-lg lg:text-base xl:text-lg font-medium leading-relaxed lg:max-w-lg xl:max-w-xl ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}>
                       {bestMatch.description}
                     </p>
                   </div>
@@ -155,8 +166,13 @@ export default function Results() {
                     <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                       {bestMatch.traits.map((id: number) => {
                         const trait = traits.find((t) => t.id === id);
+                        const color = TRAIT_COLORS[id];
                         return trait ? (
-                          <span key={id} className={`font-comic text-xs px-3 py-1 rounded-lg ${darkMode ? "bg-[#65F0CD]/10 text-[#65F0CD]/80" : "bg-[#2D6A4F]/15 text-[#2D6A4F]"}`}>
+                          <span
+                            key={id}
+                            className={`font-comic text-xs px-3 py-1 rounded-lg ${darkMode ? "" : "bg-[#2D6A4F]/15 text-[#2D6A4F]"}`}
+                            style={darkMode && color ? { color: color.text, backgroundColor: color.bg } : undefined}
+                          >
                             {TRAIT_ICONS[id] && <span className="mr-1">{TRAIT_ICONS[id]}</span>}{trait.name}
                           </span>
                         ) : null;
@@ -196,43 +212,57 @@ export default function Results() {
 
               {/* 5 — Play & Win */}
               <div className={`w-full transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "450ms" }}>
-                <div className={`w-full rounded-2xl p-7 sm:p-9 lg:p-5 xl:p-6 border flex flex-col items-center lg:items-start gap-5 lg:gap-3 xl:gap-3 ${darkMode ? "bg-[#350F29] border-[#65F0CD]/20" : "bg-[#1E3D2A] border-[#1E3D2A]"}`}>
-                  <h2 className={`font-caveat text-5xl sm:text-6xl lg:text-2xl xl:text-3xl font-bold ${darkMode ? "text-[#65F0CD]" : "text-[#F4FBF0]"}`}>
-                    Play & Win!
-                  </h2>
-                  <p className={`font-comic text-lg sm:text-xl lg:text-sm xl:text-sm font-semibold leading-relaxed lg:leading-snug ${darkMode ? "text-white" : "text-[#F4FBF0]"}`}>
-                    Answer 10 fun and surprising questions about plants and your care habits. Score points and earn your{' '}
-                    <span className="font-bold" style={{ color: '#CD7F32' }}>Bronze</span>,{' '}
-                    <span className="font-bold" style={{ color: '#C0C0C0' }}>Silver</span>,{' '}
-                    or <span className="font-bold" style={{ color: '#FFD700' }}>Gold</span> badge!
-                  </p>
-                  {/* Mobile badges */}
-                  <div className="lg:hidden flex items-center justify-center gap-6 sm:gap-8 py-3 w-full">
-                    <img src="/images/bronze-badge.svg" alt="Bronze badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
-                    <img src="/images/silver-badge.svg" alt="Silver badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
-                    <img src="/images/gold-badge.svg" alt="Gold badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
+                <div className={`w-full rounded-2xl p-7 sm:p-9 lg:p-6 xl:p-8 border flex flex-col lg:flex-row items-center lg:items-center gap-5 lg:gap-6 ${darkMode ? "bg-[#350F29] border-[#65F0CD]/20" : "bg-[#1E3D2A] border-[#1E3D2A]"}`}>
+
+                  {/* Left: text */}
+                  <div className="flex flex-col items-center text-center lg:items-start lg:text-left gap-3 lg:gap-4 lg:flex-[3] lg:min-w-0">
+                    <h2 className={`font-caveat text-5xl sm:text-6xl lg:text-3xl xl:text-4xl font-bold ${darkMode ? "text-[#65F0CD]" : "text-[#F4FBF0]"}`}>
+                      Play & Win!
+                    </h2>
+                    <p className={`font-comic text-lg sm:text-xl lg:text-sm xl:text-base font-semibold leading-relaxed lg:leading-relaxed ${darkMode ? "text-white/90" : "text-[#F4FBF0]"}`}>
+                      Answer 10 fun and surprising questions about plants and your care habits. Score points and earn your{' '}
+                      <span className="font-bold lg:italic" style={{ color: '#CD7F32' }}>Bronze</span>,{' '}
+                      <span className="font-bold lg:italic" style={{ color: '#C0C0C0' }}>Silver</span>,{' '}
+                      or <span className="font-bold lg:italic" style={{ color: '#FFD700' }}>Gold</span> badge!
+                    </p>
+                    {/* Mobile badges */}
+                    <div className="lg:hidden flex items-center justify-center gap-6 sm:gap-8 py-3 w-full">
+                      <img src="/images/bronze-badge.svg" alt="Bronze badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
+                      <img src="/images/silver-badge.svg" alt="Silver badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
+                      <img src="/images/gold-badge.svg" alt="Gold badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
+                    </div>
+                    {/* Mobile button */}
+                    <button
+                      onClick={() => {
+                        const stored = localStorage.getItem("user");
+                        if (stored) { setLoggedInUser(JSON.parse(stored)); setBadgeModal(true); }
+                        else { setAuthModal("register"); setAuthReason("badge"); }
+                      }}
+                      className={`lg:hidden w-full py-4 px-10 text-xl sm:text-2xl rounded-full font-bold border-2 transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-xl ${darkMode ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3] hover:shadow-[#65F0CD]/30" : "bg-[#2D6A4F] border-[#2D6A4F] text-[#F4FBF0] hover:bg-[#1E3D2A] hover:border-[#1E3D2A] hover:shadow-[#2D6A4F]/40"}`}
+                    >
+                      🏆 Claim Your Badge →
+                    </button>
                   </div>
-                  {/* Desktop badges */}
-                  <div className="hidden lg:flex items-center justify-start gap-3 w-full">
-                    <img src="/images/desktop-images/bronzeBadge.svg" alt="Bronze badge" className="w-12 h-12 xl:w-14 xl:h-14 drop-shadow-xl" />
-                    <img src="/images/desktop-images/silverBadge.svg" alt="Silver badge" className="w-12 h-12 xl:w-14 xl:h-14 drop-shadow-xl" />
-                    <img src="/images/desktop-images/goldBadge.svg" alt="Gold badge" className="w-12 h-12 xl:w-14 xl:h-14 drop-shadow-xl" />
+
+                  {/* Right: desktop badges + button */}
+                  <div className="hidden lg:flex flex-col items-center justify-center gap-3 pl-4 lg:flex-[2] lg:shrink-0">
+                    <div className="flex items-end justify-center gap-3 xl:gap-4">
+                      <img src="/images/bronze-badge.svg" alt="Bronze badge" className="h-20 xl:h-24 w-auto drop-shadow-xl transition-all duration-700 hover:scale-110 cursor-pointer hover:drop-shadow-[0_0_16px_rgba(255,120,0,0.95)]" />
+                      <img src="/images/silver-badge.svg" alt="Silver badge" className="h-20 xl:h-24 w-auto drop-shadow-xl transition-all duration-700 hover:scale-110 cursor-pointer hover:drop-shadow-[0_0_16px_rgba(180,220,255,0.95)]" />
+                      <img src="/images/gold-badge.svg" alt="Gold badge" className="h-20 xl:h-24 w-auto drop-shadow-xl transition-all duration-700 hover:scale-110 cursor-pointer hover:drop-shadow-[0_0_16px_rgba(255,215,0,0.95)]" />
+                    </div>
+                    <button
+                      onClick={() => {
+                        const stored = localStorage.getItem("user");
+                        if (stored) { setLoggedInUser(JSON.parse(stored)); setBadgeModal(true); }
+                        else { setAuthModal("register"); setAuthReason("badge"); }
+                      }}
+                      className={`w-full py-2 px-7 text-sm xl:text-base rounded-full font-bold border-2 whitespace-nowrap transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-xl ${darkMode ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3] hover:shadow-[#65F0CD]/30" : "bg-[#2D6A4F] border-[#2D6A4F] text-[#F4FBF0] hover:bg-[#1E3D2A] hover:border-[#1E3D2A] hover:shadow-[#2D6A4F]/40"}`}
+                    >
+                      Claim Your Badge →
+                    </button>
                   </div>
-                  <button
-                    onClick={() => {
-                      const stored = localStorage.getItem("user");
-                      if (stored) {
-                        setLoggedInUser(JSON.parse(stored));
-                        setBadgeModal(true);
-                      } else {
-                        setAuthModal("register");
-                        setAuthReason("badge");
-                      }
-                    }}
-                    className={`w-full lg:w-auto py-4 px-10 lg:py-2 lg:px-7 text-xl sm:text-2xl lg:text-sm xl:text-base rounded-full font-bold border-2 transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-xl ${darkMode ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3] hover:shadow-[#65F0CD]/30" : "bg-[#2D6A4F] border-[#2D6A4F] text-[#F4FBF0] hover:bg-[#1E3D2A] hover:border-[#1E3D2A] hover:shadow-[#2D6A4F]/40"}`}
-                  >
-                    🏆 Claim Your Badge →
-                  </button>
+
                 </div>
               </div>
 

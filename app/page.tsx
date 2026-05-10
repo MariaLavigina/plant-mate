@@ -1,16 +1,44 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { DarkModeContext } from "./ClientProviders";
 import { pageBg, primaryText } from "../lib/styles";
+
+const MOBILE_ANIM_INTERVALS = [350, 330, 300, 250, 200, 150, 110];
+
+const MOBILE_LIGHT_IMAGES = [
+  "/images/mobile-images/mobile-lightMode-01.svg",
+  "/images/mobile-images/mobile-lightMode-02.svg",
+  "/images/mobile-images/mobile-lightMode-03.svg",
+  "/images/mobile-images/mobile-lightMode-04.svg",
+  "/images/mobile-images/mobile-lightMode-05.svg",
+  "/images/mobile-images/mobile-lightMode-06.svg",
+  "/images/mobile-images/mobile-lightMode-07.svg",
+  "/images/mobile-images/mobile-lightMode-08.svg",
+];
+
+const MOBILE_DARK_IMAGES = [
+  "/images/mobile-images/mobile-darkMode-01.svg",
+  "/images/mobile-images/mobile-darkMode-02.svg",
+  "/images/mobile-images/mobile-darkMode-03.svg",
+  "/images/mobile-images/mobile-darkMode-04.svg",
+  "/images/mobile-images/mobile-darkMode-05.svg",
+  "/images/mobile-images/mobile-darkMode-06.svg",
+  "/images/mobile-images/mobile-darkMode-07.svg",
+  "/images/mobile-images/mobile-darkMode-08.svg",
+];
 
 export default function Home() {
   const { darkMode } = useContext(DarkModeContext);
   const router = useRouter();
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [animIndex, setAnimIndex] = useState(0);
+
+  useEffect(() => { router.prefetch("/quiz"); }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -18,6 +46,18 @@ export default function Home() {
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     setMousePos({ x, y });
   };
+
+  const handleMobileClick = () => {
+    const intervals = MOBILE_ANIM_INTERVALS;
+    setIsAnimating(true);
+    let t = 0;
+    intervals.forEach((ms, i) => {
+      t += ms;
+      setTimeout(() => setAnimIndex(i + 1), t);
+    });
+    setTimeout(() => router.push("/quiz"), t + 150);
+  };
+
 
   return (
     <div className={`relative min-h-screen ${pageBg(darkMode)}`}>
@@ -80,7 +120,10 @@ export default function Home() {
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+      <div
+        className="md:hidden relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12"
+        style={{ opacity: isAnimating ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}
+      >
         <h1 className={`font-heading text-5xl sm:text-6xl lg:text-7xl mb-6 mt-10 ${primaryText(darkMode)}`}>
           PlantMate+
         </h1>
@@ -89,15 +132,37 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="block md:hidden absolute bottom-0 left-0 right-0">
+      <div className="block md:hidden absolute bottom-0 left-0 right-0 overflow-hidden">
+        {/* Base image — establishes container height */}
         <img
           src={darkMode ? "/images/mobile-images/plant-dark-mobile.svg" : "/images/mobile-images/plant-light-mobile1.svg"}
           alt="Plants"
-          className="w-full scale-90 origin-bottom plant-hover-animation"
+          className={`w-full scale-90 origin-bottom ${!isAnimating ? "plant-hover-animation" : ""}`}
+          style={{ opacity: isAnimating ? 0 : 1, transition: "opacity 0.3s" }}
         />
+
+        {/* Animation frames */}
+        {(darkMode ? MOBILE_DARK_IMAGES : MOBILE_LIGHT_IMAGES).map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="absolute top-0 left-0 w-full scale-110 origin-bottom select-none pointer-events-none"
+            style={{
+              opacity: isAnimating && i === animIndex ? 1 : 0,
+              transition: "none",
+            }}
+          />
+        ))}
+
         <button
-          onClick={() => router.push("/quiz")}
+          onClick={handleMobileClick}
+          disabled={isAnimating}
           className={`absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[85%] px-6 py-5 text-lg border-2 font-semibold rounded-full transition-all duration-300 shadow-2xl whitespace-nowrap backdrop-blur-md ${
+            isAnimating ? "opacity-0 pointer-events-none" : ""
+          } ${
             darkMode
               ? "bg-[#20083D]/40 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#20083D]"
               : "bg-white/30 border-[#1E3D2A] text-[#1E3D2A] hover:bg-[#1E3D2A]/80 hover:text-white"
