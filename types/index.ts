@@ -10,7 +10,9 @@ export interface Plant {
   name: string;
   description: string;
   traits: number[];
-  hotspots: HotspotData[];
+  image: string;
+  heightRank: number;
+  hotspots?: HotspotData[];
 }
 
 export interface Trait {

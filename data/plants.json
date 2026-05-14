@@ -1,182 +1,290 @@
 [
   {
     "id": 1,
-    "name": "Snake Plant",
-    "traits": [1, 3],
-    "description": "Hardy plant that survives low light and irregular watering.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "25%", "left": "35%" },
-        "title": "Sword-Shaped Leaves",
-        "content": "Thick, upright leaves store water, making this plant drought-tolerant and perfect for forgetful waterers."
-      },
-      {
-        "id": 2,
-        "position": { "top": "75%", "left": "40%" },
-        "title": "Shallow Roots",
-        "content": "Compact root system means it doesn't need frequent repotting and thrives in smaller pots."
-      }
-    ]
+    "name": "Aglaonema",
+    "traits": [11, 4, 16, 1, 8, 10, 6],
+    "description": "A beginner's dream — vivid, patterned leaves that thrive even in low-light corners.",
+    "image": "/images/plants-webP-images/agalonemas 1.webp",
+    "heightRank": 1
   },
   {
     "id": 2,
-    "name": "Aloe Vera",
-    "traits": [1, 2],
-    "description": "Easy-care succulent that loves bright light.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "20%", "left": "40%" },
-        "title": "Healing Gel",
-        "content": "The gel inside the leaves can soothe burns, cuts, and skin irritations naturally."
-      },
-      {
-        "id": 2,
-        "position": { "top": "75%", "left": "45%" },
-        "title": "Sun Lover",
-        "content": "Thrives in bright, indirect light and can tolerate some direct sunlight."
-      }
-    ]
+    "name": "Aglaonema Jungle Red",
+    "traits": [11, 14, 4, 1, 8, 10, 6],
+    "description": "Fiery red and green foliage that brings a tropical energy to any space.",
+    "image": "/images/plants-webP-images/Aglaonema Jungle Red (1) 1.webp",
+    "heightRank": 1
   },
   {
     "id": 3,
-    "name": "Fiddle Leaf Fig",
-    "traits": [2, 8],
-    "description": "Decorative plant that needs attention and bright light.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "15%", "left": "35%" },
-        "title": "Large Fiddle Leaves",
-        "content": "Signature violin-shaped leaves can grow up to 12 inches long, making a bold statement."
-      },
-      {
-        "id": 2,
-        "position": { "top": "70%", "left": "40%" },
-        "title": "Watering Needs",
-        "content": "Water when top 2 inches of soil are dry. Overwatering causes brown spots on leaves."
-      }
-    ]
+    "name": "Aglaonema Kiwi",
+    "traits": [12, 4, 16, 1, 8, 10, 6],
+    "description": "Creamy white and green variegation — cool, calm, and completely effortless to keep.",
+    "image": "/images/plants-webP-images/Aglaonema Kiwi 1.webp",
+    "heightRank": 1
   },
   {
     "id": 4,
-    "name": "Calathea",
-    "traits": [4, 6, 5],
-    "description": "High-maintenance plant that needs humidity and careful watering.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "30%", "left": "40%" },
-        "title": "Prayer Plant Movement",
-        "content": "Leaves fold up at night and open during the day - a fascinating natural rhythm."
-      },
-      {
-        "id": 2,
-        "position": { "top": "75%", "left": "35%" },
-        "title": "Humidity Lover",
-        "content": "Requires 50-60% humidity. Mist regularly or use a humidifier to prevent crispy leaf edges."
-      }
-    ]
+    "name": "Aglaonema Orange Star",
+    "traits": [11, 14, 2, 1, 8, 10, 6],
+    "description": "Vibrant orange and green leaves that glow like a sunset — low effort, high impact.",
+    "image": "/images/plants-webP-images/Aglaonema Orange Star 1.webp",
+    "heightRank": 1
   },
   {
     "id": 5,
-    "name": "Pothos",
-    "traits": [1, 5, 7],
-    "description": "Fast-growing vine that adapts to many light conditions.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "25%", "left": "30%" },
-        "title": "Trailing Vines",
-        "content": "Vines can grow 10+ feet long, perfect for hanging baskets or training along shelves."
-      },
-      {
-        "id": 2,
-        "position": { "top": "70%", "left": "40%" },
-        "title": "Easy Propagation",
-        "content": "Simply cut a stem and place in water - roots will grow in 1-2 weeks."
-      }
-    ]
+    "name": "Aglaonema Zebra Feathers",
+    "traits": [12, 14, 4, 1, 8, 10, 6],
+    "description": "Silvery striped leaves with a tropical flair — low effort, unmistakably stylish.",
+    "image": "/images/plants-webP-images/Aglaonema zebra feathers 1.webp",
+    "heightRank": 1
   },
   {
     "id": 6,
-    "name": "Spider Plant",
-    "traits": [1, 3, 7],
-    "description": "Pet-safe plant that grows quickly and is easy to care for.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "30%", "left": "45%" },
-        "title": "Arching Leaves",
-        "content": "Long, graceful striped leaves arch outward creating a fountain-like appearance."
-      },
-      {
-        "id": 2,
-        "position": { "top": "75%", "left": "50%" },
-        "title": "Pet Safe",
-        "content": "Non-toxic to cats and dogs, though pets may still be attracted to the dangling leaves."
-      }
-    ]
+    "name": "Alocasia Portodora",
+    "traits": [22, 15, 14, 7, 9, 2, 25, 6],
+    "description": "Enormous elephant-ear leaves that make a room feel like a tropical jungle.",
+    "image": "/images/plants-webP-images/Alocasia portodora 1.webp",
+    "heightRank": 3
   },
   {
     "id": 7,
-    "name": "Monstera Deliciosa",
-    "traits": [2, 7, 8],
-    "description": "Popular decorative plant with large leaves and fast growth.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "20%", "left": "40%" },
-        "title": "Swiss Cheese Holes",
-        "content": "Iconic holes (fenestrations) develop as the plant matures, helping it withstand wind in nature."
-      },
-      {
-        "id": 2,
-        "position": { "top": "75%", "left": "35%" },
-        "title": "Fast Grower",
-        "content": "Can produce a new leaf every 4-6 weeks during growing season with proper care."
-      }
-    ]
+    "name": "Alocasia Zebrina",
+    "traits": [13, 15, 14, 7, 9, 2, 25, 6],
+    "description": "Zebra-striped stems lifting dramatic dark leaves — sculpture and living art in one.",
+    "image": "/images/plants-webP-images/alocasia zebrina 1.webp",
+    "heightRank": 3
   },
   {
     "id": 8,
-    "name": "Peace Lily",
-    "traits": [5, 6],
-    "description": "Elegant plant that prefers low light and high humidity.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "25%", "left": "40%" },
-        "title": "White Blooms",
-        "content": "Elegant white spathes (not true flowers) bloom several times a year with proper care."
-      },
-      {
-        "id": 2,
-        "position": { "top": "75%", "left": "35%" },
-        "title": "Low Light Tolerant",
-        "content": "One of the few flowering plants that thrives in shady spots with minimal natural light."
-      }
-    ]
+    "name": "Aloe Vera",
+    "traits": [23, 17, 18, 16, 3, 10, 6],
+    "description": "The original healing plant — spiky, sculptural, and practically indestructible.",
+    "image": "/images/plants-webP-images/Aloe vera 1.webp",
+    "heightRank": 1
   },
   {
     "id": 9,
-    "name": "zz Plant",
-    "traits": [1, 5],
-    "description": "Extremely low-maintenance plant that thrives in low light.",
-    "hotspots": [
-      {
-        "id": 1,
-        "position": { "top": "30%", "left": "40%" },
-        "title": "Waxy Leaves",
-        "content": "Glossy, waxy coating helps retain moisture and gives the plant its signature shine."
-      },
-      {
-        "id": 2,
-        "position": { "top": "75%", "left": "35%" },
-        "title": "Drought Tolerant",
-        "content": "Nearly indestructible - can tolerate neglect, low light, and irregular watering."
-      }
-    ]
+    "name": "Beaucarnea Recurvata",
+    "traits": [23, 17, 5, 3, 10, 1],
+    "description": "A quirky ponytail trunk with cascading green curls — pet-safe and drought-proof.",
+    "image": "/images/plants-webP-images/Beaucarnea recurvata 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 10,
+    "name": "Bird's Nest Fern",
+    "traits": [14, 5, 7, 2, 10],
+    "description": "Wavy rosette fronds that bring lush tropical life to shaded spots.",
+    "image": "/images/plants-webP-images/birds nest fern (1) 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 11,
+    "name": "Bonsai Fabian",
+    "traits": [23, 21, 10, 2, 8, 6],
+    "description": "A miniature tree with a sculpted canopy — calm, architectural, and meditative.",
+    "image": "/images/plants-webP-images/Bonsai Fabian 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 12,
+    "name": "Euphorbia",
+    "traits": [23, 15, 18, 17, 3, 10, 1, 6],
+    "description": "Geometric, alien-like form that thrives on neglect — pure sculptural cool.",
+    "image": "/images/plants-webP-images/cactus-very-tall-impresive.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 13,
+    "name": "Caladium Carolyn",
+    "traits": [11, 14, 13, 7, 4, 10, 6],
+    "description": "Pink, white and green leaves so vivid they look hand-painted.",
+    "image": "/images/plants-webP-images/caladium carolyn1 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 14,
+    "name": "Calathea Lancifolia",
+    "traits": [13, 24, 14, 7, 5, 4, 25],
+    "description": "Rattlesnake-patterned leaves that fold up at night like they're going to sleep.",
+    "image": "/images/plants-webP-images/Calathea lancifolia1 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 15,
+    "name": "Cast Iron Plant",
+    "traits": [4, 1, 16, 5, 10],
+    "description": "The toughest plant you'll ever own — dim corners, forgetful watering, no problem.",
+    "image": "/images/plants-webP-images/Cast Iron Plant Aspidistra elatior 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 16,
+    "name": "Spider Plant",
+    "traits": [27, 5, 20, 16, 9, 1, 2, 19],
+    "description": "An arching, air-cleaning classic that's basically impossible to kill.",
+    "image": "/images/plants-webP-images/chlorophytum comosum 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 17,
+    "name": "Croton",
+    "traits": [11, 14, 7, 25, 3, 6],
+    "description": "Wildly colorful leaves in orange, red, yellow and green — a true tropical showstopper.",
+    "image": "/images/plants-webP-images/croton plant 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 18,
+    "name": "Dracaena Rikki",
+    "traits": [12, 19, 4, 1, 10, 6],
+    "description": "Striped upright leaves that quietly clean the air while asking almost nothing of you.",
+    "image": "/images/plants-webP-images/Dracaena Rikki 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 19,
+    "name": "Variegated Rubber Plant",
+    "traits": [12, 15, 19, 2, 1, 10, 6],
+    "description": "Creamy variegated leaves on a bold, architectural plant that commands the room.",
+    "image": "/images/plants-webP-images/elastica variegata1 1.webp",
+    "heightRank": 3
+  },
+  {
+    "id": 20,
+    "name": "Fittonia",
+    "traits": [13, 21, 5, 7, 4, 25],
+    "description": "Intricate veined leaves in red or white — tiny, dramatic, and endlessly charming.",
+    "image": "/images/plants-webP-images/Fittonia 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 21,
+    "name": "Hoya Kerrii",
+    "traits": [21, 17, 5, 2, 18, 1],
+    "description": "A perfect heart-shaped leaf — the cutest, most low-fuss plant in existence.",
+    "image": "/images/plants-webP-images/hoya kerii 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 22,
+    "name": "Prayer Plant",
+    "traits": [24, 13, 14, 27, 7, 5, 4],
+    "description": "Beautifully patterned leaves that fold their hands at night — magical to watch.",
+    "image": "/images/plants-webP-images/maranta 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 23,
+    "name": "Money Tree",
+    "traits": [23, 5, 9, 2, 8],
+    "description": "Braided trunk, bright energy and feng shui good luck — a genuine conversation starter.",
+    "image": "/images/plants-webP-images/money tree (2) 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 24,
+    "name": "Monstera Deliciosa",
+    "traits": [22, 14, 9, 27, 7, 2, 1, 6],
+    "description": "Iconic split leaves and unstoppable growth — the jungle giant of every plant lover's feed.",
+    "image": "/images/plants-webP-images/monstera 2 1.webp",
+    "heightRank": 3
+  },
+  {
+    "id": 25,
+    "name": "Philodendron Verrucosum",
+    "traits": [15, 14, 7, 25, 2, 6],
+    "description": "Velvety dark leaves with glowing veins — rare, dramatic, and deeply desirable.",
+    "image": "/images/plants-webP-images/Philodendron verrucosum1 1.webp",
+    "heightRank": 3
+  },
+  {
+    "id": 26,
+    "name": "Philodendron Xanadu",
+    "traits": [14, 21, 1, 2, 8, 6],
+    "description": "Deeply lobed lush leaves in a tidy compact shape — tropical without the drama.",
+    "image": "/images/plants-webP-images/philodendron xanadu (1) 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 27,
+    "name": "Pilea Peperomioides",
+    "traits": [27, 21, 5, 9, 16, 1, 2],
+    "description": "Round coin-shaped leaves on elegant stems — the plant everyone wants a cutting of.",
+    "image": "/images/plants-webP-images/Pilea peperomioides 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 28,
+    "name": "Pothos",
+    "traits": [20, 27, 4, 9, 16, 1, 19, 6],
+    "description": "Fast-trailing vines that fill any shelf, wall or dark corner with effortless life.",
+    "image": "/images/plants-webP-images/pothos2 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 29,
+    "name": "Sansevieria Laurentii",
+    "traits": [23, 12, 19, 17, 4, 1, 6],
+    "description": "Bold upright leaves with golden edges — the definitive no-fuss statement plant.",
+    "image": "/images/plants-webP-images/Sansevieria laurentii plant 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 30,
+    "name": "Satin Pothos",
+    "traits": [20, 12, 27, 4, 9, 1, 6],
+    "description": "Silvery heart-shaped leaves that shimmer as they trail — subtle and completely enchanting.",
+    "image": "/images/plants-webP-images/scindapsus pictus 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 31,
+    "name": "Peace Lily",
+    "traits": [26, 19, 7, 4, 25, 6],
+    "description": "Elegant white blooms in low light — it even droops dramatically when it needs a drink.",
+    "image": "/images/plants-webP-images/Spathiphyllum plant 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 32,
+    "name": "Spotted Star",
+    "traits": [13, 21, 4, 19, 10, 1, 6],
+    "description": "Dark leaves dotted with golden spots — a compact gem that glows in dim corners.",
+    "image": "/images/plants-webP-images/Spotted Star 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 33,
+    "name": "Strelitzia",
+    "traits": [22, 15, 14, 26, 9, 7, 2, 6],
+    "description": "Giant paddle-like leaves and bold presence — the plant equivalent of a power move.",
+    "image": "/images/plants-webP-images/Strelitzia plant 1.webp",
+    "heightRank": 3
+  },
+  {
+    "id": 34,
+    "name": "Sansevieria Zeylanica",
+    "traits": [23, 13, 19, 17, 4, 1, 6],
+    "description": "Sword-like leaves with wavy patterns — one of the most forgiving plants you can own.",
+    "image": "/images/plants-webP-images/Sansevieria trifasciata zeylanica 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 35,
+    "name": "Leighton Cactus",
+    "traits": [15, 23, 17, 18, 3, 10, 1],
+    "description": "A tall, ribbed column of pure sculptural cool — minimal care, maximum character.",
+    "image": "/images/plants-webP-images/Leighton Cactus 1.webp",
+    "heightRank": 3
+  },
+  {
+    "id": 36,
+    "name": "Bodhi Cactus",
+    "traits": [23, 21, 18, 17, 3, 10, 1],
+    "description": "An artful arrangement of cacti — spiky, serene, and effortlessly cool.",
+    "image": "/images/plants-webP-images/Bodhi Cactus Arrangement 1.webp",
+    "heightRank": 2
   }
 ]

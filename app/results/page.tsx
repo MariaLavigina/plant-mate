@@ -1,66 +1,210 @@
 "use client";
 
 import { useEffect, useState, useContext } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { motion } from "motion/react";
 import Navbar from "../../components/Navbar";
-import InteractivePlantImage from "../../components/InteractivePlantImage";
-import AuthModal from "../../components/AuthModal";
-import BadgeWelcomeModal from "../../components/BadgeWelcomeModal";
 import { DarkModeContext } from "../ClientProviders";
-import { pageBg, primaryText, accentText, primaryButton } from "../../lib/styles";
 import { QUIZ_RESULTS_KEY } from "../../lib/constants";
-import { Plant, SelectedAnswers } from "../../types";
+import { Plant, Trait, SelectedAnswers } from "../../types";
 import plants from "../../data/plants.json";
 import traits from "../../data/traits.json";
 import quizQuestions from "../../data/quiz_questions.json";
 
+const TRAIT_REASONS: Record<number, string> = {
+  1:  "you want a plant that fits around your life, not the other way around",
+  2:  "your space gets plenty of bright, indirect light",
+  3:  "you have direct sunlight to work with",
+  4:  "your home is on the darker side — and that's perfectly fine",
+  5:  "you need something safe around your pets or kids",
+  7:  "you love a lush, humid atmosphere and the ritual of misting",
+  8:  "you prefer a plant that's relaxed about humidity",
+  9:  "you want to actually watch your plant grow and change",
+  10: "you appreciate a plant that takes its time — slow, steady, and calming",
+  11: "you're drawn to colour and personality over plain green",
+  13: "you love intricate, patterned leaves — the kind you stop to study",
+  14: "you're a tropical soul at heart",
+  15: "you want a plant that makes a real statement in the room",
+  16: "you're just getting started and want something forgiving",
+  17: "you need a plant that forgives the occasional forgotten watering",
+  18: "you're drawn to the sculptural world of cacti and succulents",
+  20: "you picture your plant trailing and filling a corner with life",
+  21: "you prefer something compact and perfectly placed",
+  22: "big, bold leaves are absolutely your thing",
+  23: "you love plants with a strong, architectural silhouette",
+  24: "the idea of a plant that actually moves and responds fascinates you",
+  25: "you genuinely enjoy the daily ritual of caring for your plants",
+  26: "you'd love a plant that actually blooms and flowers at home",
+  27: "you enjoy the full cycle — propagating, sharing cuttings, and watching new roots grow",
+};
+
+function buildWhyText(traitIds: number[]): string {
+  const counts: Record<number, number> = {};
+  traitIds.forEach(id => { counts[id] = (counts[id] || 0) + 1; });
+  const topIds = Object.entries(counts)
+    .sort((a, b) => Number(b[1]) - Number(a[1]))
+    .slice(0, 3)
+    .map(([id]) => Number(id));
+  const reasons = topIds.map(id => TRAIT_REASONS[id]).filter(Boolean);
+  if (!reasons.length) return "These plants are perfectly suited to your lifestyle and preferences.";
+  if (reasons.length === 1) return `Because ${reasons[0]}, these plants are a wonderful match for you.`;
+  const last = reasons.at(-1);
+  const rest = reasons.slice(0, -1);
+  return `Because ${rest.join(", ")} — and ${last}, these plants were made for you.`;
+}
+
+function ArrowDown({ delay = 0, size = 28 }: { delay?: number; size?: number }) {
+  return (
+    <motion.div
+      className="flex justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay, duration: 0.3 }}
+    >
+      <motion.div
+        animate={{ y: [0, 6, 0] }}
+        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut", delay: delay + 0.9 }}
+      >
+        <svg width={size} height={size * 1.6} viewBox="0 0 20 32" fill="none">
+          <motion.line
+            x1="10" y1="0" x2="10" y2="20"
+            stroke="#65F0CD" strokeWidth="2" strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.45, delay: delay + 0.1, ease: "easeOut" }}
+          />
+          <motion.path
+            d="M 3 14 L 10 23 L 17 14"
+            stroke="#65F0CD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: 0.3, delay: delay + 0.5, ease: "easeOut" }}
+          />
+        </svg>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function traitPillStyle(id: number): React.CSSProperties {
+  let rgb: string;
+  if (id === 6)                                  rgb = "248,113,113";  // pet toxic  → red
+  else if (id === 5)                             rgb = "74,222,128";   // pet safe   → green
+  else if ([2, 3, 4].includes(id))               rgb = "251,191,36";   // light      → amber
+  else if ([1, 7, 8, 16, 17, 25].includes(id))   rgb = "56,189,248";   // care/water → sky blue
+  else if ([11, 12, 13, 15, 23, 26].includes(id)) rgb = "244,114,182"; // visual     → pink
+  else                                            rgb = "101,240,205"; // growth/special → teal
+  return {
+    color: `rgb(${rgb})`,
+    borderColor: `rgb(${rgb})`,
+    backgroundColor: `rgba(${rgb},0.12)`,
+  };
+}
+
+function sideHeightClass(rank: number): string {
+  return ({
+    1: "h-[130px] lg:h-[min(34vh,25vw,300px)]",
+    2: "h-[160px] lg:h-[min(42vh,31vw,370px)]",
+    3: "h-[185px] lg:h-[min(47vh,35vw,420px)]",
+  }[rank] ?? "h-[145px] lg:h-[min(38vh,28vw,340px)]");
+}
+
+interface PlantLabel {
+  plant: Plant;
+  position: "left" | "right" | "center";
+  revealed: boolean;
+  traitNames: (id: number) => string;
+  delay: string;
+}
+
+function PlantLabelDesktop({ plant, position, revealed, traitNames, delay }: PlantLabel) {
+  const motionDelay = parseFloat(delay) / 1000;
+  const base = `hidden lg:flex flex-col absolute transition-all duration-700 ${revealed ? "opacity-100" : "opacity-0"}`;
+  const nameStyle = { fontSize: "clamp(0.95rem,1.6vw,1.35rem)" } as React.CSSProperties;
+  const pillStyle = { fontSize: "clamp(8px,1vw,12px)" };
+  const t = (extra = 0) => ({ duration: 0.55, delay: motionDelay + 0.2 + extra, ease: "easeOut" as const });
+
+  if (position === "left") {
+    // stacked: name above, pills below; label floats above-left, diagonal ↘ arrow drops into plant
+    return (
+      <div className={`${base} items-end`} style={{ bottom: "105%", right: "100%", marginRight: "clamp(8px,1.5vw,24px)", transitionDelay: delay }}>
+        <div className="text-right">
+          <p className="font-heading text-[#65F0CD] leading-tight whitespace-nowrap" style={nameStyle}>{plant.name}</p>
+          <div className="flex gap-1 flex-wrap justify-end mt-1">
+            {plant.traits.slice(0, 3).map(id => (
+              <span key={id} style={{ ...pillStyle, ...traitPillStyle(id) }} className="px-2.5 py-1 border-2 rounded-full whitespace-nowrap font-semibold tracking-wide">{traitNames(id)}</span>
+            ))}
+          </div>
+        </div>
+        <svg width="52" height="62" viewBox="0 0 52 62" fill="none" className="mt-2 self-end">
+          <motion.path d="M 6 4 L 44 54" stroke="#65F0CD" strokeWidth="2" strokeLinecap="round"
+            initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={t()} />
+          <motion.path d="M 30 46 L 46 58 L 38 44" stroke="#65F0CD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"
+            initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={t(0.5)} />
+        </svg>
+      </div>
+    );
+  }
+
+  if (position === "right") {
+    // stacked: name above, pills below; label floats above-right, diagonal ↙ arrow drops into plant
+    return (
+      <div className={`${base} items-start`} style={{ bottom: "105%", left: "100%", marginLeft: "clamp(8px,1.5vw,24px)", transitionDelay: delay }}>
+        <div className="text-left">
+          <p className="font-heading text-[#65F0CD] leading-tight whitespace-nowrap" style={nameStyle}>{plant.name}</p>
+          <div className="flex gap-1 flex-wrap mt-1">
+            {plant.traits.slice(0, 3).map(id => (
+              <span key={id} style={{ ...pillStyle, ...traitPillStyle(id) }} className="px-2.5 py-1 border-2 rounded-full whitespace-nowrap font-semibold tracking-wide">{traitNames(id)}</span>
+            ))}
+          </div>
+        </div>
+        <svg width="52" height="62" viewBox="0 0 52 62" fill="none" className="mt-2 self-start">
+          <motion.path d="M 46 4 L 8 54" stroke="#65F0CD" strokeWidth="2" strokeLinecap="round"
+            initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={t()} />
+          <motion.path d="M 22 46 L 6 58 L 14 44" stroke="#65F0CD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"
+            initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={t(0.5)} />
+        </svg>
+      </div>
+    );
+  }
+
+  // center: name + pills on ONE horizontal row; anchored to the side at top of plant (never overlaps heading)
+  return (
+    <div className={`${base} items-start`} style={{ top: "12%", left: "100%", marginLeft: "clamp(8px,1.5vw,24px)", transitionDelay: delay }}>
+      <div className="flex items-center gap-2 flex-wrap">
+        <p className="font-heading text-[#65F0CD] leading-tight whitespace-nowrap" style={nameStyle}>{plant.name}</p>
+        {plant.traits.slice(0, 3).map(id => (
+          <span key={id} style={{ ...pillStyle, ...traitPillStyle(id) }} className="px-2.5 py-1 border-2 rounded-full whitespace-nowrap font-semibold tracking-wide">{traitNames(id)}</span>
+        ))}
+      </div>
+      {/* arrow curves from upper-right (label) down-left into the plant */}
+      <svg width="62" height="52" viewBox="0 0 62 52" fill="none" className="mt-2 self-start">
+        <motion.path d="M 58 8 C 44 14 22 28 6 42" stroke="#65F0CD" strokeWidth="2" strokeLinecap="round" fill="none"
+          initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={t()} />
+        <motion.path d="M 16 32 L 4 42 L 18 46" stroke="#65F0CD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"
+          initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={t(0.5)} />
+      </svg>
+    </div>
+  );
+}
+
 export default function Results() {
   const { darkMode } = useContext(DarkModeContext);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const preview = searchParams.get("preview");
-  const plantId = searchParams.get("plantId");
 
-  const [bestMatch, setBestMatch] = useState<Plant | null>(null);
+  const [displayPlants, setDisplayPlants] = useState<Plant[]>([]);
   const [selectedTraitIds, setSelectedTraitIds] = useState<number[]>([]);
-  const [authModal, setAuthModal] = useState<"login" | "register" | null>(null);
-  const [authReason, setAuthReason] = useState<string | undefined>(undefined);
-  const [badgeModal, setBadgeModal] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState<any>(null);
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const TRAIT_ICONS: Record<number, string> = {
-    1: "🌿", 2: "☀️", 3: "🐾", 4: "💚",
-    5: "🌙", 6: "💧", 7: "🚀", 8: "✨",
-  };
-
-  const TRAIT_COLORS: Record<number, { text: string; bg: string }> = {
-    1: { text: "#86EFAC", bg: "rgba(134,239,172,0.12)" },  // Low-maintenance: sage green
-    2: { text: "#FCD34D", bg: "rgba(252,211,77,0.12)" },   // Bright light: amber
-    3: { text: "#C4B5FD", bg: "rgba(196,181,253,0.12)" },  // Pet-friendly: lavender
-    4: { text: "#FDA4AF", bg: "rgba(253,164,175,0.12)" },  // High-maintenance: rose
-    5: { text: "#93C5FD", bg: "rgba(147,197,253,0.12)" },  // Low light: steel blue
-    6: { text: "#67E8F9", bg: "rgba(103,232,249,0.12)" },  // High humidity: cyan
-    7: { text: "#A3E635", bg: "rgba(163,230,53,0.12)" },   // Fast growing: lime
-    8: { text: "#FDE68A", bg: "rgba(253,230,138,0.12)" },  // Decorative: gold
-  };
-
   useEffect(() => {
-    if (bestMatch) {
-      const t = setTimeout(() => setRevealed(true), 50);
+    if (displayPlants.length > 0) {
+      const t = setTimeout(() => setRevealed(true), 120);
       return () => clearTimeout(t);
     }
-  }, [bestMatch]);
+  }, [displayPlants]);
 
   useEffect(() => {
-    if (plantId) {
-      const plant = plants.find((p) => p.id === Number(plantId));
-      if (plant) setBestMatch(plant as Plant);
-      setLoading(false);
-      return;
-    }
-
     const storedAnswers = localStorage.getItem(QUIZ_RESULTS_KEY);
     if (!storedAnswers) {
       router.replace("/quiz");
@@ -68,261 +212,164 @@ export default function Results() {
     }
 
     const parsed: SelectedAnswers = JSON.parse(storedAnswers);
-
     const traitIds = Object.entries(parsed).flatMap(([questionId, answerId]) => {
-      const question = quizQuestions.find((q) => q.id === Number(questionId));
-      const answer = question?.answers.find((a) => a.id === answerId);
-      return answer?.trait_ids || [];
+      const q = quizQuestions.find(q => q.id === Number(questionId));
+      const a = q?.answers.find(a => a.id === answerId);
+      return a?.trait_ids ?? [];
     });
-
     setSelectedTraitIds(traitIds);
 
-    let bestPlant: Plant | null = null;
-    let bestOverlap = -1;
+    const scored = (plants as Plant[]).map(plant => ({
+      plant,
+      score: plant.traits.filter(t => traitIds.includes(t)).length,
+    }));
+    scored.sort((a, b) => b.score - a.score || a.plant.traits.length - b.plant.traits.length);
+    const top3 = scored.slice(0, 3).map(s => s.plant);
 
-    for (const plant of plants as Plant[]) {
-      const overlap = plant.traits.filter((t) => traitIds.includes(t)).length;
-      if (
-        overlap > bestOverlap ||
-        (overlap === bestOverlap && plant.traits.length < (bestPlant?.traits.length ?? Infinity))
-      ) {
-        bestPlant = plant;
-        bestOverlap = overlap;
-      }
-    }
-
-    setBestMatch(bestPlant);
+    // Sort for display: tallest in center position
+    const byHeight = [...top3].sort((a, b) => a.heightRank - b.heightRank);
+    // [shortest, medium, tallest] → display as [shortest, tallest, medium]
+    setDisplayPlants([byHeight[0], byHeight[2], byHeight[1]]);
     setLoading(false);
-  }, [preview, plantId]);
+  }, []);
 
-  const TRAIT_REASONS: Record<number, string> = {
-    1: "you want a plant that can handle some neglect",
-    2: "your space gets plenty of natural sunlight",
-    3: "you need something safe around your pets",
-    4: "you enjoy giving your plants hands-on daily care",
-    5: "your home doesn't get much natural light",
-    6: "you love misting and creating a humid environment",
-    7: "you want to watch something grow fast and noticeably",
-    8: "you want a bold statement plant that turns heads",
-  };
+  const traitName = (id: number) => (traits as Trait[]).find(t => t.id === id)?.name ?? "";
 
-  const buildWhyText = (plant: Plant): string => {
-    const reasons = plant.traits
-      .filter((id) => selectedTraitIds.includes(id))
-      .map((id) => TRAIT_REASONS[id])
-      .filter(Boolean);
-    if (reasons.length === 0) return "";
-    if (reasons.length === 1) return `You ${reasons[0]}.`;
-    const last = reasons[reasons.length - 1];
-    const rest = reasons.slice(0, -1);
-    return `You ${rest.join(", you ")} — and ${last}.`;
-  };
-
+  const [leftPlant, centerPlant, rightPlant] = displayPlants;
 
   return (
-    <>
-      <div className={`min-h-screen transition-colors duration-500 ${darkMode ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]" : "bg-gradient-to-b from-[#F4FBF0] from-[3%] via-[#F5C6D8] via-[20%] to-[#A75B2B] lg:from-[0%] lg:via-[50%]"}`}>
-        <Navbar />
+    <div className={`flex flex-col min-h-screen lg:h-screen lg:overflow-hidden transition-colors duration-500 ${darkMode ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]" : "bg-gradient-to-b from-[#F4FBF0] via-[#F5C6D8] to-[#A75B2B]"}`}>
+      <Navbar />
 
-        <div className="flex flex-col px-4 sm:px-6 lg:px-10 xl:px-14 2xl:px-16 pt-20 lg:pt-24 pb-6 lg:h-screen lg:overflow-hidden max-w-7xl mx-auto w-full">
+      {/* flex-1 so this fills all space below the fixed navbar */}
+      <div className="flex flex-col flex-1 min-h-0 items-center px-4 sm:px-10 pt-20 pb-10 lg:pb-2">
 
-          {/* TOP SECTION: text left + image right */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:flex-1 gap-4 lg:gap-10 xl:gap-14 mb-5 lg:mb-6 min-h-0">
+        {loading && (
+          <p className={`mt-32 font-heading text-2xl animate-pulse ${darkMode ? "text-white/50" : "text-[#210E4A]/50"}`}>
+            Finding your plants…
+          </p>
+        )}
 
-            {/* Left: plant info + Play & Win */}
-            <div className="w-full lg:w-[50%] flex flex-col space-y-3 lg:space-y-5 items-center text-center lg:items-start lg:text-left">
+        {!loading && displayPlants.length === 3 && (
+          <div className={`flex flex-col flex-1 min-h-0 items-center w-full max-w-6xl transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
 
-              {/* 1 — Eyebrow + plant name */}
-              <div className={`w-full transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "0ms" }}>
-                <h2 className={`font-caveat text-2xl sm:text-3xl lg:text-2xl xl:text-3xl font-normal leading-tight ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}>
-                  <span className={darkMode ? "text-[#65F0CD]" : "text-[#2D6A4F]"}>✦</span>{" "}Your Plant Match
-                </h2>
-                {bestMatch && (
-                  <>
-                    <h3 className={`font-caveat text-5xl sm:text-6xl lg:text-5xl xl:text-6xl font-bold leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#2D6A4F]"}`}>
-                      {bestMatch.name}
-                    </h3>
-                  </>
-                )}
-              </div>
-
-              {loading && !bestMatch && (
-                <p className={`font-caveat text-xl animate-pulse ${darkMode ? "text-white/50" : "text-[#1E3D2A]/50"}`}>
-                  Finding your match…
+            {/* ── Header — shrinks to its content, never grows ── */}
+            <div className="shrink-0 flex flex-col items-center text-center mt-2">
+              <h1 className="font-heading text-[clamp(2rem,4.5vw,3rem)] text-[#F4C842] leading-none">
+                Your Plants Match!
+              </h1>
+              <h2 className="font-heading text-[clamp(0.95rem,1.6vw,1.25rem)] text-[#65F0CD] mt-1">
+                Why those plants fit you:
+              </h2>
+              {selectedTraitIds.length > 0 && (
+                <p className={`font-comic text-sm sm:text-[0.82rem] max-w-sm sm:max-w-xl mt-1 leading-snug ${darkMode ? "text-white/65" : "text-[#210E4A]/65"}`}>
+                  {buildWhyText(selectedTraitIds)}
                 </p>
               )}
-
-              {bestMatch && (
-                <>
-                  {/* 2 — Description */}
-                  <div className={`w-full transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "150ms" }}>
-                    <p className={`font-comic text-base sm:text-lg lg:text-base xl:text-lg font-medium leading-relaxed lg:max-w-lg xl:max-w-xl ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}>
-                      {bestMatch.description}
-                    </p>
-                  </div>
-
-                  {/* 3 — Trait pills + match score */}
-                  <div className={`w-full transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "250ms" }}>
-                    <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-                      {bestMatch.traits.map((id: number) => {
-                        const trait = traits.find((t) => t.id === id);
-                        const color = TRAIT_COLORS[id];
-                        return trait ? (
-                          <span
-                            key={id}
-                            className={`font-comic text-xs px-3 py-1 rounded-lg ${darkMode ? "" : "bg-[#2D6A4F]/15 text-[#2D6A4F]"}`}
-                            style={darkMode && color ? { color: color.text, backgroundColor: color.bg } : undefined}
-                          >
-                            {TRAIT_ICONS[id] && <span className="mr-1">{TRAIT_ICONS[id]}</span>}{trait.name}
-                          </span>
-                        ) : null;
-                      })}
-                    </div>
-                    {selectedTraitIds.length > 0 && (
-                      <p className={`font-comic text-xs mt-2 text-center lg:text-left ${darkMode ? "text-white/65" : "text-[#1E3D2A]/65"}`}>
-                        ✦ {bestMatch.traits.filter((t) => selectedTraitIds.includes(t)).length} of {bestMatch.traits.length} traits matched
-                      </p>
-                    )}
-                  </div>
-
-                  {/* 4 — Mobile: plant image + overlapping why box */}
-                  <div className={`lg:hidden w-full flex flex-col transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "350ms" }}>
-                    <InteractivePlantImage
-                      plant={bestMatch}
-                      className="h-[120vw] max-h-[700px] w-full"
-                      imageClassName="w-full h-full object-contain"
-                    />
-                    {selectedTraitIds.length > 0 && buildWhyText(bestMatch) && (
-                      <div
-                        className={`-mt-24 relative z-10 w-full rounded-2xl p-6 border overflow-hidden ${darkMode ? "border-[#65F0CD]/20" : "border-[#1E3D2A]/20"}`}
-                        style={{ backgroundColor: darkMode ? "rgba(33,14,74,0.90)" : "rgba(244,251,240,0.93)", backdropFilter: "blur(8px)" }}
-                      >
-                        <p className={`font-caveat text-2xl font-bold mb-3 whitespace-nowrap ${darkMode ? "text-[#F4FBF0]" : "text-[#2D6A4F]"}`}>
-                          Why this plant fits you:
-                        </p>
-                        <p className={`font-comic text-base leading-loose ${darkMode ? "text-white/80" : "text-[#1E3D2A]/80"}`}>
-                          {buildWhyText(bestMatch)}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                </>
-              )}
-
-              {/* 5 — Play & Win */}
-              <div className={`w-full transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "450ms" }}>
-                <div className={`w-full rounded-2xl p-7 sm:p-9 lg:p-6 xl:p-8 border flex flex-col lg:flex-row items-center lg:items-center gap-5 lg:gap-6 ${darkMode ? "bg-[#350F29] border-[#65F0CD]/20" : "bg-[#1E3D2A] border-[#1E3D2A]"}`}>
-
-                  {/* Left: text */}
-                  <div className="flex flex-col items-center text-center lg:items-start lg:text-left gap-3 lg:gap-4 lg:flex-[3] lg:min-w-0">
-                    <h2 className={`font-caveat text-5xl sm:text-6xl lg:text-3xl xl:text-4xl font-bold ${darkMode ? "text-[#65F0CD]" : "text-[#F4FBF0]"}`}>
-                      Play & Win!
-                    </h2>
-                    <p className={`font-comic text-lg sm:text-xl lg:text-sm xl:text-base font-semibold leading-relaxed lg:leading-relaxed ${darkMode ? "text-white/90" : "text-[#F4FBF0]"}`}>
-                      Answer 10 fun and surprising questions about plants and your care habits. Score points and earn your{' '}
-                      <span className="font-bold lg:italic" style={{ color: '#CD7F32' }}>Bronze</span>,{' '}
-                      <span className="font-bold lg:italic" style={{ color: '#C0C0C0' }}>Silver</span>,{' '}
-                      or <span className="font-bold lg:italic" style={{ color: '#FFD700' }}>Gold</span> badge!
-                    </p>
-                    {/* Mobile badges */}
-                    <div className="lg:hidden flex items-center justify-center gap-6 sm:gap-8 py-3 w-full">
-                      <img src="/images/bronze-badge.svg" alt="Bronze badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
-                      <img src="/images/silver-badge.svg" alt="Silver badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
-                      <img src="/images/gold-badge.svg" alt="Gold badge" className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-xl" />
-                    </div>
-                    {/* Mobile button */}
-                    <button
-                      onClick={() => {
-                        const stored = localStorage.getItem("user");
-                        if (stored) { setLoggedInUser(JSON.parse(stored)); setBadgeModal(true); }
-                        else { setAuthModal("register"); setAuthReason("badge"); }
-                      }}
-                      className={`lg:hidden w-full py-4 px-10 text-xl sm:text-2xl rounded-full font-bold border-2 transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-xl ${darkMode ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3] hover:shadow-[#65F0CD]/30" : "bg-[#2D6A4F] border-[#2D6A4F] text-[#F4FBF0] hover:bg-[#1E3D2A] hover:border-[#1E3D2A] hover:shadow-[#2D6A4F]/40"}`}
-                    >
-                      🏆 Claim Your Badge →
-                    </button>
-                  </div>
-
-                  {/* Right: desktop badges + button */}
-                  <div className="hidden lg:flex flex-col items-center justify-center gap-3 pl-4 lg:flex-[2] lg:shrink-0">
-                    <div className="flex items-end justify-center gap-3 xl:gap-4">
-                      <img src="/images/bronze-badge.svg" alt="Bronze badge" className="h-20 xl:h-24 w-auto drop-shadow-xl transition-all duration-700 hover:scale-110 cursor-pointer hover:drop-shadow-[0_0_16px_rgba(255,120,0,0.95)]" />
-                      <img src="/images/silver-badge.svg" alt="Silver badge" className="h-20 xl:h-24 w-auto drop-shadow-xl transition-all duration-700 hover:scale-110 cursor-pointer hover:drop-shadow-[0_0_16px_rgba(180,220,255,0.95)]" />
-                      <img src="/images/gold-badge.svg" alt="Gold badge" className="h-20 xl:h-24 w-auto drop-shadow-xl transition-all duration-700 hover:scale-110 cursor-pointer hover:drop-shadow-[0_0_16px_rgba(255,215,0,0.95)]" />
-                    </div>
-                    <button
-                      onClick={() => {
-                        const stored = localStorage.getItem("user");
-                        if (stored) { setLoggedInUser(JSON.parse(stored)); setBadgeModal(true); }
-                        else { setAuthModal("register"); setAuthReason("badge"); }
-                      }}
-                      className={`w-full py-2 px-7 text-sm xl:text-base rounded-full font-bold border-2 whitespace-nowrap transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-xl ${darkMode ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3] hover:shadow-[#65F0CD]/30" : "bg-[#2D6A4F] border-[#2D6A4F] text-[#F4FBF0] hover:bg-[#1E3D2A] hover:border-[#1E3D2A] hover:shadow-[#2D6A4F]/40"}`}
-                    >
-                      Claim Your Badge →
-                    </button>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* 6 — Retake quiz (bottom, after everything) */}
-              <div className={`w-full flex justify-center lg:justify-start transition-all duration-700 ease-out ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`} style={{ transitionDelay: "550ms" }}>
-                <button
-                  onClick={() => router.push("/quiz")}
-                  className={`font-comic text-sm sm:text-base uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-70 hover:opacity-100 ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}
-                >
-                  ↩ Retake quiz
-                </button>
-              </div>
-
             </div>
 
-            {/* Right: plant image with why overlay — desktop only */}
-            {bestMatch && (
-              <div className="hidden lg:flex lg:w-[50%] items-center justify-center min-h-0">
-                <div className="relative h-[calc(100vh-360px)] max-h-[500px]">
-                  <InteractivePlantImage
-                    plant={bestMatch}
-                    className="h-full w-auto"
-                    imageClassName="h-full w-auto object-contain"
-                  />
-                  {selectedTraitIds.length > 0 && buildWhyText(bestMatch) && (
-                    <div
-                      className={`absolute z-20 transition-opacity duration-700 ease-out ${revealed ? "opacity-100" : "opacity-0"}`}
-                      style={{
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        transitionDelay: "350ms",
-                        width: "115%",
-                        padding: "14px 20px",
-                        borderRadius: "16px",
-                        backgroundColor: darkMode ? "rgba(26,11,59,0.55)" : "rgba(244,251,240,0.58)",
-                        backdropFilter: "blur(12px)",
-                        boxShadow: darkMode
-                          ? "0 8px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(101,240,205,0.12)"
-                          : "0 8px 32px rgba(30,61,42,0.14), 0 0 0 1px rgba(45,106,79,0.12)",
-                      }}
-                    >
-                      <p className={`font-caveat text-base xl:text-lg font-bold mb-1 text-center ${darkMode ? "text-[#65F0CD]" : "text-[#2D6A4F]"}`}>
-                        Why this plant fits you:
-                      </p>
-                      <p className={`font-comic text-xs xl:text-sm leading-relaxed text-center ${darkMode ? "text-white/80" : "text-[#1E3D2A]/80"}`}>
-                        {buildWhyText(bestMatch)}
-                      </p>
-                    </div>
-                  )}
-                </div>
+            {/* ── Plant showcase — desktop only (lg+) ── */}
+            <div className="relative hidden lg:flex flex-1 min-h-0 items-end justify-center w-full mt-3 overflow-x-visible"
+              style={{ paddingBottom: "clamp(24px,5vh,64px)" }}>
+
+
+              {/* LEFT PLANT */}
+              <div className="relative flex-shrink-0" style={{ zIndex: 10, marginRight: "clamp(-40px,-3vw,-12px)" }}>
+                <PlantLabelDesktop plant={leftPlant} position="left" revealed={revealed} traitNames={traitName} delay="350ms" />
+                <img
+                  src={leftPlant.image}
+                  alt={leftPlant.name}
+                  className={`${sideHeightClass(leftPlant.heightRank)} w-auto object-contain object-bottom`}
+                />
               </div>
-            )}
+
+              {/* CENTER PLANT */}
+              <div className="relative flex-shrink-0" style={{ zIndex: 20 }}>
+                <PlantLabelDesktop plant={centerPlant} position="center" revealed={revealed} traitNames={traitName} delay="150ms" />
+                <img
+                  src={centerPlant.image}
+                  alt={centerPlant.name}
+                  className="h-[240px] lg:h-[min(56vh,40vw,480px)] w-auto object-contain object-bottom"
+                />
+              </div>
+
+              {/* RIGHT PLANT */}
+              <div className="relative flex-shrink-0" style={{ zIndex: 10, marginLeft: "clamp(-40px,-3vw,-12px)" }}>
+                <PlantLabelDesktop plant={rightPlant} position="right" revealed={revealed} traitNames={traitName} delay="500ms" />
+                <img
+                  src={rightPlant.image}
+                  alt={rightPlant.name}
+                  className={`${sideHeightClass(rightPlant.heightRank)} w-auto object-contain object-bottom`}
+                />
+              </div>
+            </div>
+
+            {/* ── Tablet (sm–lg): center plant hero on top, two side plants in a row ── */}
+            <div className="hidden sm:flex lg:hidden flex-col items-center w-full mt-6 pb-8 gap-6">
+
+              {/* Center plant — hero */}
+              <div className={`flex flex-col items-center transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
+                <p className="font-heading text-[#65F0CD] text-3xl leading-tight">{centerPlant.name}</p>
+                <div className="flex gap-1 flex-wrap justify-center mt-2">
+                  {centerPlant.traits.slice(0, 3).map(id => (
+                    <span key={id} style={traitPillStyle(id)} className="text-[12px] px-3 py-1 border-2 rounded-full font-semibold tracking-wide">{traitName(id)}</span>
+                  ))}
+                </div>
+                <img src={centerPlant.image} alt={centerPlant.name} className="mt-4 h-[42vh] w-auto object-contain" />
+              </div>
+
+              {/* Side plants — side by side */}
+              <div className="flex gap-8 justify-center w-full">
+                {[leftPlant, rightPlant].map((plant, i) => (
+                  <div key={plant.id} className={`flex flex-col items-center flex-1 max-w-[260px] transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: `${300 + i * 150}ms` }}>
+                    <p className="font-heading text-[#65F0CD] text-xl leading-tight">{plant.name}</p>
+                    <div className="flex gap-1 flex-wrap justify-center mt-1">
+                      {plant.traits.slice(0, 3).map(id => (
+                        <span key={id} style={traitPillStyle(id)} className="text-[11px] px-3 py-1 border-2 rounded-full font-semibold tracking-wide">{traitName(id)}</span>
+                      ))}
+                    </div>
+                    <img src={plant.image} alt={plant.name} className="mt-3 h-[28vh] w-auto object-contain" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Mobile: name → traits → image, stacked ── */}
+            <div className="flex flex-col items-center gap-10 mt-6 sm:hidden w-full">
+              {[centerPlant, leftPlant, rightPlant].map((plant, i) => (
+                <div
+                  key={plant.id}
+                  className={`flex flex-col items-center w-full transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                  style={{ transitionDelay: `${200 + i * 180}ms` }}
+                >
+                  <p className="font-heading text-[#65F0CD] text-2xl leading-tight">{plant.name}</p>
+                  <div className="flex gap-1 flex-wrap justify-center mt-2">
+                    {plant.traits.slice(0, 3).map(id => (
+                      <span key={id} style={traitPillStyle(id)} className="text-[11px] px-3 py-1 border-2 rounded-full font-semibold tracking-wide">
+                        {traitName(id)}
+                      </span>
+                    ))}
+                  </div>
+                  <img
+                    src={plant.image}
+                    alt={plant.name}
+                    className="mt-4 h-[340px] w-auto object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* ── Retake quiz ── */}
+            <button
+              onClick={() => router.push("/quiz")}
+              className={`shrink-0 font-comic text-xs sm:text-sm uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-60 hover:opacity-100 mt-4 sm:mt-2 mb-2 ${darkMode ? "text-white" : "text-[#210E4A]"}`}
+            >
+              ↩ Retake quiz
+            </button>
+
           </div>
-
-        </div>
+        )}
       </div>
-
-      {authModal && <AuthModal type={authModal} reason={authReason} onClose={() => { setAuthModal(null); setAuthReason(undefined); }} />}
-      {badgeModal && <BadgeWelcomeModal user={loggedInUser} onClose={() => setBadgeModal(false)} />}
-    </>
+    </div>
   );
 }

@@ -77,7 +77,7 @@ export default function Quiz() {
               : "bg-gray-400/30 border-gray-400/50 cursor-not-allowed text-gray-600"
           }`}
         >
-          {isLastQuestion ? "See My Plant Match" : "Next Question"}
+          {isLastQuestion ? "See My Plant Matches" : "Next Question"}
         </button>
       </div>
     </div>

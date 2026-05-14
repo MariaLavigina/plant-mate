@@ -13,6 +13,7 @@ A fun, interactive web app that helps you find your perfect houseplant match —
 - **Frontend:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
 - **Backend:** Node.js, Express, PostgreSQL 17.9 *(in progress)*
 - **Auth:** JWT + bcrypt
+- **Animation:** [Motion for React](https://motion.dev/tutorials/react-path-drawing) — SVG path drawing animations on the results page
 
 ## Running locally
 
