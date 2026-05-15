@@ -171,26 +171,29 @@ interface DesktopPlantCardProps {
 }
 
 function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCenter = false, isTopPick = false, hidePills = false }: DesktopPlantCardProps) {
-  const imgClass = `${sideHeightClass(plant.heightRank)} w-auto object-contain object-bottom${isCenter ? " scale-[1.35] origin-bottom" : ""}`;
+  const imgClass = `h-[130px] lg:h-[min(34vh,25vw,300px)] w-auto object-contain object-bottom${isCenter ? " scale-[1.6] origin-bottom" : ""}`;
 
   return (
     <div className="flex flex-col items-center">
-      {isTopPick && (
-        <motion.div
-          className="mb-1 px-3 py-0.5 border-2 border-[#F4C842] text-[#F4C842] rounded-full font-semibold tracking-widest uppercase"
-          style={{ fontSize: "clamp(8px,0.8vw,10px)" }}
-          initial={{ opacity: 0, y: -8 }}
-          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: -8 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-        >
-          ★ Best Match
-        </motion.div>
-      )}
+      <div className="relative">
+        <img src={plant.image} alt={plant.name} className={imgClass} />
+        {isTopPick && (
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-5 py-1.5 border-2 border-[#F4C842] text-[#F4C842] bg-[#210E4A] rounded-full font-semibold tracking-widest uppercase whitespace-nowrap"
+            style={{ fontSize: "clamp(11px,1.1vw,14px)" }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={revealed ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.4, delay: 0.05 }}
+          >
+            ★ Best Match
+          </motion.div>
+        )}
+      </div>
 
-      {/* Name + score bar sit ABOVE the image so image bottoms align via items-end */}
+      {/* Name + score below the image — same font sizes so footer height is identical across all cards */}
       <motion.p
-        className="font-heading text-[#65F0CD] text-center whitespace-nowrap"
-        style={{ fontSize: isCenter ? "clamp(1rem,1.7vw,1.4rem)" : "clamp(0.85rem,1.3vw,1.15rem)" }}
+        className="font-heading text-[#65F0CD] mt-3 text-center whitespace-nowrap"
+        style={{ fontSize: "clamp(0.85rem,1.3vw,1.15rem)" }}
         initial={{ opacity: 0, y: 14 }}
         animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
         transition={{ duration: 0.5, delay: nameDelay, ease: "easeOut" }}
@@ -199,7 +202,7 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
       </motion.p>
 
       <motion.div
-        className="w-full max-w-[160px] mt-1 mb-2"
+        className="w-full max-w-[160px] mt-2"
         initial={{ opacity: 0 }}
         animate={revealed ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.4, delay: nameDelay + 0.1 }}
@@ -208,7 +211,7 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
           <span
             className="font-comic font-semibold"
             style={{
-              fontSize: isCenter ? "clamp(9px,0.9vw,12px)" : "clamp(8px,0.75vw,10px)",
+              fontSize: "clamp(8px,0.75vw,10px)",
               color: isCenter ? "#F4C842" : "rgba(255,255,255,0.55)",
             }}
           >
@@ -225,9 +228,6 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
           />
         </div>
       </motion.div>
-
-      {/* Image last — its bottom is the card bottom, so items-end aligns all plant bases */}
-      <img src={plant.image} alt={plant.name} className={imgClass} />
 
       {!hidePills && (
         <div className="flex gap-1 flex-wrap justify-center mt-1.5">
@@ -310,6 +310,13 @@ export default function Results() {
       a.plant.traits.length - b.plant.traits.length
     );
 
+    const devPreviewId = localStorage.getItem("devPreviewId");
+    if (devPreviewId) {
+      localStorage.removeItem("devPreviewId");
+      const idx = scored.findIndex(s => s.plant.id === Number(devPreviewId));
+      if (idx > 0) { const [item] = scored.splice(idx, 1); scored.unshift(item); }
+    }
+
     const top3 = scored.slice(0, 3);
 
     setWhyText(buildPersonalizedWhyText(parsed, top3[0].plant));
@@ -369,8 +376,8 @@ export default function Results() {
             <div className="hidden lg:flex flex-1 min-h-0 w-full mt-2">
 
               {/* LEFT: heading + overlapping plants + names + score bars */}
-              <div className="flex flex-col flex-1 min-h-0 items-center">
-                <div className="shrink-0 text-center mt-2">
+              <div className="flex flex-col flex-1 min-h-0 items-center justify-center">
+                <div className="shrink-0 text-center">
                   <h1 className="font-heading text-[clamp(1.8rem,3vw,2.6rem)] text-[#F4C842] leading-none">
                     Your Plants Match!
                   </h1>
@@ -381,18 +388,23 @@ export default function Results() {
                   </h2>
                 </div>
 
-                <div className="flex flex-1 min-h-0 items-end justify-center w-full"
-                  style={{ paddingBottom: "clamp(16px,4vh,48px)" }}>
-                  <div className="flex-shrink-0" style={{ zIndex: 10, marginRight: "clamp(-160px,-13vw,-110px)" }}>
-                    <DesktopPlantCard plant={leftPlant} score={leftScore} revealed={revealed} traitName={traitName} nameDelay={0.4} hidePills />
-                  </div>
-                  <div className="flex-shrink-0" style={{ zIndex: 20 }}>
-                    <DesktopPlantCard plant={centerPlant} score={centerScore} revealed={revealed} traitName={traitName} nameDelay={0.2} isCenter isTopPick hidePills />
-                  </div>
-                  <div className="flex-shrink-0" style={{ zIndex: 10, marginLeft: "clamp(-160px,-13vw,-110px)" }}>
-                    <DesktopPlantCard plant={rightPlant} score={rightScore} revealed={revealed} traitName={traitName} nameDelay={0.55} hidePills />
-                  </div>
-                </div>
+                {(() => {
+                  const leighton = centerPlant?.id === 35 || centerPlant?.id === 20;
+                  return (
+                    <div className="flex items-end justify-center w-full mt-44"
+                      style={{ paddingBottom: "clamp(16px,4vh,48px)" }}>
+                      <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginRight: "clamp(-60px,-5vw,-30px)" }}>
+                        <DesktopPlantCard plant={leftPlant} score={leftScore} revealed={revealed} traitName={traitName} nameDelay={0.4} hidePills />
+                      </div>
+                      <div className="flex-shrink-0" style={{ zIndex: leighton ? 10 : 20 }}>
+                        <DesktopPlantCard plant={centerPlant} score={centerScore} revealed={revealed} traitName={traitName} nameDelay={0.2} isCenter isTopPick hidePills />
+                      </div>
+                      <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginLeft: "clamp(-60px,-5vw,-30px)" }}>
+                        <DesktopPlantCard plant={rightPlant} score={rightScore} revealed={revealed} traitName={traitName} nameDelay={0.55} hidePills />
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* RIGHT: why text + best plant's trait pills + comparison + retake */}

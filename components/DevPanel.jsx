@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import plants from "../data/plants.json";
+import quizQuestions from "../data/quiz_questions.json";
 
 export default function DevPanel() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +11,24 @@ export default function DevPanel() {
   if (process.env.NEXT_PUBLIC_DEV_PANEL !== "true") return null;
 
   const previewPlant = (plant) => {
-    router.push(`/results?plantId=${plant.id}&preview=${Date.now()}`);
+    // For each question pick the answer whose trait_ids overlap most with this plant.
+    // This makes the scoring algorithm naturally pick this plant as the winner.
+    const fakeAnswers = {};
+    for (const question of quizQuestions) {
+      let bestAnswer = question.answers[0];
+      let bestOverlap = 0;
+      for (const answer of question.answers) {
+        const overlap = answer.trait_ids.filter(t => plant.traits.includes(t)).length;
+        if (overlap > bestOverlap) {
+          bestOverlap = overlap;
+          bestAnswer = answer;
+        }
+      }
+      fakeAnswers[question.id] = bestAnswer.id;
+    }
+    localStorage.setItem("quizResults", JSON.stringify(fakeAnswers));
+    localStorage.setItem("devPreviewId", String(plant.id));
+    window.location.href = "/results";
   };
 
   return (
