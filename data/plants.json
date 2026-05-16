@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Aglaonema",
     "traits": [11, 4, 16, 1, 8, 10, 6],
-    "description": "A beginner's dream — vivid, patterned leaves that thrive even in low-light corners.",
+    "description": "A beginner's dream - vivid, patterned leaves that thrive even in low-light corners.",
     "image": "/images/plants-webP-images/agalonemas 1.webp",
     "heightRank": 1
   },
@@ -19,7 +19,7 @@
     "id": 3,
     "name": "Aglaonema Kiwi",
     "traits": [12, 4, 16, 1, 8, 10, 6],
-    "description": "Creamy white and green variegation — cool, calm, and completely effortless to keep.",
+    "description": "Creamy white and green variegation - cool, calm, and completely effortless to keep.",
     "image": "/images/plants-webP-images/Aglaonema Kiwi 1.webp",
     "heightRank": 1
   },
@@ -27,7 +27,7 @@
     "id": 4,
     "name": "Aglaonema Orange Star",
     "traits": [11, 14, 2, 1, 8, 10, 6],
-    "description": "Vibrant orange and green leaves that glow like a sunset — low effort, high impact.",
+    "description": "Vibrant orange and green leaves that glow like a sunset - low effort, high impact.",
     "image": "/images/plants-webP-images/Aglaonema Orange Star 1.webp",
     "heightRank": 1
   },
@@ -35,7 +35,7 @@
     "id": 5,
     "name": "Aglaonema Zebra Feathers",
     "traits": [12, 14, 4, 1, 8, 10, 6],
-    "description": "Silvery striped leaves with a tropical flair — low effort, unmistakably stylish.",
+    "description": "Silvery striped leaves with a tropical flair - low effort, unmistakably stylish.",
     "image": "/images/plants-webP-images/Aglaonema zebra feathers 1.webp",
     "heightRank": 1
   },
@@ -51,7 +51,7 @@
     "id": 7,
     "name": "Alocasia Zebrina",
     "traits": [13, 15, 14, 7, 9, 2, 25, 6],
-    "description": "Zebra-striped stems lifting dramatic dark leaves — sculpture and living art in one.",
+    "description": "Zebra-striped stems lifting dramatic dark leaves - sculpture and living art in one.",
     "image": "/images/plants-webP-images/alocasia zebrina 1.webp",
     "heightRank": 3
   },
@@ -59,7 +59,7 @@
     "id": 8,
     "name": "Aloe Vera",
     "traits": [23, 17, 18, 16, 3, 10, 6],
-    "description": "The original healing plant — spiky, sculptural, and practically indestructible.",
+    "description": "The original healing plant - spiky, sculptural, and practically indestructible.",
     "image": "/images/plants-webP-images/Aloe vera 1.webp",
     "heightRank": 1
   },
@@ -67,7 +67,7 @@
     "id": 9,
     "name": "Beaucarnea Recurvata",
     "traits": [23, 17, 5, 3, 10, 1],
-    "description": "A quirky ponytail trunk with cascading green curls — pet-safe and drought-proof.",
+    "description": "A quirky ponytail trunk with cascading green curls - pet-safe and drought-proof.",
     "image": "/images/plants-webP-images/Beaucarnea recurvata 1.webp",
     "heightRank": 2
   },
@@ -83,7 +83,7 @@
     "id": 11,
     "name": "Bonsai Fabian",
     "traits": [23, 21, 10, 2, 8, 6],
-    "description": "A miniature tree with a sculpted canopy — calm, architectural, and meditative.",
+    "description": "A miniature tree with a sculpted canopy - calm, architectural, and meditative.",
     "image": "/images/plants-webP-images/Bonsai Fabian 1.webp",
     "heightRank": 1
   },
@@ -91,7 +91,7 @@
     "id": 12,
     "name": "Euphorbia",
     "traits": [23, 15, 18, 17, 3, 10, 1, 6],
-    "description": "Geometric, alien-like form that thrives on neglect — pure sculptural cool.",
+    "description": "Geometric, alien-like form that thrives on neglect - pure sculptural cool.",
     "image": "/images/plants-webP-images/cactus-very-tall-impresive.webp",
     "heightRank": 2
   },
@@ -115,7 +115,7 @@
     "id": 15,
     "name": "Cast Iron Plant",
     "traits": [4, 1, 16, 5, 10],
-    "description": "The toughest plant you'll ever own — dim corners, forgetful watering, no problem.",
+    "description": "The toughest plant you'll ever own - dim corners, forgetful watering, no problem.",
     "image": "/images/plants-webP-images/Cast Iron Plant Aspidistra elatior 1.webp",
     "heightRank": 2
   },
@@ -131,7 +131,7 @@
     "id": 17,
     "name": "Croton",
     "traits": [11, 14, 7, 25, 3, 6],
-    "description": "Wildly colorful leaves in orange, red, yellow and green — a true tropical showstopper.",
+    "description": "Wildly colorful leaves in orange, red, yellow and green - a true tropical showstopper.",
     "image": "/images/plants-webP-images/croton plant 1.webp",
     "heightRank": 2
   },
@@ -155,23 +155,15 @@
     "id": 20,
     "name": "Fittonia",
     "traits": [13, 21, 5, 7, 4, 25],
-    "description": "Intricate veined leaves in red or white — tiny, dramatic, and endlessly charming.",
+    "description": "Intricate veined leaves in red or white - tiny, dramatic, and endlessly charming.",
     "image": "/images/plants-webP-images/Fittonia 1.webp",
-    "heightRank": 1
-  },
-  {
-    "id": 21,
-    "name": "Hoya Kerrii",
-    "traits": [21, 17, 5, 2, 18, 1],
-    "description": "A perfect heart-shaped leaf — the cutest, most low-fuss plant in existence.",
-    "image": "/images/plants-webP-images/hoya kerii 1.webp",
     "heightRank": 1
   },
   {
     "id": 22,
     "name": "Prayer Plant",
     "traits": [24, 13, 14, 27, 7, 5, 4],
-    "description": "Beautifully patterned leaves that fold their hands at night — magical to watch.",
+    "description": "Beautifully patterned leaves that fold their hands at night - magical to watch.",
     "image": "/images/plants-webP-images/maranta 1.webp",
     "heightRank": 1
   },
@@ -179,7 +171,7 @@
     "id": 23,
     "name": "Money Tree",
     "traits": [23, 5, 9, 2, 8],
-    "description": "Braided trunk, bright energy and feng shui good luck — a genuine conversation starter.",
+    "description": "Braided trunk, bright energy and feng shui good luck - a genuine conversation starter.",
     "image": "/images/plants-webP-images/money tree (2) 1.webp",
     "heightRank": 2
   },
@@ -187,7 +179,7 @@
     "id": 24,
     "name": "Monstera Deliciosa",
     "traits": [22, 14, 9, 27, 7, 2, 1, 6],
-    "description": "Iconic split leaves and unstoppable growth — the jungle giant of every plant lover's feed.",
+    "description": "Iconic split leaves and unstoppable growth - the jungle giant of every plant lover's feed.",
     "image": "/images/plants-webP-images/monstera 2 1.webp",
     "heightRank": 3
   },
@@ -195,7 +187,7 @@
     "id": 25,
     "name": "Philodendron Verrucosum",
     "traits": [15, 14, 7, 25, 2, 6],
-    "description": "Velvety dark leaves with glowing veins — rare, dramatic, and deeply desirable.",
+    "description": "Velvety dark leaves with glowing veins - rare, dramatic, and deeply desirable.",
     "image": "/images/plants-webP-images/Philodendron verrucosum1 1.webp",
     "heightRank": 3
   },
@@ -203,7 +195,7 @@
     "id": 26,
     "name": "Philodendron Xanadu",
     "traits": [14, 21, 1, 2, 8, 6],
-    "description": "Deeply lobed lush leaves in a tidy compact shape — tropical without the drama.",
+    "description": "Deeply lobed lush leaves in a tidy compact shape - tropical without the drama.",
     "image": "/images/plants-webP-images/philodendron xanadu (1) 1.webp",
     "heightRank": 2
   },
@@ -211,7 +203,7 @@
     "id": 27,
     "name": "Pilea Peperomioides",
     "traits": [27, 21, 5, 9, 16, 1, 2],
-    "description": "Round coin-shaped leaves on elegant stems — the plant everyone wants a cutting of.",
+    "description": "Round coin-shaped leaves on elegant stems - the plant everyone wants a cutting of.",
     "image": "/images/plants-webP-images/Pilea peperomioides 1.webp",
     "heightRank": 1
   },
@@ -227,7 +219,7 @@
     "id": 29,
     "name": "Sansevieria Laurentii",
     "traits": [23, 12, 19, 17, 4, 1, 6],
-    "description": "Bold upright leaves with golden edges — the definitive no-fuss statement plant.",
+    "description": "Bold upright leaves with golden edges - the definitive no-fuss statement plant.",
     "image": "/images/plants-webP-images/Sansevieria laurentii plant 1.webp",
     "heightRank": 2
   },
@@ -235,7 +227,7 @@
     "id": 30,
     "name": "Satin Pothos",
     "traits": [20, 12, 27, 4, 9, 1, 6],
-    "description": "Silvery heart-shaped leaves that shimmer as they trail — subtle and completely enchanting.",
+    "description": "Silvery heart-shaped leaves that shimmer as they trail - subtle and completely enchanting.",
     "image": "/images/plants-webP-images/scindapsus pictus 1.webp",
     "heightRank": 1
   },
@@ -243,23 +235,15 @@
     "id": 31,
     "name": "Peace Lily",
     "traits": [26, 19, 7, 4, 25, 6],
-    "description": "Elegant white blooms in low light — it even droops dramatically when it needs a drink.",
+    "description": "Elegant white blooms in low light - it even droops dramatically when it needs a drink.",
     "image": "/images/plants-webP-images/Spathiphyllum plant 1.webp",
     "heightRank": 2
-  },
-  {
-    "id": 32,
-    "name": "Spotted Star",
-    "traits": [13, 21, 4, 19, 10, 1, 6],
-    "description": "Dark leaves dotted with golden spots — a compact gem that glows in dim corners.",
-    "image": "/images/plants-webP-images/Spotted Star 1.webp",
-    "heightRank": 1
   },
   {
     "id": 33,
     "name": "Strelitzia",
     "traits": [22, 15, 14, 26, 9, 7, 2, 6],
-    "description": "Giant paddle-like leaves and bold presence — the plant equivalent of a power move.",
+    "description": "Giant paddle-like leaves and bold presence - the plant equivalent of a power move.",
     "image": "/images/plants-webP-images/Strelitzia plant 1.webp",
     "heightRank": 3
   },
@@ -267,15 +251,15 @@
     "id": 34,
     "name": "Sansevieria Zeylanica",
     "traits": [23, 13, 19, 17, 4, 1, 6],
-    "description": "Sword-like leaves with wavy patterns — one of the most forgiving plants you can own.",
-    "image": "/images/plants-webP-images/Sansevieria trifasciata zeylanica 1.webp",
+    "description": "Sword-like leaves with wavy patterns - one of the most forgiving plants you can own.",
+    "image": "/images/plants-webP-images/Sansevieria laurentii plant 1.webp",
     "heightRank": 2
   },
   {
     "id": 35,
     "name": "Leighton Cactus",
     "traits": [15, 23, 17, 18, 3, 10, 1],
-    "description": "A tall, ribbed column of pure sculptural cool — minimal care, maximum character.",
+    "description": "A tall, ribbed column of pure sculptural cool - minimal care, maximum character.",
     "image": "/images/plants-webP-images/Leighton Cactus 1.webp",
     "heightRank": 1
   },
@@ -283,8 +267,32 @@
     "id": 36,
     "name": "Bodhi Cactus",
     "traits": [23, 21, 18, 17, 3, 10, 1],
-    "description": "An artful arrangement of cacti — spiky, serene, and effortlessly cool.",
+    "description": "An artful arrangement of cacti - spiky, serene, and effortlessly cool.",
     "image": "/images/plants-webP-images/Bodhi Cactus Arrangement 1.webp",
     "heightRank": 2
+  },
+  {
+    "id": 37,
+    "name": "String of Hearts",
+    "traits": [20, 17, 18, 13, 5, 1, 2, 27],
+    "description": "Delicate trailing vines of tiny silver-marbled hearts - effortlessly romantic and nearly impossible to overwater.",
+    "image": "/images/plants-webP-images/hearts plant2 1.webp",
+    "heightRank": 1
+  },
+  {
+    "id": 38,
+    "name": "Pachira Aquatica",
+    "traits": [15, 5, 9, 2, 8, 19, 1],
+    "description": "A bold canopy of lush green palms atop a striking trunk - said to bring good fortune and guaranteed to start conversations.",
+    "image": "/images/plants-webP-images/Pachira plant (1) 1.webp",
+    "heightRank": 2
+  },
+  {
+    "id": 39,
+    "name": "Calathea Medallion",
+    "traits": [24, 13, 14, 7, 5, 4, 25],
+    "description": "Round velvety leaves painted with intricate dark and light green patterns - a living work of art that folds up every single night.",
+    "image": "/images/plants-webP-images/Calathea lancifolia 5 (1) 1.webp",
+    "heightRank": 1
   }
 ]

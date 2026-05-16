@@ -133,7 +133,7 @@ export default function Home() {
       </div>
 
       <div className="block md:hidden absolute bottom-0 left-0 right-0 overflow-hidden">
-        {/* Base image — establishes container height */}
+        {/* Base image - establishes container height */}
         <img
           src={darkMode ? "/images/mobile-images/plant-dark-mobile.svg" : "/images/mobile-images/plant-light-mobile1.svg"}
           alt="Plants"

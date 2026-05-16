@@ -40,7 +40,7 @@ export default function Contact() {
       <Navbar />
 
       <div className="flex min-h-screen md:pl-16">
-        {/* Left — animated illustration, desktop only */}
+        {/* Left - animated illustration, desktop only */}
         <div
           className="hidden md:block relative w-2/5 overflow-hidden"
           onMouseMove={(e) => {
@@ -84,7 +84,7 @@ export default function Contact() {
             />
           ))}
 
-          {/* Image 8 — spotlight reveal on hover */}
+          {/* Image 8 - spotlight reveal on hover */}
           <img
             src="/images/desktop-images/contactMe_08-onlyhover.svg"
             alt=""
@@ -103,7 +103,7 @@ export default function Contact() {
           />
         </div>
 
-        {/* Right — contact form */}
+        {/* Right - contact form */}
         <div className="flex-1 flex items-center justify-center px-6 sm:px-10 pt-24 pb-10 md:py-0">
           <div className="w-full max-w-sm">
             <h1
@@ -112,7 +112,7 @@ export default function Contact() {
               Get in Touch
             </h1>
             <p className={`text-sm mb-8 ${primaryText(darkMode)} opacity-70`}>
-              Drop me a message — I&apos;d love to hear from you!
+              Drop me a message - I&apos;d love to hear from you!
             </p>
 
             <form

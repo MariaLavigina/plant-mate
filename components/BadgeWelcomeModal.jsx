@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { DarkModeContext } from "../app/ClientProviders";
 
 const QUIZ_INFO = [
-  { icon: "⚡", text: "5 seconds per question — quick and fun!" },
+  { icon: "⚡", text: "5 seconds per question - quick and fun!" },
   { icon: "✅", text: "Instant feedback for every answer" },
-  { icon: "🌱", text: "No pressure — it's about learning and having fun!" },
+  { icon: "🌱", text: "No pressure - it's about learning and having fun!" },
   { icon: "📊", text: "Track your progress in your profile" },
   { icon: "🏆", text: "Collect all badges to become a PlantMate+ master!" },
 ];
@@ -19,7 +19,7 @@ export default function BadgeWelcomeModal({ user, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
       <div
         className={`w-full max-w-md rounded-2xl shadow-2xl relative overflow-hidden ${
-          darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#210E4A]"
+          darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#1E3D2A]"
         }`}
         style={{
           boxShadow: darkMode

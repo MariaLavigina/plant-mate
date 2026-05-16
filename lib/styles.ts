@@ -2,7 +2,7 @@ export const pageBg = (darkMode: boolean) =>
   `transition-colors duration-500 ${
     darkMode
       ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]"
-      : "bg-gradient-to-b from-[#F4FBF0] via-[#F5C6D8] to-[#A75B2B]"
+      : "bg-gradient-to-b from-[#F4FBF0] via-[#E8F2E2] to-[#C8DEBA]"
   }`;
 
 export const primaryText = (darkMode: boolean) =>

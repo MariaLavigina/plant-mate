@@ -1,10 +1,10 @@
 [
   {
     "id": 1,
-    "question": "Be honest — what actually happens to plants in your home?",
+    "question": "Be honest - what actually happens to plants in your home?",
     "answers": [
       { "id": 1,  "text": "They thrive. I notice every new leaf and genuinely love the routine",           "trait_ids": [25, 9, 27] },
-      { "id": 2,  "text": "They do well — I find a rhythm and mostly stick to it",                         "trait_ids": [1, 8] },
+      { "id": 2,  "text": "They do well - I find a rhythm and mostly stick to it",                         "trait_ids": [1, 8] },
       { "id": 3,  "text": "They survive... mostly. I forget sometimes but I try",                          "trait_ids": [1, 17] },
       { "id": 4,  "text": "My home has a graveyard of plants. I need something basically indestructible",  "trait_ids": [1, 17, 16] }
     ]
@@ -13,79 +13,79 @@
     "id": 2,
     "question": "What do your windows actually look like?",
     "answers": [
-      { "id": 5,  "text": "Big bright windows — it gets genuinely sunny and warm in here",                "trait_ids": [2, 3] },
+      { "id": 5,  "text": "Big bright windows - it gets genuinely sunny and warm in here",                "trait_ids": [2, 3] },
       { "id": 6,  "text": "Nice windows but the light always stays soft and filtered",                     "trait_ids": [2] },
-      { "id": 7,  "text": "Small windows or a north-facing room — it's quite dim honestly",               "trait_ids": [4] },
-      { "id": 8,  "text": "A mix — some bright spots, some pretty dark corners",                          "trait_ids": [1, 4] }
+      { "id": 7,  "text": "Small windows or a north-facing room - it's quite dim honestly",               "trait_ids": [4] },
+      { "id": 8,  "text": "A mix - some bright spots, some pretty dark corners",                          "trait_ids": [1, 4] }
     ]
   },
   {
     "id": 3,
-    "question": "Pets, kids — or total freedom?",
+    "question": "Pets, kids - or total freedom?",
     "answers": [
-      { "id": 9,  "text": "Pets or small kids who get into absolutely everything — safety first",          "trait_ids": [5] },
+      { "id": 9,  "text": "Pets or small kids who get into absolutely everything - safety first",          "trait_ids": [5] },
       { "id": 10, "text": "I have pets or kids but they tend to leave plants alone",                      "trait_ids": [5] },
-      { "id": 11, "text": "Total freedom — no pets, no restrictions, whatever I want goes!",              "trait_ids": [15, 23] },
-      { "id": 12, "text": "No pets but I'd still prefer non-toxic — peace of mind matters",               "trait_ids": [5] }
+      { "id": 11, "text": "Total freedom - no pets, no restrictions, whatever I want goes!",              "trait_ids": [15, 23] },
+      { "id": 12, "text": "No pets but I'd still prefer non-toxic - peace of mind matters",               "trait_ids": [5] }
     ]
   },
   {
     "id": 4,
     "question": "How do you actually feel about watering and humidity?",
     "answers": [
-      { "id": 13, "text": "I love the ritual — misting leaves, checking soil moisture, all of it",        "trait_ids": [7, 8, 25] },
+      { "id": 13, "text": "I love the ritual - misting leaves, checking soil moisture, all of it",        "trait_ids": [7, 8, 25] },
       { "id": 14, "text": "Happy to water regularly but I don't want to fuss with humidity",              "trait_ids": [1, 8] },
-      { "id": 15, "text": "I'd rather water less often — every couple of weeks suits me fine",            "trait_ids": [1, 17] },
-      { "id": 16, "text": "As dry as possible — give me a plant I can almost forget about",               "trait_ids": [17, 18] }
+      { "id": 15, "text": "I'd rather water less often - every couple of weeks suits me fine",            "trait_ids": [1, 17] },
+      { "id": 16, "text": "As dry as possible - give me a plant I can almost forget about",               "trait_ids": [17, 18] }
     ]
   },
   {
     "id": 5,
     "question": "What home aesthetic makes your heart skip?",
     "answers": [
-      { "id": 17, "text": "Lush tropical corners — big leaves, layered greens, jungle energy",            "trait_ids": [14, 7] },
+      { "id": 17, "text": "Lush tropical corners - big leaves, layered greens, jungle energy",            "trait_ids": [14, 7] },
       { "id": 18, "text": "One dramatic architectural plant that completely owns the whole room",          "trait_ids": [23, 15] },
-      { "id": 19, "text": "Colour and pattern everywhere — plants with real personality",                  "trait_ids": [11, 13] },
-      { "id": 20, "text": "Clean and minimal — the plant is a living sculpture, full stop",               "trait_ids": [23, 10] }
+      { "id": 19, "text": "Colour and pattern everywhere - plants with real personality",                  "trait_ids": [11, 13] },
+      { "id": 20, "text": "Clean and minimal - the plant is a living sculpture, full stop",               "trait_ids": [23, 10] }
     ]
   },
   {
     "id": 6,
     "question": "Where in your home is this plant actually heading?",
     "answers": [
-      { "id": 21, "text": "A floor spot — something I walk past and admire every single day",             "trait_ids": [22, 15] },
-      { "id": 22, "text": "A shelf, windowsill, or desk — compact and perfectly placed",                  "trait_ids": [21, 10] },
+      { "id": 21, "text": "A floor spot - something I walk past and admire every single day",             "trait_ids": [22, 15] },
+      { "id": 22, "text": "A shelf, windowsill, or desk - compact and perfectly placed",                  "trait_ids": [21, 10] },
       { "id": 23, "text": "A hanging spot or somewhere it can trail down beautifully",                    "trait_ids": [20, 9] },
-      { "id": 24, "text": "The bathroom or kitchen — somewhere naturally warm and a little steamy",        "trait_ids": [7, 8] }
+      { "id": 24, "text": "The bathroom or kitchen - somewhere naturally warm and a little steamy",        "trait_ids": [7, 8] }
     ]
   },
   {
     "id": 7,
-    "question": "Close your eyes — what's the plant moment you're actually picturing?",
+    "question": "Close your eyes - what's the plant moment you're actually picturing?",
     "answers": [
-      { "id": 25, "text": "Watching a brand new leaf slowly unfurl — I'd check on it every day",          "trait_ids": [9, 22] },
+      { "id": 25, "text": "Watching a brand new leaf slowly unfurl - I'd check on it every day",          "trait_ids": [9, 22] },
       { "id": 26, "text": "My plant trailing down a bookshelf, filling a corner with life",               "trait_ids": [20, 14, 27] },
-      { "id": 27, "text": "A guest stopping mid-sentence to ask 'wait — what IS that plant?!'",           "trait_ids": [15, 23] },
-      { "id": 28, "text": "Watching leaves fold up at night and open again each morning — living magic",  "trait_ids": [24, 13] }
+      { "id": 27, "text": "A guest stopping mid-sentence to ask 'wait - what IS that plant?!'",           "trait_ids": [15, 23] },
+      { "id": 28, "text": "Watching leaves fold up at night and open again each morning - living magic",  "trait_ids": [24, 13] }
     ]
   },
   {
     "id": 8,
     "question": "How much space should your plant own in the room?",
     "answers": [
-      { "id": 29, "text": "It should be the star — massive, dramatic, impossible to ignore",              "trait_ids": [22, 15] },
+      { "id": 29, "text": "It should be the star - massive, dramatic, impossible to ignore",              "trait_ids": [22, 15] },
       { "id": 30, "text": "A solid presence but not the centre of attention",                             "trait_ids": [14, 10] },
-      { "id": 31, "text": "Small and sweet — something that sits on a shelf or windowsill",              "trait_ids": [21, 1] },
+      { "id": 31, "text": "Small and sweet - something that sits on a shelf or windowsill",              "trait_ids": [21, 1] },
       { "id": 32, "text": "Something that trails and wanders, filling a corner naturally",                "trait_ids": [20, 9, 27] }
     ]
   },
   {
     "id": 9,
-    "question": "Honestly — do you want a plant that stops people in their tracks?",
+    "question": "Honestly - do you want a plant that stops people in their tracks?",
     "answers": [
-      { "id": 33, "text": "Yes, absolutely — give me something unforgettable",                            "trait_ids": [15, 23] },
-      { "id": 34, "text": "Not really — I prefer something calm and peaceful",                            "trait_ids": [1, 10] },
-      { "id": 35, "text": "Somewhere in between — interesting but not overwhelming",                      "trait_ids": [12, 14] },
+      { "id": 33, "text": "Yes, absolutely - give me something unforgettable",                            "trait_ids": [15, 23] },
+      { "id": 34, "text": "Not really - I prefer something calm and peaceful",                            "trait_ids": [1, 10] },
+      { "id": 35, "text": "Somewhere in between - interesting but not overwhelming",                      "trait_ids": [12, 14] },
       { "id": 40, "text": "I'd actually love a plant that flowers at home",                               "trait_ids": [26] }
     ]
   },
@@ -93,10 +93,10 @@
     "id": 10,
     "question": "You spot a spiky cactus at the plant shop. What's your reaction?",
     "answers": [
-      { "id": 36, "text": "Instant love — cacti are living sculptures",                                   "trait_ids": [17, 18, 23] },
+      { "id": 36, "text": "Instant love - cacti are living sculptures",                                   "trait_ids": [17, 18, 23] },
       { "id": 37, "text": "Cute, but not really my vibe",                                                 "trait_ids": [14, 7] },
       { "id": 38, "text": "I could be convinced if it was the right one",                                 "trait_ids": [17, 1] },
-      { "id": 39, "text": "Hard pass — give me something lush and leafy",                                 "trait_ids": [7, 14, 9] }
+      { "id": 39, "text": "Hard pass - give me something lush and leafy",                                 "trait_ids": [7, 14, 9] }
     ]
   }
 ]

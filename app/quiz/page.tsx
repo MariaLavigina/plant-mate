@@ -57,10 +57,10 @@ export default function Quiz() {
                 selectedAnswers[currentQuestion.id] === answer.id
                   ? darkMode
                     ? "bg-[#65F0CD]/30 border-[#65F0CD] text-white"
-                    : "bg-[#210E4A]/20 border-[#210E4A] text-[#210E4A]"
+                    : "bg-[#1E3D2A]/20 border-[#1E3D2A] text-[#1E3D2A]"
                   : darkMode
                   ? "bg-white/10 border-white/30 text-white hover:border-[#65F0CD] hover:bg-[#65F0CD]/10"
-                  : "bg-white/20 border-[#210E4A]/30 text-[#210E4A] hover:border-[#210E4A] hover:bg-white/40"
+                  : "bg-white/20 border-[#1E3D2A]/30 text-[#1E3D2A] hover:border-[#1E3D2A] hover:bg-white/40"
               }`}
             >
               {answer.text}

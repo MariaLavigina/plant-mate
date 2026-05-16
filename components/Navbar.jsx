@@ -67,7 +67,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu — full width, outside the padded container */}
+        {/* Mobile Menu - full width, outside the padded container */}
         {isOpen && (
           <div className="md:hidden flex flex-col px-6 pb-4" style={{ backgroundColor: darkMode ? "rgba(33,14,74,0.97)" : "rgba(244,251,240,0.97)" }}>
             {NAV_LINKS.map(({ href, label }) => (

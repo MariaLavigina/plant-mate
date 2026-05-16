@@ -78,7 +78,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
   const inputClass = `w-full px-4 py-2.5 rounded-lg border-2 outline-none transition-all duration-200 ${
     darkMode
       ? "bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-[#65F0CD]"
-      : "bg-white border-[#210E4A]/20 text-[#210E4A] placeholder-[#210E4A]/40 focus:border-[#210E4A]"
+      : "bg-white border-[#1E3D2A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:border-[#1E3D2A]"
   }`;
 
   const buttonClass = `w-full py-2.5 rounded-lg font-semibold transition-all duration-200 border-2 ${
@@ -88,18 +88,18 @@ export default function AuthModal({ type = "login", onClose, reason }) {
   }`;
 
   const linkClass = `mt-4 text-sm cursor-pointer text-center ${
-    darkMode ? "text-[#65F0CD] hover:text-white" : "text-[#210E4A] hover:text-[#2D1260]"
+    darkMode ? "text-[#65F0CD] hover:text-white" : "text-[#1E3D2A] hover:text-[#0f2116]"
   }`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className={`w-[92%] max-w-md rounded-2xl shadow-2xl p-8 relative ${
-        darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#210E4A]"
+        darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#1E3D2A]"
       }`}>
         <button
           onClick={onClose}
           className={`absolute top-4 right-4 text-xl transition hover:scale-110 ${
-            darkMode ? "text-white/50 hover:text-white" : "text-[#210E4A]/40 hover:text-[#210E4A]"
+            darkMode ? "text-white/50 hover:text-white" : "text-[#1E3D2A]/40 hover:text-[#1E3D2A]"
           }`}
         >
           ✕

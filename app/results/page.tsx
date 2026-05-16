@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import Navbar from "../../components/Navbar";
 import { DarkModeContext } from "../ClientProviders";
 import { QUIZ_RESULTS_KEY } from "../../lib/constants";
@@ -20,48 +20,48 @@ interface ScoredPlant {
 
 // Maps each answer ID → a sentence explaining why that choice led to this plant.
 const ANSWER_REASON: Record<number, (n: string, mt: number[]) => string | null> = {
-  1:  (n) => `You told us plants genuinely thrive in your care — ${n} will reward that attention with steady, reliable growth.`,
-  2:  (n) => `You said you find a rhythm and mostly stick to it — ${n} is a natural fit for that easy, consistent pace.`,
-  3:  (n) => `You said you forget sometimes but you try — ${n} stores what it needs and waits patiently without drama.`,
-  4:  (n) => `You told us you need something basically indestructible — ${n} is exactly that, thriving on minimal input.`,
-  5:  (n) => `Your big sunny windows are perfect — ${n} loves direct light and uses every bit of it to stay vibrant.`,
-  6:  (n) => `Your soft filtered light suits ${n} well — it grows steadily without needing harsh direct sun.`,
-  7:  (n) => `Even your dim space is fine — ${n} is built for shadier spots most plants simply give up in.`,
+  1:  (n) => `You told us plants genuinely thrive in your care - ${n} will reward that attention with steady, reliable growth.`,
+  2:  (n) => `You said you find a rhythm and mostly stick to it - ${n} is a natural fit for that easy, consistent pace.`,
+  3:  (n) => `You said you forget sometimes but you try - ${n} stores what it needs and waits patiently without drama.`,
+  4:  (n) => `You told us you need something basically indestructible - ${n} is exactly that, thriving on minimal input.`,
+  5:  (n) => `Your big sunny windows are perfect - ${n} loves direct light and uses every bit of it to stay vibrant.`,
+  6:  (n) => `Your soft filtered light suits ${n} well - it grows steadily without needing harsh direct sun.`,
+  7:  (n) => `Even your dim space is fine - ${n} is built for shadier spots most plants simply give up in.`,
   8:  (n) => `With a mix of bright and dark spots in your home, ${n} is flexible enough to settle in wherever you put it.`,
-  9:  (n, mt) => mt.includes(5) ? `Safety around pets and kids was a priority for you — ${n} is completely non-toxic and worry-free.` : null,
-  10: (n, mt) => mt.includes(5) ? `You wanted peace of mind about safety — ${n} is non-toxic and perfectly safe to have around.` : null,
-  11: (n) => `With no restrictions at home, you could pick anything — and ${n} proves you have genuinely good taste.`,
-  12: (n, mt) => mt.includes(5) ? `You prefer non-toxic for peace of mind — ${n} keeps things completely worry-free.` : null,
-  13: (n) => `You love the ritual of misting and checking soil — ${n} rewards that hands-on, attentive care.`,
-  14: (n) => `You said you don't want to fuss with humidity — ${n} is completely at home in dry air, no misting needed.`,
-  15: (n) => `You prefer watering every couple of weeks — ${n} stores water and stays healthy on exactly that relaxed schedule.`,
-  16: (n) => `You want a plant you can almost forget — ${n} is built for that, thriving happily on neglect.`,
-  17: (n) => `You want a lush tropical corner — ${n} brings that layered, jungle energy to any space.`,
-  18: (n) => `You said you want one dramatic architectural plant that owns the entire room — ${n} does exactly that.`,
-  19: (n) => `You love colour and pattern everywhere — ${n} delivers that vivid, living personality.`,
-  20: (n) => `You told us you want a living sculpture, clean and minimal — ${n} is precisely that, nothing more and nothing less.`,
-  21: (n) => `You want a floor statement you admire every time you walk past it — ${n} is made for exactly that spot.`,
+  9:  (n, mt) => mt.includes(5) ? `Safety around pets and kids was a priority for you - ${n} is completely non-toxic and worry-free.` : null,
+  10: (n, mt) => mt.includes(5) ? `You wanted peace of mind about safety - ${n} is non-toxic and perfectly safe to have around.` : null,
+  11: (n) => `With no restrictions at home, you could pick anything - and ${n} proves you have genuinely good taste.`,
+  12: (n, mt) => mt.includes(5) ? `You prefer non-toxic for peace of mind - ${n} keeps things completely worry-free.` : null,
+  13: (n) => `You love the ritual of misting and checking soil - ${n} rewards that hands-on, attentive care.`,
+  14: (n) => `You said you don't want to fuss with humidity - ${n} is completely at home in dry air, no misting needed.`,
+  15: (n) => `You prefer watering every couple of weeks - ${n} stores water and stays healthy on exactly that relaxed schedule.`,
+  16: (n) => `You want a plant you can almost forget - ${n} is built for that, thriving happily on neglect.`,
+  17: (n) => `You want a lush tropical corner - ${n} brings that layered, jungle energy to any space.`,
+  18: (n) => `You said you want one dramatic architectural plant that owns the entire room - ${n} does exactly that.`,
+  19: (n) => `You love colour and pattern everywhere - ${n} delivers that vivid, living personality.`,
+  20: (n) => `You told us you want a living sculpture, clean and minimal - ${n} is precisely that, nothing more and nothing less.`,
+  21: (n) => `You want a floor statement you admire every time you walk past it - ${n} is made for exactly that spot.`,
   22: (n, mt) => mt.includes(21)
-    ? `You want something compact and perfectly placed on a shelf — ${n} sits exactly there.`
-    : `You want something that earns its place without taking over — ${n} is a calm, considered presence.`,
-  23: (n) => `You picture it trailing down beautifully — ${n} lends itself perfectly to that kind of flowing display.`,
-  24: (n) => `Your warm, steamy bathroom or kitchen is ideal — ${n} thrives in that kind of naturally humid warmth.`,
-  25: (n) => `You picture watching a brand new leaf slowly unfurl — ${n} gives you that moment regularly.`,
-  26: (n) => `You imagine it trailing down a bookshelf, filling a corner with life — ${n} grows naturally into exactly that.`,
-  27: (n) => `You want guests to stop mid-sentence asking what on earth it is — ${n} will absolutely do that.`,
-  28: (n) => `You said you want a plant that moves and responds like living magic — ${n} has that kind of quiet, captivating presence.`,
-  29: (n) => `You told us the plant should be the star — massive, dramatic, impossible to ignore — ${n} delivers exactly that presence.`,
-  30: (n) => `You want a solid presence without stealing the whole spotlight — ${n} sits naturally in that understated role.`,
-  31: (n) => `Small and perfectly placed on a shelf was exactly what you pictured — ${n} is made for that kind of considered space.`,
-  32: (n) => `You want something that trails and wanders, filling a corner with life — ${n} is built for that.`,
-  33: (n) => `You wanted something truly unforgettable — ${n} never disappoints on that front.`,
-  34: (n) => `You said you prefer calm and peaceful over flashy — ${n} has real presence without ever demanding attention.`,
-  35: (n) => `You wanted something interesting but not overwhelming — ${n} hits that balance perfectly.`,
-  40: (n) => `You'd love a plant that actually blooms at home — ${n} can surprise you with flowers when conditions are right.`,
-  36: (n) => `When you told us you instantly love cacti as living sculptures — that settled it. ${n} is exactly your kind of plant.`,
+    ? `You want something compact and perfectly placed on a shelf - ${n} sits exactly there.`
+    : `You want something that earns its place without taking over - ${n} is a calm, considered presence.`,
+  23: (n) => `You picture it trailing down beautifully - ${n} lends itself perfectly to that kind of flowing display.`,
+  24: (n) => `Your warm, steamy bathroom or kitchen is ideal - ${n} thrives in that kind of naturally humid warmth.`,
+  25: (n) => `You picture watching a brand new leaf slowly unfurl - ${n} gives you that moment regularly.`,
+  26: (n) => `You imagine it trailing down a bookshelf, filling a corner with life - ${n} grows naturally into exactly that.`,
+  27: (n) => `You want guests to stop mid-sentence asking what on earth it is - ${n} will absolutely do that.`,
+  28: (n) => `You said you want a plant that moves and responds like living magic - ${n} has that kind of quiet, captivating presence.`,
+  29: (n) => `You told us the plant should be the star - massive, dramatic, impossible to ignore - ${n} delivers exactly that presence.`,
+  30: (n) => `You want a solid presence without stealing the whole spotlight - ${n} sits naturally in that understated role.`,
+  31: (n) => `Small and perfectly placed on a shelf was exactly what you pictured - ${n} is made for that kind of considered space.`,
+  32: (n) => `You want something that trails and wanders, filling a corner with life - ${n} is built for that.`,
+  33: (n) => `You wanted something truly unforgettable - ${n} never disappoints on that front.`,
+  34: (n) => `You said you prefer calm and peaceful over flashy - ${n} has real presence without ever demanding attention.`,
+  35: (n) => `You wanted something interesting but not overwhelming - ${n} hits that balance perfectly.`,
+  40: (n) => `You'd love a plant that actually blooms at home - ${n} can surprise you with flowers when conditions are right.`,
+  36: (n) => `When you told us you instantly love cacti as living sculptures - that settled it. ${n} is exactly your kind of plant.`,
   37: (n) => `Cacti aren't really your thing, and ${n} is the lush, leafy alternative you were looking for.`,
-  38: (n) => `You said you could be convinced by the right cactus — and ${n} is definitely the right one.`,
-  39: (n) => `You want something lush and leafy over anything spiky — ${n} gives you exactly that.`,
+  38: (n) => `You said you could be convinced by the right cactus - and ${n} is definitely the right one.`,
+  39: (n) => `You want something lush and leafy over anything spiky - ${n} gives you exactly that.`,
 };
 
 function buildPersonalizedWhyText(parsedAnswers: SelectedAnswers, bestPlant: Plant): string {
@@ -116,7 +116,7 @@ function buildComparisonText(top3: ScoredPlant[]): string {
   const diff2 = best.pct - second.pct;
   const diff3 = best.pct - third.pct;
 
-  let line = `${best.plant.name} scored ${best.pct}% overall — `;
+  let line = `${best.plant.name} scored ${best.pct}% overall - `;
 
   if (diff2 === 0) {
     line += `tied with ${second.plant.name} on coverage, but edges ahead: ${bestFocus}% of its own traits match your answers versus ${secondFocus}% for ${second.plant.name}.`;
@@ -124,7 +124,7 @@ function buildComparisonText(top3: ScoredPlant[]): string {
     line += `${diff2} point${diff2 === 1 ? "" : "s"} ahead of ${second.plant.name} at ${second.pct}%, which covered your preferences less completely on ${diff2 > 5 ? "several" : "one or two"} of your answers.`;
   }
 
-  line += ` ${third.plant.name} scored ${third.pct}% — `;
+  line += ` ${third.plant.name} scored ${third.pct}% - `;
   if (diff3 <= 4) {
     line += `very close, and also a genuinely strong match for you.`;
   } else if (diff3 <= 10) {
@@ -168,15 +168,22 @@ interface DesktopPlantCardProps {
   isCenter?: boolean;
   isTopPick?: boolean;
   hidePills?: boolean;
+  onClick?: () => void;
+  darkMode?: boolean;
 }
 
-function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCenter = false, isTopPick = false, hidePills = false }: DesktopPlantCardProps) {
+function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCenter = false, isTopPick = false, hidePills = false, onClick, darkMode = true }: DesktopPlantCardProps) {
   const imgClass = `h-[130px] lg:h-[min(34vh,25vw,300px)] w-auto object-contain object-bottom${isCenter ? " scale-[1.6] origin-bottom" : ""}`;
 
   return (
-    <div className="flex flex-col items-center">
+    <motion.div
+      className="flex flex-col items-center cursor-pointer"
+      onClick={onClick}
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+    >
       <div className="relative">
-        <img src={plant.image} alt={plant.name} className={imgClass} />
+        <img src={plant.image} alt={plant.name} className={imgClass} style={{ pointerEvents: "none" }} />
         {isTopPick && (
           <motion.div
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-5 py-1.5 border-2 border-[#F4C842] text-[#F4C842] bg-[#210E4A] rounded-full font-semibold tracking-widest uppercase whitespace-nowrap"
@@ -190,9 +197,9 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
         )}
       </div>
 
-      {/* Name + score below the image — same font sizes so footer height is identical across all cards */}
+      {/* Name + score below the image - same font sizes so footer height is identical across all cards */}
       <motion.p
-        className="font-heading text-[#65F0CD] mt-3 text-center whitespace-nowrap"
+        className={`font-heading mt-3 text-center whitespace-nowrap ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}
         style={{ fontSize: "clamp(0.85rem,1.3vw,1.15rem)" }}
         initial={{ opacity: 0, y: 14 }}
         animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
@@ -212,13 +219,13 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
             className="font-comic font-semibold"
             style={{
               fontSize: "clamp(8px,0.75vw,10px)",
-              color: isCenter ? "#F4C842" : "rgba(255,255,255,0.55)",
+              color: isCenter ? "#F4C842" : darkMode ? "rgba(255,255,255,0.55)" : "rgba(30,61,42,0.6)",
             }}
           >
             {score}% match
           </span>
         </div>
-        <div className="h-[3px] w-full rounded-full" style={{ background: "rgba(255,255,255,0.12)" }}>
+        <div className="h-[6px] w-full rounded-full" style={{ background: darkMode ? "rgba(255,255,255,0.12)" : "rgba(30,61,42,0.12)" }}>
           <motion.div
             className="h-full rounded-full"
             style={{ background: isCenter ? "#F4C842" : "rgba(101,240,205,0.55)" }}
@@ -245,7 +252,7 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
           ))}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -259,6 +266,7 @@ export default function Results() {
   const [comparisonText, setComparisonText] = useState<string>("");
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [tappedPlant, setTappedPlant] = useState<Plant | null>(null);
 
   useEffect(() => {
     if (displayPlants.length > 0) {
@@ -336,13 +344,13 @@ export default function Results() {
   const [leftScore, centerScore, rightScore] = displayScores;
 
   return (
-    <div className={`flex flex-col min-h-screen lg:h-screen lg:overflow-hidden transition-colors duration-500 ${darkMode ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]" : "bg-gradient-to-b from-[#F4FBF0] via-[#F5C6D8] to-[#A75B2B]"}`}>
+    <div className={`flex flex-col min-h-screen lg:h-screen lg:overflow-hidden transition-colors duration-500 ${darkMode ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]" : "bg-gradient-to-b from-[#F4FBF0] via-[#E8F2E2] to-[#C8DEBA]"}`}>
       <Navbar />
 
       <div className="flex flex-col flex-1 min-h-0 items-center px-4 sm:px-10 pt-20 pb-10 lg:pb-2">
 
         {loading && (
-          <p className={`mt-32 font-heading text-2xl animate-pulse ${darkMode ? "text-white/50" : "text-[#210E4A]/50"}`}>
+          <p className={`mt-32 font-heading text-2xl animate-pulse ${darkMode ? "text-white/50" : "text-[#1E3D2A]/50"}`}>
             Finding your plants…
           </p>
         )}
@@ -355,18 +363,18 @@ export default function Results() {
               <h1 className="font-heading text-[clamp(2rem,4.5vw,3rem)] text-[#F4C842] leading-none">
                 Your Plants Match!
               </h1>
-              <h2 className="font-heading text-[clamp(0.95rem,1.6vw,1.25rem)] text-[#65F0CD]">
+              <h2 className={`font-heading text-[clamp(0.95rem,1.6vw,1.25rem)] ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
                 Your best match is{" "}
                 <span className="text-[#F4C842]">{centerPlant.name}</span>
                 <span className="ml-2 font-comic font-bold text-[#F4C842]">· {centerScore}%</span>
               </h2>
               {whyText && (
-                <p className="font-comic text-[0.78rem] sm:text-[0.85rem] max-w-sm sm:max-w-xl leading-snug text-white/90">
+                <p className={`font-comic text-[0.78rem] sm:text-[0.85rem] max-w-sm sm:max-w-xl leading-snug ${darkMode ? "text-white/90" : "text-[#1E3D2A]/90"}`}>
                   {whyText}
                 </p>
               )}
               {comparisonText && (
-                <p className="font-comic text-[0.68rem] sm:text-[0.74rem] max-w-xs sm:max-w-lg leading-snug text-white/45 italic">
+                <p className={`font-comic text-[0.68rem] sm:text-[0.74rem] max-w-xs sm:max-w-lg leading-snug italic ${darkMode ? "text-white/45" : "text-[#1E3D2A]/60"}`}>
                   {comparisonText}
                 </p>
               )}
@@ -381,7 +389,7 @@ export default function Results() {
                   <h1 className="font-heading text-[clamp(1.8rem,3vw,2.6rem)] text-[#F4C842] leading-none">
                     Your Plants Match!
                   </h1>
-                  <h2 className="font-heading text-[clamp(0.8rem,1.2vw,1.05rem)] text-[#65F0CD] mt-1">
+                  <h2 className={`font-heading text-[clamp(0.8rem,1.2vw,1.05rem)] mt-1 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
                     Your best match is{" "}
                     <span className="text-[#F4C842]">{centerPlant.name}</span>
                     <span className="ml-2 font-comic font-bold text-[#F4C842]">· {centerScore}%</span>
@@ -393,14 +401,14 @@ export default function Results() {
                   return (
                     <div className="flex items-end justify-center w-full mt-44"
                       style={{ paddingBottom: "clamp(16px,4vh,48px)" }}>
-                      <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginRight: "clamp(-60px,-5vw,-30px)" }}>
-                        <DesktopPlantCard plant={leftPlant} score={leftScore} revealed={revealed} traitName={traitName} nameDelay={0.4} hidePills />
+                      <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginRight: "clamp(-40px,-3vw,-20px)" }}>
+                        <DesktopPlantCard plant={leftPlant} score={leftScore} revealed={revealed} traitName={traitName} nameDelay={0.4} hidePills onClick={() => setTappedPlant(leftPlant)} darkMode={darkMode} />
                       </div>
                       <div className="flex-shrink-0" style={{ zIndex: leighton ? 10 : 20 }}>
-                        <DesktopPlantCard plant={centerPlant} score={centerScore} revealed={revealed} traitName={traitName} nameDelay={0.2} isCenter isTopPick hidePills />
+                        <DesktopPlantCard plant={centerPlant} score={centerScore} revealed={revealed} traitName={traitName} nameDelay={0.2} isCenter isTopPick hidePills onClick={() => setTappedPlant(centerPlant)} darkMode={darkMode} />
                       </div>
-                      <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginLeft: "clamp(-60px,-5vw,-30px)" }}>
-                        <DesktopPlantCard plant={rightPlant} score={rightScore} revealed={revealed} traitName={traitName} nameDelay={0.55} hidePills />
+                      <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginLeft: "clamp(-40px,-3vw,-20px)" }}>
+                        <DesktopPlantCard plant={rightPlant} score={rightScore} revealed={revealed} traitName={traitName} nameDelay={0.55} hidePills onClick={() => setTappedPlant(rightPlant)} darkMode={darkMode} />
                       </div>
                     </div>
                   );
@@ -412,7 +420,7 @@ export default function Results() {
                 style={{ paddingBottom: "clamp(24px,5vh,60px)" }}>
                 {whyText && (
                   <motion.p
-                    className="font-comic text-[0.88rem] leading-relaxed text-white/90"
+                    className={`font-comic text-[0.88rem] leading-relaxed ${darkMode ? "text-white/90" : "text-[#1E3D2A]/90"}`}
                     initial={{ opacity: 0, x: 20 }}
                     animate={revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                     transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
@@ -420,21 +428,9 @@ export default function Results() {
                     {whyText}
                   </motion.p>
                 )}
-                <motion.div
-                  className="flex gap-1.5 flex-wrap mt-5"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                  transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
-                >
-                  {centerPlant.traits.filter(id => id !== 24).slice(0, 4).map(id => (
-                    <span key={id} style={{ fontSize: "11px", ...traitPillStyle(id) }} className="px-3 py-1.5 border-2 rounded-full font-semibold tracking-wide">
-                      {traitName(id)}
-                    </span>
-                  ))}
-                </motion.div>
                 {comparisonText && (
                   <motion.p
-                    className="font-comic text-[0.72rem] leading-snug text-white/45 italic mt-4"
+                    className={`font-comic text-[0.72rem] leading-snug italic mt-4 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/60"}`}
                     initial={{ opacity: 0, x: 20 }}
                     animate={revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                     transition={{ duration: 0.5, delay: 0.65, ease: "easeOut" }}
@@ -444,7 +440,7 @@ export default function Results() {
                 )}
                 <button
                   onClick={() => router.push("/quiz")}
-                  className={`font-comic text-xs uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-60 hover:opacity-100 mt-8 self-start ${darkMode ? "text-white" : "text-[#210E4A]"}`}
+                  className={`font-comic text-xs uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-60 hover:opacity-100 mt-8 self-start ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}
                 >
                   ↩ Retake quiz
                 </button>
@@ -454,49 +450,38 @@ export default function Results() {
             {/* ── Tablet (sm–lg): center hero + two side plants ── */}
             <div className="hidden sm:flex lg:hidden flex-col items-center w-full mt-6 pb-8 gap-6">
 
-              <div className={`flex flex-col items-center transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
+              <button type="button" onClick={() => setTappedPlant(centerPlant)} className={`flex flex-col items-center transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
                 <div className="mb-1 px-3 py-0.5 border-2 border-[#F4C842] text-[#F4C842] rounded-full text-[10px] font-semibold tracking-widest uppercase">
                   ★ Best Match
                 </div>
-                <p className="font-heading text-[#65F0CD] text-3xl leading-tight">{centerPlant.name}</p>
-                {/* Score bar – tablet center */}
+                <p className={`font-heading text-3xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>{centerPlant.name}</p>
                 <div className="w-[180px] mt-1.5">
                   <div className="flex justify-between mb-0.5">
                     <span className="font-comic text-[11px] font-bold text-[#F4C842]">{centerScore}% match</span>
                   </div>
-                  <div className="h-[3px] w-full rounded-full bg-white/10">
+                  <div className={`h-[6px] w-full rounded-full ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/10"}`}>
                     <div className="h-full rounded-full bg-[#F4C842]" style={{ width: `${centerScore}%` }} />
                   </div>
                 </div>
-                <div className="flex gap-1 flex-wrap justify-center mt-2">
-                  {centerPlant.traits.filter(id => id !== 24).slice(0, 3).map(id => (
-                    <span key={id} style={traitPillStyle(id)} className="text-[12px] px-3 py-1 border-2 rounded-full font-semibold tracking-wide">{traitName(id)}</span>
-                  ))}
-                </div>
                 <img src={centerPlant.image} alt={centerPlant.name} className="mt-4 h-[42vh] w-auto object-contain" />
-              </div>
+              </button>
 
               <div className="flex gap-8 justify-center w-full">
                 {([leftPlant, rightPlant] as Plant[]).map((plant, i) => {
                   const sc = i === 0 ? leftScore : rightScore;
                   return (
-                    <div key={plant.id} className={`flex flex-col items-center flex-1 max-w-[260px] transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: `${300 + i * 150}ms` }}>
-                      <p className="font-heading text-[#65F0CD] text-xl leading-tight">{plant.name}</p>
+                    <button type="button" key={plant.id} onClick={() => setTappedPlant(plant)} className={`flex flex-col items-center flex-1 max-w-[260px] transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: `${300 + i * 150}ms` }}>
+                      <p className={`font-heading text-xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>{plant.name}</p>
                       <div className="w-[140px] mt-1 mb-1">
                         <div className="flex justify-between mb-0.5">
-                          <span className="font-comic text-[10px] text-white/50">{sc}% match</span>
+                          <span className={`font-comic text-[10px] ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>{sc}% match</span>
                         </div>
-                        <div className="h-[2px] w-full rounded-full bg-white/10">
+                        <div className={`h-[6px] w-full rounded-full ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/10"}`}>
                           <div className="h-full rounded-full bg-[#65F0CD]/55" style={{ width: `${sc}%` }} />
                         </div>
                       </div>
-                      <div className="flex gap-1 flex-wrap justify-center">
-                        {plant.traits.filter(id => id !== 24).slice(0, 3).map(id => (
-                          <span key={id} style={traitPillStyle(id)} className="text-[11px] px-3 py-1 border-2 rounded-full font-semibold tracking-wide">{traitName(id)}</span>
-                        ))}
-                      </div>
                       <img src={plant.image} alt={plant.name} className="mt-3 h-[28vh] w-auto object-contain" />
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -507,52 +492,49 @@ export default function Results() {
               {([centerPlant, leftPlant, rightPlant] as Plant[]).map((plant, i) => {
                 const sc = [centerScore, leftScore, rightScore][i];
                 return (
-                  <div
+                  <button
+                    type="button"
                     key={plant.id}
                     className={`flex flex-col items-center w-full transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
                     style={{ transitionDelay: `${200 + i * 180}ms` }}
+                    onClick={() => setTappedPlant(plant)}
                   >
-                    {i === 0 && (
-                      <div className="mb-1 px-3 py-0.5 border-2 border-[#F4C842] text-[#F4C842] rounded-full text-[10px] font-semibold tracking-widest uppercase">
-                        ★ Best Match
-                      </div>
-                    )}
-                    <p className="font-heading text-[#65F0CD] text-2xl leading-tight">{plant.name}</p>
-                    {/* Score bar – mobile */}
+                    <p className={`font-heading text-2xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>{plant.name}</p>
                     <div className="w-[180px] mt-1.5 mb-1">
                       <div className="flex justify-between mb-0.5">
-                        <span className={`font-comic text-[11px] font-semibold ${i === 0 ? "text-[#F4C842]" : "text-white/50"}`}>
+                        <span className={`font-comic text-[11px] font-semibold ${i === 0 ? "text-[#F4C842]" : darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
                           {sc}% match
                         </span>
                       </div>
-                      <div className="h-[3px] w-full rounded-full bg-white/10">
+                      <div className={`h-[6px] w-full rounded-full ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/10"}`}>
                         <div
                           className="h-full rounded-full"
                           style={{ width: `${sc}%`, background: i === 0 ? "#F4C842" : "rgba(101,240,205,0.55)" }}
                         />
                       </div>
                     </div>
-                    <div className="flex gap-1 flex-wrap justify-center mt-1">
-                      {plant.traits.filter(id => id !== 24).slice(0, 3).map(id => (
-                        <span key={id} style={traitPillStyle(id)} className="text-[11px] px-3 py-1 border-2 rounded-full font-semibold tracking-wide">
-                          {traitName(id)}
-                        </span>
-                      ))}
+                    <div className="relative mt-4">
+                      <img
+                        src={plant.image}
+                        alt={plant.name}
+                        className="h-[340px] w-auto object-contain"
+                      />
+                      {i === 0 && (
+                        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-4 py-1.5 border-2 border-[#F4C842] text-[#F4C842] bg-[#210E4A] rounded-full text-[11px] font-semibold tracking-widest uppercase whitespace-nowrap">
+                          ★ Best Match
+                        </div>
+                      )}
                     </div>
-                    <img
-                      src={plant.image}
-                      alt={plant.name}
-                      className="mt-4 h-[340px] w-auto object-contain"
-                    />
-                  </div>
+                  </button>
                 );
               })}
             </div>
 
+
             {/* ── Retake quiz: tablet + mobile only (desktop has it in right column) ── */}
             <button
               onClick={() => router.push("/quiz")}
-              className={`lg:hidden shrink-0 font-comic text-xs sm:text-sm uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-60 hover:opacity-100 mt-4 sm:mt-2 mb-2 ${darkMode ? "text-white" : "text-[#210E4A]"}`}
+              className={`lg:hidden shrink-0 font-comic text-xs sm:text-sm uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-60 hover:opacity-100 mt-4 sm:mt-2 mb-2 ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}
             >
               ↩ Retake quiz
             </button>
@@ -560,6 +542,95 @@ export default function Results() {
           </div>
         )}
       </div>
+
+      {/* ── Plant detail: bottom sheet on mobile/tablet, slide-in drawer on desktop ── */}
+      <AnimatePresence>
+        {tappedPlant && (
+          <>
+            {/* Invisible click-catcher - no colour, just captures clicks anywhere to dismiss */}
+            <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setTappedPlant(null)} />
+
+            {/* Mobile + tablet: bottom sheet */}
+            <motion.div
+              className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-[#210E4A] rounded-t-3xl overflow-hidden"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              onClick={() => setTappedPlant(null)}
+            >
+              {/* Drag handle + X button */}
+              <div className="flex items-center justify-between px-4 pt-3 pb-1">
+                <div className="w-10 h-1 rounded-full bg-white/20 mx-auto" />
+                <button
+                  onClick={() => setTappedPlant(null)}
+                  className="absolute top-3 right-4 text-white/40 hover:text-white transition-colors text-lg leading-none"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="px-4 pt-2 pb-1">
+                <img
+                  src={tappedPlant.image.replace(".webp", "-rightPanel.webp")}
+                  alt={tappedPlant.name}
+                  className="w-full object-contain rounded-xl"
+                  style={{ height: "60vw", maxHeight: "360px" }}
+                />
+              </div>
+              <div className="px-6 pt-4 pb-8">
+                <p className="font-heading text-[#65F0CD] text-xl mb-3">{tappedPlant.name}</p>
+                <div className="flex gap-2 flex-wrap mb-4">
+                  {tappedPlant.traits.filter(id => id !== 24).slice(0, 5).map(id => (
+                    <span key={id} style={{ fontSize: "10px", ...traitPillStyle(id) }} className="px-3 py-1 border-2 rounded-full font-bold uppercase tracking-widest">
+                      {traitName(id)}
+                    </span>
+                  ))}
+                </div>
+                <p className="font-comic text-white/80 text-sm leading-relaxed mb-5">
+                  Placeholder sentence one - something captivating about this plant's personality and what makes it stand out. Placeholder sentence two - a note about the care routine and what kind of plant parent this suits best. Placeholder sentence three - something about its visual qualities, growth habits, or unique features. Placeholder sentence four - a fun or surprising fact that makes you love this plant even more.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Desktop: slide-in drawer from right */}
+            <motion.div
+              className="fixed top-0 right-0 h-full z-50 hidden lg:flex flex-col bg-[#210E4A] border-l border-white/10 overflow-hidden"
+              style={{ width: "clamp(360px, 30vw, 480px)" }}
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+            >
+              <button
+                onClick={() => setTappedPlant(null)}
+                className="absolute top-4 right-5 text-white/40 hover:text-white transition-colors z-10 text-lg leading-none"
+              >
+                ✕
+              </button>
+              <div className="px-5 pt-10 pb-2 flex-shrink-0" style={{ height: "40%" }}>
+                <img
+                  src={tappedPlant.image.replace(".webp", "-rightPanel.webp")}
+                  alt={tappedPlant.name}
+                  className="w-full h-full object-contain rounded-xl"
+                />
+              </div>
+              <div className="flex-1 overflow-y-auto px-7 py-6">
+                <h2 className="font-heading text-[#65F0CD] text-2xl mb-4">{tappedPlant.name}</h2>
+                <div className="flex gap-2 flex-wrap mb-5">
+                  {tappedPlant.traits.filter(id => id !== 24).slice(0, 5).map(id => (
+                    <span key={id} style={{ fontSize: "10px", ...traitPillStyle(id) }} className="px-3 py-1 border-2 rounded-full font-bold uppercase tracking-widest">
+                      {traitName(id)}
+                    </span>
+                  ))}
+                </div>
+                <p className="font-comic text-white/80 text-sm leading-relaxed">
+                  Placeholder sentence one - something captivating about this plant's personality and what makes it stand out. Placeholder sentence two - a note about the care routine and what kind of plant parent this suits best. Placeholder sentence three - something about its visual qualities, growth habits, or unique features. Placeholder sentence four - a fun or surprising fact that makes you love this plant even more.
+                </p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
