@@ -4,6 +4,7 @@
     "name": "Aglaonema",
     "traits": [11, 4, 16, 1, 8, 10, 6],
     "description": "A beginner's dream - vivid, patterned leaves that thrive even in low-light corners.",
+    "panelDescription": "NASA literally tested the Aglaonema and confirmed it filters benzene and formaldehyde from indoor air - so it's quietly cleaning your home while looking great doing it. It's been used as an office plant across Asia for centuries because it thrives under fluorescent lights. The more colourful the leaves, the more light it secretly craves, but it will never throw a tantrum about it. If plants had LinkedIn profiles, this one's would say 'thrives in toxic environments.'",
     "image": "/images/plants-webP-images/agalonemas 1.webp",
     "heightRank": 1
   },
@@ -12,6 +13,7 @@
     "name": "Aglaonema Jungle Red",
     "traits": [11, 14, 4, 1, 8, 10, 6],
     "description": "Fiery red and green foliage that brings a tropical energy to any space.",
+    "panelDescription": "Same legendary toughness as its green cousins, but with fiery red foliage that looks like it belongs in a tropical fever dream. The red pigmentation actually intensifies in brighter light - so the more sun it gets, the more dramatic it becomes (very relatable). It grows slowly and deliberately, each new leaf arriving more vivid than the last. One of the most striking 'easy plants' you will ever own.",
     "image": "/images/plants-webP-images/Aglaonema Jungle Red (1) 1.webp",
     "heightRank": 1
   },
@@ -20,6 +22,7 @@
     "name": "Aglaonema Kiwi",
     "traits": [12, 4, 16, 1, 8, 10, 6],
     "description": "Creamy white and green variegation - cool, calm, and completely effortless to keep.",
+    "panelDescription": "The Aglaonema Kiwi proves you don't have to suffer for great houseplant aesthetics. Its creamy white and green variegation stays crisp even in low light, which most variegated plants absolutely refuse to do. It grows slowly and deliberately, like it knows exactly how good it looks. Zero drama, maximum style.",
     "image": "/images/plants-webP-images/Aglaonema Kiwi 1.webp",
     "heightRank": 1
   },
@@ -28,6 +31,7 @@
     "name": "Aglaonema Orange Star",
     "traits": [11, 14, 2, 1, 8, 10, 6],
     "description": "Vibrant orange and green leaves that glow like a sunset - low effort, high impact.",
+    "panelDescription": "This one glows like a sunset on your windowsill without requiring a single special skill to keep alive. The orange colouring deepens the more indirect light it receives - it's basically self-styling. It handles neglect, irregular watering, and dim corners without throwing a leaf. A proper overachiever in a very small package.",
     "image": "/images/plants-webP-images/Aglaonema Orange Star 1.webp",
     "heightRank": 1
   },
@@ -36,6 +40,7 @@
     "name": "Aglaonema Zebra Feathers",
     "traits": [12, 14, 4, 1, 8, 10, 6],
     "description": "Silvery striped leaves with a tropical flair - low effort, unmistakably stylish.",
+    "panelDescription": "Those silvery stripes aren't just pretty - they're a natural light-diffusion system that lets this plant photosynthesize efficiently even in shadowy corners. It's been in cultivation for so long that even seasoned collectors still get excited when they spot one. Slow to grow, but every new leaf arrives looking like it was designed. Basically indestructible, completely photogenic.",
     "image": "/images/plants-webP-images/Aglaonema zebra feathers 1.webp",
     "heightRank": 1
   },
@@ -44,6 +49,7 @@
     "name": "Alocasia Portodora",
     "traits": [22, 15, 14, 7, 9, 2, 25, 6],
     "description": "Enormous elephant-ear leaves that make a room feel like a tropical jungle.",
+    "panelDescription": "The Alocasia Portodora can grow leaves the size of a small child - and it absolutely knows it. It's a drama queen that wilts theatrically when thirsty and bounces back just as dramatically when you water it. Native to Southeast Asian rainforests, it wants humidity, warmth, and your full attention. Give it those three things and it will make your living room look like a boutique hotel lobby.",
     "image": "/images/plants-webP-images/Alocasia portodora 1.webp",
     "heightRank": 3
   },
@@ -52,6 +58,7 @@
     "name": "Alocasia Zebrina",
     "traits": [13, 15, 14, 7, 9, 2, 25, 6],
     "description": "Zebra-striped stems lifting dramatic dark leaves - sculpture and living art in one.",
+    "panelDescription": "Those zebra-striped stems are one of the most architecturally striking things in the plant world - no filter needed. Native to the Philippine rainforests, it evolved to push leaves above the competition to catch light. It's dramatic, a little high-maintenance, and absolutely worth it. Think of it as the statement piece of the plant world.",
     "image": "/images/plants-webP-images/alocasia zebrina 1.webp",
     "heightRank": 3
   },
@@ -60,6 +67,7 @@
     "name": "Aloe Vera",
     "traits": [23, 17, 18, 16, 3, 10, 6],
     "description": "The original healing plant - spiky, sculptural, and practically indestructible.",
+    "panelDescription": "Aloe Vera has been used medicinally for over 6,000 years - ancient Egyptians called it the 'plant of immortality.' The gel inside its leaves is 99% water, packed with vitamins and compounds that genuinely soothe burns and skin irritation. It stores water in its thick leaves and can survive weeks without being watered. Basically the original wellness product, and it never needed an influencer to go viral.",
     "image": "/images/plants-webP-images/Aloe vera 1.webp",
     "heightRank": 1
   },
@@ -68,6 +76,7 @@
     "name": "Beaucarnea Recurvata",
     "traits": [23, 17, 5, 3, 10, 1],
     "description": "A quirky ponytail trunk with cascading green curls - pet-safe and drought-proof.",
+    "panelDescription": "That swollen trunk isn't just a quirky design choice - it's actually a water storage tank that can hold enough moisture to survive months of drought. The Ponytail Palm is not actually a palm at all; it's related to agave and can live for hundreds of years in the wild. It grows incredibly slowly indoors, which means the one you buy now could outlive you. Low maintenance, high character, genuinely ancient energy.",
     "image": "/images/plants-webP-images/Beaucarnea recurvata 1.webp",
     "heightRank": 2
   },
@@ -76,6 +85,7 @@
     "name": "Bird's Nest Fern",
     "traits": [14, 5, 7, 2, 10],
     "description": "Wavy rosette fronds that bring lush tropical life to shaded spots.",
+    "panelDescription": "The Bird's Nest Fern doesn't grow from the ground in the wild - it clings to tree trunks and collects falling debris in its rosette to create its own compost. That central nest shape is perfectly engineered to catch water and organic matter from above. It's one of the few ferns that actually tolerates some neglect and indirect light. Jungle engineering at its finest.",
     "image": "/images/plants-webP-images/birds nest fern (1) 1.webp",
     "heightRank": 1
   },
@@ -84,14 +94,16 @@
     "name": "Bonsai Fabian",
     "traits": [23, 21, 10, 2, 8, 6],
     "description": "A miniature tree with a sculpted canopy - calm, architectural, and meditative.",
+    "panelDescription": "The Bonsai Fabian is a master of slow, considered growth - in the wild it can become a full-sized tree, but in miniature form it's pure meditative sculpture. Bonsai as a practice originated over 1,000 years ago in China before becoming a refined Japanese art form. Each branch tells the story of years of patient growth and careful shaping. If you own one, you're not just buying a plant - you're becoming a custodian.",
     "image": "/images/plants-webP-images/Bonsai Fabian 1.webp",
     "heightRank": 1
   },
   {
     "id": 12,
     "name": "Euphorbia",
-    "traits": [23, 15, 18, 17, 3, 10, 1, 6],
+    "traits": [23, 15, 22, 18, 17, 3, 1, 6],
     "description": "Geometric, alien-like form that thrives on neglect - pure sculptural cool.",
+    "panelDescription": "Despite looking exactly like a cactus, Euphorbia is not related to cacti at all - it just evolved the same spiky, water-storing strategy completely independently on a different continent. Its white latex sap is actually toxic and can irritate skin and eyes, so handle with gloves. It can grow to several metres tall in the right conditions, making it one of the most dramatic slow burns in the plant world. Natural selection's proof that great ideas get reinvented.",
     "image": "/images/plants-webP-images/cactus-very-tall-impresive.webp",
     "heightRank": 2
   },
@@ -100,6 +112,7 @@
     "name": "Caladium Carolyn",
     "traits": [11, 14, 13, 7, 4, 10, 6],
     "description": "Pink, white and green leaves so vivid they look hand-painted.",
+    "panelDescription": "Caladium leaves are so vivid they look like someone painted them by hand - pink, white and green in patterns that vary leaf by leaf. They're tropical tubers that go completely dormant in winter, disappearing underground like they were never there, then exploding back to life in spring. They love humidity and warmth, which makes them perfect for steamy kitchens and bathrooms. The most theatrical seasonal plant you'll ever own.",
     "image": "/images/plants-webP-images/caladium carolyn1 1.webp",
     "heightRank": 1
   },
@@ -108,6 +121,7 @@
     "name": "Calathea Lancifolia",
     "traits": [13, 24, 14, 7, 5, 4, 25],
     "description": "Rattlesnake-patterned leaves that fold up at night like they're going to sleep.",
+    "panelDescription": "The Calathea Lancifolia actually moves its leaves - they fold upward at night and open again in the morning in a process called nyctinasty. Scientists think this movement helps the plant retain warmth and conserve moisture overnight. It's one of the most responsive plants you can own, almost like it has a personality. High-maintenance, deeply rewarding, and genuinely never boring.",
     "image": "/images/plants-webP-images/Calathea lancifolia1 1.webp",
     "heightRank": 2
   },
@@ -116,6 +130,7 @@
     "name": "Cast Iron Plant",
     "traits": [4, 1, 16, 5, 10],
     "description": "The toughest plant you'll ever own - dim corners, forgetful watering, no problem.",
+    "panelDescription": "The Cast Iron Plant earned its name honestly - it survived Victorian drawing rooms heated by coal fires, with minimal light and maximum neglect. It's one of the slowest-growing houseplants on earth, but once established it's practically unkillable. A single plant can live for decades with almost zero intervention. The houseplant world's ultimate quiet achiever.",
     "image": "/images/plants-webP-images/Cast Iron Plant Aspidistra elatior 1.webp",
     "heightRank": 2
   },
@@ -124,6 +139,7 @@
     "name": "Spider Plant",
     "traits": [27, 5, 20, 16, 9, 1, 2, 19],
     "description": "An arching, air-cleaning classic that's basically impossible to kill.",
+    "panelDescription": "NASA's Clean Air Study identified the Spider Plant as one of the top air-purifying plants, capable of removing up to 90% of certain toxins from a sealed room in 24 hours. It produces baby plants called spiderettes on long arching stems - basically free plants, endlessly. It's non-toxic to pets and children, which makes it genuinely rare among houseplants. The most generous plant you'll ever own - it literally gives itself away.",
     "image": "/images/plants-webP-images/chlorophytum comosum 1.webp",
     "heightRank": 1
   },
@@ -132,6 +148,7 @@
     "name": "Croton",
     "traits": [11, 14, 7, 25, 3, 6],
     "description": "Wildly colorful leaves in orange, red, yellow and green - a true tropical showstopper.",
+    "panelDescription": "A Croton's leaf colour is directly tied to light - the more sun it gets, the more orange, red and yellow the leaves become. In low light it slowly fades to green, like a mood ring for your home. It's native to tropical Asia and the Pacific, where it can grow into a full outdoor shrub. One of the most colour-reactive plants in existence - essentially a living light meter.",
     "image": "/images/plants-webP-images/croton plant 1.webp",
     "heightRank": 2
   },
@@ -140,6 +157,7 @@
     "name": "Dracaena Rikki",
     "traits": [12, 19, 4, 1, 10, 6],
     "description": "Striped upright leaves that quietly clean the air while asking almost nothing of you.",
+    "panelDescription": "Dracaena Rikki is one of the top plants NASA recommended for filtering trichloroethylene from the air - the stuff that off-gases from dry-cleaned clothes. It grows in a slow, architectural column that looks more designed than grown. It's incredibly drought-tolerant and asks for very little beyond a bright-ish spot and occasional water. Quietly impressive, low key legendary.",
     "image": "/images/plants-webP-images/Dracaena Rikki 1.webp",
     "heightRank": 2
   },
@@ -148,6 +166,7 @@
     "name": "Variegated Rubber Plant",
     "traits": [12, 15, 19, 2, 1, 10, 6],
     "description": "Creamy variegated leaves on a bold, architectural plant that commands the room.",
+    "panelDescription": "The Variegated Rubber Plant produces a milky latex sap that was historically used to make natural rubber - hence the name. The creamy variegation on its leaves is caused by reduced chlorophyll in certain cells, which means those patches don't even photosynthesize - it grows vigorously anyway, which is kind of remarkable. It can grow into a floor-to-ceiling statement plant with almost no fuss. Bold, architectural, and carrying centuries of industrial history in every leaf.",
     "image": "/images/plants-webP-images/elastica variegata1 1.webp",
     "heightRank": 3
   },
@@ -156,6 +175,7 @@
     "name": "Fittonia",
     "traits": [13, 21, 5, 7, 4, 25],
     "description": "Intricate veined leaves in red or white - tiny, dramatic, and endlessly charming.",
+    "panelDescription": "Fittonia is sometimes called the 'nerve plant' because its intricate white or red veining looks exactly like a nervous system diagram. It's a ground-cover plant from the Peruvian rainforest, where it creeps across the forest floor under a dense canopy. It's incredibly theatrical when thirsty - it dramatically collapses, then perks back up within hours of watering. The most expressive small plant you'll ever own.",
     "image": "/images/plants-webP-images/Fittonia 1.webp",
     "heightRank": 1
   },
@@ -164,6 +184,7 @@
     "name": "Prayer Plant",
     "traits": [24, 13, 14, 27, 7, 5, 4],
     "description": "Beautifully patterned leaves that fold their hands at night - magical to watch.",
+    "panelDescription": "The Prayer Plant folds its leaves upward every evening like hands in prayer - a movement called nyctinasty, driven by changes in light and water pressure in the plant's cells. It's native to Brazilian rainforests and evolved this behaviour to protect its leaves from overnight moisture loss. The patterns on its leaves vary between plants, making each one slightly unique. Equal parts beautiful and genuinely fascinating to watch.",
     "image": "/images/plants-webP-images/maranta 1.webp",
     "heightRank": 1
   },
@@ -172,6 +193,7 @@
     "name": "Money Tree",
     "traits": [23, 5, 9, 2, 8],
     "description": "Braided trunk, bright energy and feng shui good luck - a genuine conversation starter.",
+    "panelDescription": "The Money Tree is said to bring good luck and financial prosperity according to Feng Shui tradition - its five-leaf clusters supposedly represent the five elements of metal, wood, water, fire and earth. The iconic braided trunk is done by hand when the plants are young and flexible. In Taiwan, where the braided style originated in the 1980s, it became a global export phenomenon practically overnight. A good-looking plant with an ambitious story.",
     "image": "/images/plants-webP-images/money tree (2) 1.webp",
     "heightRank": 2
   },
@@ -180,6 +202,7 @@
     "name": "Monstera Deliciosa",
     "traits": [22, 14, 9, 27, 7, 2, 1, 6],
     "description": "Iconic split leaves and unstoppable growth - the jungle giant of every plant lover's feed.",
+    "panelDescription": "The Monstera's iconic split leaves (called fenestrations) evolved in the wild to let wind pass through without snapping the leaf in a tropical storm. The plant produces an edible fruit that tastes like a combination of banana, pineapple and coconut - hence 'deliciosa.' It's one of the fastest-growing houseplants when happy, capable of pushing out a new leaf every few weeks. The plant that basically invented the concept of plant influencer.",
     "image": "/images/plants-webP-images/monstera 2 1.webp",
     "heightRank": 3
   },
@@ -188,6 +211,7 @@
     "name": "Philodendron Verrucosum",
     "traits": [15, 14, 7, 25, 2, 6],
     "description": "Velvety dark leaves with glowing veins - rare, dramatic, and deeply desirable.",
+    "panelDescription": "The Philodendron Verrucosum is one of the most sought-after houseplants among serious collectors - its velvety dark leaves with iridescent green veins are unlike almost anything else in the plant world. 'Verrucosum' means 'warty' in Latin, referring to the texture of its stems. In the wild it climbs rainforest trees in Ecuador and Colombia, reaching enormous sizes. Rare, slow, and deeply satisfying to grow.",
     "image": "/images/plants-webP-images/Philodendron verrucosum1 1.webp",
     "heightRank": 3
   },
@@ -196,6 +220,7 @@
     "name": "Philodendron Xanadu",
     "traits": [14, 21, 1, 2, 8, 6],
     "description": "Deeply lobed lush leaves in a tidy compact shape - tropical without the drama.",
+    "panelDescription": "Unlike most philodendrons, the Xanadu doesn't climb - it grows in a tidy self-heading mound that stays compact without any training or staking. It was developed in Australia in the 1980s and quickly became one of the most popular tropical houseplants in the world. Its deeply lobed leaves give it a lush, tropical look that's nearly impossible to achieve with easier plants. Tropical drama with surprisingly civilised manners.",
     "image": "/images/plants-webP-images/philodendron xanadu (1) 1.webp",
     "heightRank": 2
   },
@@ -204,6 +229,7 @@
     "name": "Pilea Peperomioides",
     "traits": [27, 21, 5, 9, 16, 1, 2],
     "description": "Round coin-shaped leaves on elegant stems - the plant everyone wants a cutting of.",
+    "panelDescription": "The Pilea was brought to Europe from China in 1946 by a Norwegian missionary who distributed cuttings to friends - for decades it spread entirely by word of mouth with no scientific name. It wasn't formally identified by botanists until 1978, making it one of the most socially distributed plants in history. Its round coin-shaped leaves inspired its other nickname: the Chinese Money Plant. Still one of the most instantly recognised plants in the world.",
     "image": "/images/plants-webP-images/Pilea peperomioides 1.webp",
     "heightRank": 1
   },
@@ -212,6 +238,7 @@
     "name": "Pothos",
     "traits": [20, 27, 4, 9, 16, 1, 19, 6],
     "description": "Fast-trailing vines that fill any shelf, wall or dark corner with effortless life.",
+    "panelDescription": "Pothos has been shown to remove carbon monoxide, benzene and formaldehyde from indoor air, making it one of the most functional houseplants you can own. It can survive in near-total darkness for months, though it grows faster in brighter light. It's technically a climbing vine that uses aerial roots to attach to surfaces in the wild - on a shelf, those same roots just trail elegantly. The most forgiving plant on earth, no contest.",
     "image": "/images/plants-webP-images/pothos2 1.webp",
     "heightRank": 1
   },
@@ -220,6 +247,7 @@
     "name": "Sansevieria Laurentii",
     "traits": [23, 12, 19, 17, 4, 1, 6],
     "description": "Bold upright leaves with golden edges - the definitive no-fuss statement plant.",
+    "panelDescription": "The Sansevieria converts CO2 to oxygen at night rather than during the day - the opposite of most plants - making it one of the best plants to keep in a bedroom. It can go weeks without water and will survive almost total neglect. NASA included it in their Clean Air Study as one of the most effective air purifiers available. The plant equivalent of someone who quietly does an extraordinary amount of work without ever complaining.",
     "image": "/images/plants-webP-images/Sansevieria laurentii plant 1.webp",
     "heightRank": 2
   },
@@ -228,6 +256,7 @@
     "name": "Satin Pothos",
     "traits": [20, 12, 27, 4, 9, 1, 6],
     "description": "Silvery heart-shaped leaves that shimmer as they trail - subtle and completely enchanting.",
+    "panelDescription": "The Satin Pothos isn't actually a pothos at all - it's a Scindapsus, a different genus entirely, just wearing a confusingly similar name. Those silver patches on its leaves are tiny air pockets just below the surface that create the shimmer effect. It trails beautifully and grows with almost no effort, making it one of the most rewarding easy plants you can own. Deceptively simple, endlessly gorgeous.",
     "image": "/images/plants-webP-images/scindapsus pictus 1.webp",
     "heightRank": 1
   },
@@ -236,6 +265,7 @@
     "name": "Peace Lily",
     "traits": [26, 19, 7, 4, 25, 6],
     "description": "Elegant white blooms in low light - it even droops dramatically when it needs a drink.",
+    "panelDescription": "The Peace Lily is one of very few flowering houseplants that thrives in low light - those elegant white blooms are actually modified leaves called spathes, not petals. It will literally droop and wilt dramatically when it needs water, then spring back upright within hours of drinking. NASA listed it as one of the best plants for removing ammonia, benzene and formaldehyde from indoor air. The most communicative houseplant you'll ever own.",
     "image": "/images/plants-webP-images/Spathiphyllum plant 1.webp",
     "heightRank": 2
   },
@@ -244,6 +274,7 @@
     "name": "Strelitzia",
     "traits": [22, 15, 14, 26, 9, 7, 2, 6],
     "description": "Giant paddle-like leaves and bold presence - the plant equivalent of a power move.",
+    "panelDescription": "The Strelitzia produces flowers that look like an exotic tropical bird mid-flight - each bloom is engineered so that visiting sunbirds spread pollen as they land. Indoors it rarely flowers, but the giant paddle leaves alone are worth every inch of space it takes up. In the wild in South Africa it can reach 3-4 metres tall. When it eventually blooms after years of patience, it feels like a genuine event.",
     "image": "/images/plants-webP-images/Strelitzia plant 1.webp",
     "heightRank": 3
   },
@@ -252,14 +283,16 @@
     "name": "Sansevieria Zeylanica",
     "traits": [23, 13, 19, 17, 4, 1, 6],
     "description": "Sword-like leaves with wavy patterns - one of the most forgiving plants you can own.",
+    "panelDescription": "The Sansevieria Zeylanica is one of the most indestructible plants in existence - it has been documented surviving complete drought for over two years and still recovering. Like its cousins, it photosynthesises at night, making it a favourite for bedrooms. Its wavy crossband patterning is completely natural and varies slightly between plants. Completely unbothered by neglect, low light, or irregular care.",
     "image": "/images/plants-webP-images/Sansevieria laurentii plant 1.webp",
     "heightRank": 2
   },
   {
     "id": 35,
     "name": "Leighton Cactus",
-    "traits": [15, 23, 17, 18, 3, 10, 1],
-    "description": "A tall, ribbed column of pure sculptural cool - minimal care, maximum character.",
+    "traits": [23, 21, 26, 17, 18, 3, 10, 1],
+    "description": "A compact flowering cactus with sculptural charm - tiny in size, huge in personality.",
+    "panelDescription": "Don't let the 'cactus' label fool you - the Leighton is a compact flowering specimen that stays small and neat, never demanding more space than it's given. It produces vivid blooms that seem almost impossibly bright against its sculptural form. Cacti have been flowering on Earth for around 35 million years and have perfected the art of doing everything with minimal resources. Tiny in size, ancient in character.",
     "image": "/images/plants-webP-images/Leighton Cactus 1.webp",
     "heightRank": 1
   },
@@ -268,6 +301,7 @@
     "name": "Bodhi Cactus",
     "traits": [23, 21, 18, 17, 3, 10, 1],
     "description": "An artful arrangement of cacti - spiky, serene, and effortlessly cool.",
+    "panelDescription": "The Bodhi Cactus arrangement brings together multiple cactus varieties in one composed, artful display - each one shaped by millions of years of desert evolution. Cacti store water in their stem cells and can survive years of drought in the wild. Their spines are actually modified leaves - a genius adaptation that reduces water loss and deters animals simultaneously. Low effort, high philosophy.",
     "image": "/images/plants-webP-images/Bodhi Cactus Arrangement 1.webp",
     "heightRank": 2
   },
@@ -276,6 +310,7 @@
     "name": "String of Hearts",
     "traits": [20, 17, 18, 13, 5, 1, 2, 27],
     "description": "Delicate trailing vines of tiny silver-marbled hearts - effortlessly romantic and nearly impossible to overwater.",
+    "panelDescription": "The String of Hearts produces tiny silver-marbled heart-shaped leaves on thread-like vines that can grow metres long if you let them. It stores water in tiny tubers along its stems, which is why it handles missed waterings with total grace. When it flowers, it produces small tubular blooms that briefly trap visiting insects before releasing them - a polite kidnapping in the name of pollination. One of the most charming plants in existence.",
     "image": "/images/plants-webP-images/hearts plant2 1.webp",
     "heightRank": 1
   },
@@ -284,6 +319,7 @@
     "name": "Pachira Aquatica",
     "traits": [15, 5, 9, 2, 8, 19, 1],
     "description": "A bold canopy of lush green palms atop a striking trunk - said to bring good fortune and guaranteed to start conversations.",
+    "panelDescription": "The Pachira Aquatica is native to Central and South American swamps, where it regularly floods - its roots are genuinely adapted to survive waterlogged soil. Its large palmate leaves and striking trunk make it one of the most architecturally impressive mid-size houseplants available. In the wild it produces large seed pods filled with edible seeds that taste like peanuts when roasted. Good fortune, good looks, and good snacks.",
     "image": "/images/plants-webP-images/Pachira plant (1) 1.webp",
     "heightRank": 2
   },
@@ -292,6 +328,7 @@
     "name": "Calathea Medallion",
     "traits": [24, 13, 14, 7, 5, 4, 25],
     "description": "Round velvety leaves painted with intricate dark and light green patterns - a living work of art that folds up every single night.",
+    "panelDescription": "The Calathea Medallion has two completely different faces - the top of each leaf is painted in intricate dark and light green patterns, while the underside is a deep burgundy-red. Like its Calathea relatives, it folds its leaves upward every night and opens them again each morning. It needs consistently moist soil and high humidity, making it a bit of a diva - but an incredibly beautiful one. The most visually complex plant in any room it enters.",
     "image": "/images/plants-webP-images/Calathea lancifolia 5 (1) 1.webp",
     "heightRank": 1
   }

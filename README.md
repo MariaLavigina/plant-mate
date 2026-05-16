@@ -1,40 +1,48 @@
-# Plant Mate 🌿
+# PlantMate+
 
-A fun, interactive web app that helps you find your perfect houseplant match — and rewards you for learning about plants.
+A personality-driven plant matching app. Answer a short quiz and get matched with the plant that
+actually fits your lifestyle, light conditions, and personality.
 
 ## What it does
 
-**Plant Match Quiz** — Answer a few questions about your lifestyle (light levels, how often you water, pets at home, etc.) and Plant Mate scores every plant in its database to find your best match. The results page shows your matched plant with an interactive image you can tap to explore facts about different parts of the plant.
-
-**Play & Win** — A 10-question trivia game drawn from a bank of 50 plant questions. Score enough points to earn a Bronze, Silver, or Gold badge. A free account keeps your badge and tracks your progress over time.
-
-## Tech stack
-
-- **Frontend:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
-- **Backend:** Node.js, Express, PostgreSQL 17.9 *(in progress)*
-- **Auth:** JWT + bcrypt
-- **Animation:** [Motion for React](https://motion.dev/tutorials/react-path-drawing) — SVG path drawing animations on the results page
+- **Plant match quiz** - scores every plant against your answers and shows your top 3 matches with
+  a personalised explanation of why each one fits you
+- **Plant detail panel** - tap any plant to see traits, care info, and personality notes
+- **Play & Win** - a badge quiz that awards Bronze, Silver, or Gold based on your plant knowledge
+- **Accounts** - save your match, track quiz history, and earn badges (backend in progress)
 
 ## Running locally
 
 ```bash
-# Install dependencies (only needed once when you first set up the project)
 npm install
-
-# Start the development server — open http://localhost:3000 to see the app
-npm run dev
+npm run dev      # localhost:3000
+npm run build    # production build
+npm run lint     # ESLint
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+The quiz and results page work without a backend. Auth and badge saving require the Express API
+running on `localhost:5000`.
 
-The app runs without a backend — the quiz and results page are fully client-side. Auth and badge saving require the Express API running on port `5000`.
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| UI | React 19, TypeScript |
+| Styling | Tailwind CSS v4 |
+| Animation | Framer Motion |
+| Database | PostgreSQL 17.9 (in progress) |
+| Backend | Node.js + Express + bcrypt + JWT (in progress) |
 
 ## Project structure
 
 ```
-app/            Next.js pages (quiz, results, play, about)
-components/     Shared UI components (Navbar, AuthModal, InteractivePlantImage, …)
-data/           Static JSON — plants, traits, quiz questions, play-and-win questions
-lib/            Shared utilities and style helpers
-public/images/  Plant images and badge SVGs
+app/            Pages (home, quiz, results, about, contact)
+components/     Shared UI components
+data/           Static JSON - plants, traits, quiz questions
+lib/            Style helpers and constants
+public/images/  Plant images and SVG assets
 ```
+
+See `TOMORROW.md` for the full roadmap.
+See `ABOUT_THE_CREATOR.md` for background on the project and its creator.

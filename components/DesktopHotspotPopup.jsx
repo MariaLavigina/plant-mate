@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../app/ClientProviders";
+import { accentBar, accentLine } from "../lib/styles";
 
 export default function DesktopHotspotPopup({ hotspot, onClose, position }) {
   const { darkMode } = useContext(DarkModeContext);
@@ -31,11 +32,7 @@ export default function DesktopHotspotPopup({ hotspot, onClose, position }) {
       } ${darkMode ? "bg-[#1A0B3B]/97" : "bg-white/97"}`}
     >
       {/* Top accent bar */}
-      <div className={`h-[3px] w-full ${
-        darkMode
-          ? "bg-gradient-to-r from-[#65F0CD] via-[#4FD4B3] to-[#65F0CD]/40"
-          : "bg-gradient-to-r from-[#2D6A4F] via-[#4CAF82] to-[#2D6A4F]/40"
-      }`} />
+      <div className={accentBar(darkMode)} />
 
       <div className="p-5 xl:p-6">
         {/* Close */}
@@ -59,9 +56,7 @@ export default function DesktopHotspotPopup({ hotspot, onClose, position }) {
         </h3>
 
         {/* Accent line */}
-        <div className={`w-8 h-[2px] rounded-full mb-3 ${
-          darkMode ? "bg-[#65F0CD]/35" : "bg-[#2D6A4F]/30"
-        }`} />
+        <div className={`${accentLine(darkMode)} mb-3`} />
 
         {/* Content */}
         <p className={`font-comic text-sm xl:text-base leading-relaxed ${

@@ -64,7 +64,7 @@ const ANSWER_REASON: Record<number, (n: string, mt: number[]) => string | null> 
   39: (n) => `You want something lush and leafy over anything spiky - ${n} gives you exactly that.`,
 };
 
-function buildPersonalizedWhyText(parsedAnswers: SelectedAnswers, bestPlant: Plant): string {
+function buildPersonalizedWhyText(parsedAnswers: SelectedAnswers, bestPlant: Plant): string[] {
   type Entry = { sentence: string; matchCount: number; qId: number };
   const entries: Entry[] = [];
 
@@ -85,55 +85,12 @@ function buildPersonalizedWhyText(parsedAnswers: SelectedAnswers, bestPlant: Pla
   }
 
   entries.sort((a, b) => b.matchCount - a.matchCount || a.qId - b.qId);
-  const picks = entries.slice(0, 4);
+  const picks = entries.slice(0, 7);
   picks.sort((a, b) => a.qId - b.qId);
 
   return picks.length > 0
-    ? picks.map(e => e.sentence).join(" ")
-    : `${bestPlant.name} came out on top because it matched more of your preferences than any other plant in our collection.`;
-}
-
-// Returns the answer text the user chose that the best plant matched but the other plant didn't
-function findEdgeAnswer(parsedAnswers: SelectedAnswers, best: Plant, other: Plant): string | null {
-  for (const [qId, aId] of Object.entries(parsedAnswers)) {
-    const q = quizQuestions.find(q => q.id === Number(qId));
-    const a = q?.answers.find(a => a.id === aId);
-    if (!a) continue;
-    const hitsBest  = a.trait_ids.some(t => best.traits.includes(t));
-    const hitsOther = a.trait_ids.some(t => other.traits.includes(t));
-    if (hitsBest && !hitsOther) return a.text;
-  }
-  return null;
-}
-
-function buildComparisonText(top3: ScoredPlant[]): string {
-  const [best, second, third] = top3;
-
-  const bestFocus   = Math.round(best.traitMatches   / best.plant.traits.length   * 100);
-  const secondFocus = Math.round(second.traitMatches / second.plant.traits.length * 100);
-  const thirdFocus  = Math.round(third.traitMatches  / third.plant.traits.length  * 100);
-
-  const diff2 = best.pct - second.pct;
-  const diff3 = best.pct - third.pct;
-
-  let line = `${best.plant.name} scored ${best.pct}% overall - `;
-
-  if (diff2 === 0) {
-    line += `tied with ${second.plant.name} on coverage, but edges ahead: ${bestFocus}% of its own traits match your answers versus ${secondFocus}% for ${second.plant.name}.`;
-  } else {
-    line += `${diff2} point${diff2 === 1 ? "" : "s"} ahead of ${second.plant.name} at ${second.pct}%, which covered your preferences less completely on ${diff2 > 5 ? "several" : "one or two"} of your answers.`;
-  }
-
-  line += ` ${third.plant.name} scored ${third.pct}% - `;
-  if (diff3 <= 4) {
-    line += `very close, and also a genuinely strong match for you.`;
-  } else if (diff3 <= 10) {
-    line += `a solid option but slightly less tailored to your specific choices (${thirdFocus}% of its traits align with your preferences).`;
-  } else {
-    line += `a good plant but noticeably less matched to your answers than the top two.`;
-  }
-
-  return line;
+    ? picks.map(e => e.sentence)
+    : [`${bestPlant.name} came out on top because it matched more of your preferences than any other plant in our collection.`];
 }
 
 function traitPillStyle(id: number): React.CSSProperties {
@@ -151,12 +108,30 @@ function traitPillStyle(id: number): React.CSSProperties {
   };
 }
 
-function sideHeightClass(rank: number): string {
-  return ({
-    1: "h-[130px] lg:h-[min(34vh,25vw,300px)]",
-    2: "h-[160px] lg:h-[min(42vh,31vw,370px)]",
-    3: "h-[185px] lg:h-[min(47vh,35vw,420px)]",
-  }[rank] ?? "h-[145px] lg:h-[min(38vh,28vw,340px)]");
+function WhyTextLine({ line, darkMode, className = "" }: { line: string; darkMode: boolean; className?: string }) {
+  const dashIdx = line.indexOf(" - ");
+  const before = dashIdx !== -1 ? line.slice(0, dashIdx) : line;
+  const after  = dashIdx !== -1 ? line.slice(dashIdx + 3) : null;
+  return (
+    <p className={`font-semibold ${className}`}>
+      <span className={`block leading-snug ${darkMode ? "text-white/50" : "text-[#1A6241]/60"}`}>{before}</span>
+      {after && (
+        <span className={`block mt-0.5 leading-snug ${darkMode ? "text-[#65F0CD]" : "text-[#0F3D26]"}`}>{after}</span>
+      )}
+    </p>
+  );
+}
+
+function TraitPills({ plant, traitName, className = "" }: { plant: Plant; traitName: (id: number) => string; className?: string }) {
+  return (
+    <div className={`flex gap-2 flex-wrap ${className}`}>
+      {plant.traits.filter(id => id !== 24).slice(0, 5).map(id => (
+        <span key={id} style={{ fontSize: "10px", ...traitPillStyle(id) }} className="px-3 py-1 border-2 rounded-full font-bold uppercase tracking-widest">
+          {traitName(id)}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 interface DesktopPlantCardProps {
@@ -177,17 +152,25 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
 
   return (
     <motion.div
-      className="flex flex-col items-center cursor-pointer"
+      className="relative flex flex-col items-center cursor-pointer"
+      style={{ width: "clamp(100px, 18vw, 220px)" }}
       onClick={onClick}
       whileHover={{ y: -6 }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
     >
+      {isCenter && (
+        <div
+          className="absolute left-0 right-0 cursor-pointer"
+          style={{ top: "clamp(-150px,-14vh,-80px)", height: "clamp(80px,14vh,150px)" }}
+          onClick={onClick}
+        />
+      )}
       <div className="relative">
         <img src={plant.image} alt={plant.name} className={imgClass} style={{ pointerEvents: "none" }} />
         {isTopPick && (
           <motion.div
-            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-5 py-1.5 border-2 border-[#F4C842] text-[#F4C842] bg-[#210E4A] rounded-full font-semibold tracking-widest uppercase whitespace-nowrap"
-            style={{ fontSize: "clamp(11px,1.1vw,14px)" }}
+            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-4 py-1.5 border border-[#F4C842]/60 text-[#F4C842] bg-[#210E4A]/80 rounded-full font-medium tracking-widest uppercase whitespace-nowrap"
+            style={{ fontSize: "clamp(10px,1vw,12px)" }}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={revealed ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.4, delay: 0.05 }}
@@ -197,9 +180,9 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
         )}
       </div>
 
-      {/* Name + score below the image - same font sizes so footer height is identical across all cards */}
+      {/* Name + score below the image */}
       <motion.p
-        className={`font-heading mt-3 text-center whitespace-nowrap ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}
+        className={`font-heading mt-3 text-center ${darkMode ? "text-[#65F0CD]" : "text-[#1A3A0A]"}`}
         style={{ fontSize: "clamp(0.85rem,1.3vw,1.15rem)" }}
         initial={{ opacity: 0, y: 14 }}
         animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
@@ -209,7 +192,7 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
       </motion.p>
 
       <motion.div
-        className="w-full max-w-[160px] mt-2"
+        className="w-full mt-2 flex flex-col items-center"
         initial={{ opacity: 0 }}
         animate={revealed ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.4, delay: nameDelay + 0.1 }}
@@ -219,16 +202,16 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
             className="font-comic font-semibold"
             style={{
               fontSize: "clamp(8px,0.75vw,10px)",
-              color: isCenter ? "#F4C842" : darkMode ? "rgba(255,255,255,0.55)" : "rgba(30,61,42,0.6)",
+              color: isCenter ? (darkMode ? "#F4C842" : "#0F3D26") : darkMode ? "rgba(255,255,255,0.55)" : "rgba(15,61,38,0.75)",
             }}
           >
             {score}% match
           </span>
         </div>
-        <div className="h-[6px] w-full rounded-full" style={{ background: darkMode ? "rgba(255,255,255,0.12)" : "rgba(30,61,42,0.12)" }}>
+        <div className="h-[10px] w-full max-w-[120px] rounded-full" style={{ background: darkMode ? "rgba(255,255,255,0.12)" : "rgba(15,61,38,0.15)" }}>
           <motion.div
-            className="h-full rounded-full"
-            style={{ background: isCenter ? "#F4C842" : "rgba(101,240,205,0.55)" }}
+            className="h-[10px] rounded-full"
+            style={{ background: isCenter ? (darkMode ? "#F4C842" : "#1A6241") : darkMode ? "rgba(101,240,205,0.55)" : "rgba(26,98,65,0.5)" }}
             initial={{ width: 0 }}
             animate={revealed ? { width: `${score}%` } : { width: 0 }}
             transition={{ duration: 0.8, delay: nameDelay + 0.25, ease: "easeOut" }}
@@ -262,8 +245,7 @@ export default function Results() {
 
   const [displayPlants, setDisplayPlants] = useState<Plant[]>([]);
   const [displayScores, setDisplayScores] = useState<number[]>([]);
-  const [whyText, setWhyText] = useState<string>("");
-  const [comparisonText, setComparisonText] = useState<string>("");
+  const [whyText, setWhyText] = useState<string[]>([]);
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [tappedPlant, setTappedPlant] = useState<Plant | null>(null);
@@ -328,7 +310,6 @@ export default function Results() {
     const top3 = scored.slice(0, 3);
 
     setWhyText(buildPersonalizedWhyText(parsed, top3[0].plant));
-    setComparisonText(buildComparisonText(top3));
 
     // Best scorer always center; sides ordered by heightRank for visual balance
     const sides = [top3[1], top3[2]].sort((a, b) => a.plant.heightRank - b.plant.heightRank);
@@ -344,13 +325,13 @@ export default function Results() {
   const [leftScore, centerScore, rightScore] = displayScores;
 
   return (
-    <div className={`flex flex-col min-h-screen lg:h-screen lg:overflow-hidden transition-colors duration-500 ${darkMode ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]" : "bg-gradient-to-b from-[#F4FBF0] via-[#E8F2E2] to-[#C8DEBA]"}`}>
+    <div className={`flex flex-col min-h-screen lg:h-screen lg:overflow-hidden transition-colors duration-500 ${darkMode ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27]" : "bg-gradient-to-t lg:bg-gradient-to-tr from-[#7EC8A0] lg:from-[#1A6241] to-[#FDFAF0]"}`}>
       <Navbar />
 
       <div className="flex flex-col flex-1 min-h-0 items-center px-4 sm:px-10 pt-20 pb-10 lg:pb-2">
 
         {loading && (
-          <p className={`mt-32 font-heading text-2xl animate-pulse ${darkMode ? "text-white/50" : "text-[#1E3D2A]/50"}`}>
+          <p className={`mt-32 font-heading text-2xl animate-pulse ${darkMode ? "text-white/50" : "text-[#1A6241]/60"}`}>
             Finding your plants…
           </p>
         )}
@@ -360,23 +341,19 @@ export default function Results() {
 
             {/* ── Header: tablet + mobile only ── */}
             <div className="lg:hidden shrink-0 flex flex-col items-center text-center mt-2 gap-1">
-              <h1 className="font-heading text-[clamp(2rem,4.5vw,3rem)] text-[#F4C842] leading-none">
+              <p className={`font-comic text-[1.1rem] sm:text-[0.95rem] uppercase tracking-widest ${darkMode ? "text-white/40" : "text-[#1A6241]/50"}`}>
                 Your Plants Match!
+              </p>
+              <h1 className={`font-heading text-[clamp(2rem,4.5vw,3rem)] leading-none ${darkMode ? "text-[#F4C842]" : "text-[#1E3D2A]"}`}>
+                {centerPlant.name}
               </h1>
-              <h2 className={`font-heading text-[clamp(0.95rem,1.6vw,1.25rem)] ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
-                Your best match is{" "}
-                <span className="text-[#F4C842]">{centerPlant.name}</span>
-                <span className="ml-2 font-comic font-bold text-[#F4C842]">· {centerScore}%</span>
-              </h2>
-              {whyText && (
-                <p className={`font-comic text-[0.78rem] sm:text-[0.85rem] max-w-sm sm:max-w-xl leading-snug ${darkMode ? "text-white/90" : "text-[#1E3D2A]/90"}`}>
-                  {whyText}
-                </p>
-              )}
-              {comparisonText && (
-                <p className={`font-comic text-[0.68rem] sm:text-[0.74rem] max-w-xs sm:max-w-lg leading-snug italic ${darkMode ? "text-white/45" : "text-[#1E3D2A]/60"}`}>
-                  {comparisonText}
-                </p>
+              <p className={`font-comic font-bold text-[clamp(0.9rem,1.5vw,1.1rem)] ${darkMode ? "text-[#F4C842]" : "text-[#0F3D26]"}`}>· {centerScore}% match</p>
+              {whyText.length > 0 && (
+                <div className="hidden sm:block max-w-sm sm:max-w-xl text-center space-y-2 mt-4">
+                  {whyText.map((line, i) => (
+                    <WhyTextLine key={i} line={line} darkMode={darkMode} className="font-comic text-[0.85rem]" />
+                  ))}
+                </div>
               )}
             </div>
 
@@ -386,14 +363,13 @@ export default function Results() {
               {/* LEFT: heading + overlapping plants + names + score bars */}
               <div className="flex flex-col flex-1 min-h-0 items-center justify-center">
                 <div className="shrink-0 text-center">
-                  <h1 className="font-heading text-[clamp(1.8rem,3vw,2.6rem)] text-[#F4C842] leading-none">
+                  <p className={`font-comic text-[1.1rem] sm:text-[0.95rem] uppercase tracking-widest ${darkMode ? "text-white/40" : "text-[#1A6241]/50"}`}>
                     Your Plants Match!
+                  </p>
+                  <h1 className={`font-heading text-[clamp(1.8rem,3vw,2.6rem)] leading-none ${darkMode ? "text-[#F4C842]" : "text-[#1E3D2A]"}`}>
+                    {centerPlant.name}
                   </h1>
-                  <h2 className={`font-heading text-[clamp(0.8rem,1.2vw,1.05rem)] mt-1 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
-                    Your best match is{" "}
-                    <span className="text-[#F4C842]">{centerPlant.name}</span>
-                    <span className="ml-2 font-comic font-bold text-[#F4C842]">· {centerScore}%</span>
-                  </h2>
+                  <p className={`font-comic font-bold text-[clamp(0.85rem,1.1vw,1rem)] mt-0.5 ${darkMode ? "text-[#F4C842]" : "text-[#0F3D26]"}`}>· {centerScore}% match</p>
                 </div>
 
                 {(() => {
@@ -416,31 +392,23 @@ export default function Results() {
               </div>
 
               {/* RIGHT: why text + best plant's trait pills + comparison + retake */}
-              <div className="flex flex-col justify-center w-[360px] xl:w-[400px] shrink-0 pl-6 pr-4"
+              <div className="flex flex-col justify-center w-[540px] xl:w-[580px] shrink-0 pl-12 pr-4"
                 style={{ paddingBottom: "clamp(24px,5vh,60px)" }}>
-                {whyText && (
-                  <motion.p
-                    className={`font-comic text-[0.88rem] leading-relaxed ${darkMode ? "text-white/90" : "text-[#1E3D2A]/90"}`}
+                {whyText.length > 0 && (
+                  <motion.div
+                    className="font-comic space-y-4"
                     initial={{ opacity: 0, x: 20 }}
                     animate={revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                     transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                   >
-                    {whyText}
-                  </motion.p>
-                )}
-                {comparisonText && (
-                  <motion.p
-                    className={`font-comic text-[0.72rem] leading-snug italic mt-4 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/60"}`}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                    transition={{ duration: 0.5, delay: 0.65, ease: "easeOut" }}
-                  >
-                    {comparisonText}
-                  </motion.p>
+                    {whyText.map((line, i) => (
+                      <WhyTextLine key={i} line={line} darkMode={darkMode} className="text-[0.95rem]" />
+                    ))}
+                  </motion.div>
                 )}
                 <button
                   onClick={() => router.push("/quiz")}
-                  className={`font-comic text-xs uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-60 hover:opacity-100 mt-8 self-start ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}
+                  className={`font-comic text-sm font-bold uppercase tracking-widest underline underline-offset-4 transition-opacity hover:opacity-70 mt-8 self-start ${darkMode ? "text-[#65F0CD]" : "text-[#1A6241]"}`}
                 >
                   ↩ Retake quiz
                 </button>
@@ -454,12 +422,12 @@ export default function Results() {
                 <div className="mb-1 px-3 py-0.5 border-2 border-[#F4C842] text-[#F4C842] rounded-full text-[10px] font-semibold tracking-widest uppercase">
                   ★ Best Match
                 </div>
-                <p className={`font-heading text-3xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>{centerPlant.name}</p>
+                <p className={`font-heading text-3xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1A3A0A]"}`}>{centerPlant.name}</p>
                 <div className="w-[180px] mt-1.5">
                   <div className="flex justify-between mb-0.5">
                     <span className="font-comic text-[11px] font-bold text-[#F4C842]">{centerScore}% match</span>
                   </div>
-                  <div className={`h-[6px] w-full rounded-full ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/10"}`}>
+                  <div className={`h-[10px] w-full max-w-[120px] rounded-full ${darkMode ? "bg-white/10" : "bg-[#3A5A20]/12"}`}>
                     <div className="h-full rounded-full bg-[#F4C842]" style={{ width: `${centerScore}%` }} />
                   </div>
                 </div>
@@ -471,12 +439,12 @@ export default function Results() {
                   const sc = i === 0 ? leftScore : rightScore;
                   return (
                     <button type="button" key={plant.id} onClick={() => setTappedPlant(plant)} className={`flex flex-col items-center flex-1 max-w-[260px] transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: `${300 + i * 150}ms` }}>
-                      <p className={`font-heading text-xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>{plant.name}</p>
+                      <p className={`font-heading text-xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1A3A0A]"}`}>{plant.name}</p>
                       <div className="w-[140px] mt-1 mb-1">
                         <div className="flex justify-between mb-0.5">
                           <span className={`font-comic text-[10px] ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>{sc}% match</span>
                         </div>
-                        <div className={`h-[6px] w-full rounded-full ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/10"}`}>
+                        <div className={`h-[10px] w-full max-w-[120px] rounded-full ${darkMode ? "bg-white/10" : "bg-[#3A5A20]/12"}`}>
                           <div className="h-full rounded-full bg-[#65F0CD]/55" style={{ width: `${sc}%` }} />
                         </div>
                       </div>
@@ -492,49 +460,61 @@ export default function Results() {
               {([centerPlant, leftPlant, rightPlant] as Plant[]).map((plant, i) => {
                 const sc = [centerScore, leftScore, rightScore][i];
                 return (
-                  <button
-                    type="button"
-                    key={plant.id}
-                    className={`flex flex-col items-center w-full transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-                    style={{ transitionDelay: `${200 + i * 180}ms` }}
-                    onClick={() => setTappedPlant(plant)}
-                  >
-                    <p className={`font-heading text-2xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>{plant.name}</p>
-                    <div className="w-[180px] mt-1.5 mb-1">
-                      <div className="flex justify-between mb-0.5">
-                        <span className={`font-comic text-[11px] font-semibold ${i === 0 ? "text-[#F4C842]" : darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
-                          {sc}% match
-                        </span>
+                  <div key={plant.id} className="flex flex-col items-center w-full gap-10">
+                    {i === 1 && (
+                      <div className="w-full px-6 text-center border-t pt-6" style={{ borderColor: darkMode ? "rgba(255,255,255,0.1)" : "rgba(26,98,65,0.15)" }}>
+                        <p className={`font-comic text-[0.7rem] uppercase tracking-widest mb-1 ${darkMode ? "text-white/35" : "text-[#1A6241]/50"}`}>Also a great match for you</p>
+                        <p className={`font-comic text-[0.78rem] font-semibold ${darkMode ? "text-white/70" : "text-[#1A3A0A]/80"}`}>Not quite feeling {centerPlant.name}? These two came very close - tap either to learn more.</p>
                       </div>
-                      <div className={`h-[6px] w-full rounded-full ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/10"}`}>
-                        <div
-                          className="h-full rounded-full"
-                          style={{ width: `${sc}%`, background: i === 0 ? "#F4C842" : "rgba(101,240,205,0.55)" }}
-                        />
-                      </div>
-                    </div>
-                    <div className="relative mt-4">
-                      <img
-                        src={plant.image}
-                        alt={plant.name}
-                        className="h-[340px] w-auto object-contain"
-                      />
-                      {i === 0 && (
-                        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-4 py-1.5 border-2 border-[#F4C842] text-[#F4C842] bg-[#210E4A] rounded-full text-[11px] font-semibold tracking-widest uppercase whitespace-nowrap">
-                          ★ Best Match
+                    )}
+                    <button
+                      type="button"
+                      className={`flex flex-col items-center w-full transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                      style={{ transitionDelay: `${200 + i * 180}ms` }}
+                      onClick={() => setTappedPlant(plant)}
+                    >
+                      <p className={`font-heading text-2xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1A3A0A]"}`}>{plant.name}</p>
+                      <div className="w-[180px] mt-1.5 mb-1">
+                        <div className="flex justify-between mb-0.5">
+                          <span className={`font-comic text-[11px] font-semibold ${darkMode ? (i === 0 ? "text-[#F4C842]" : "text-white/90") : "text-[#0F3D26]"}`}>
+                            {sc}% match
+                          </span>
                         </div>
-                      )}
-                    </div>
-                  </button>
+                        <div className={`h-[10px] w-full max-w-[120px] rounded-full ${darkMode ? "bg-white/10" : "bg-[#3A5A20]/12"}`}>
+                          <div
+                            className="h-[10px] rounded-full"
+                            style={{ width: `${sc}%`, background: i === 0 ? (darkMode ? "#F4C842" : "#1A6241") : darkMode ? "rgba(101,240,205,0.55)" : "rgba(26,98,65,0.5)" }}
+                          />
+                        </div>
+                      </div>
+                      <div className="relative mt-4">
+                        <img
+                          src={plant.image}
+                          alt={plant.name}
+                          className="h-[340px] w-auto object-contain"
+                        />
+                        </div>
+                    </button>
+
+                    {/* Why text - shown immediately after the best match plant */}
+                    {i === 0 && whyText.length > 0 && (
+                      <div className="w-full px-4 space-y-4 -mt-2">
+                        {whyText.map((line, j) => (
+                          <WhyTextLine key={j} line={line} darkMode={darkMode} className="font-comic text-[0.9rem] text-center" />
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
+
             </div>
 
 
             {/* ── Retake quiz: tablet + mobile only (desktop has it in right column) ── */}
             <button
               onClick={() => router.push("/quiz")}
-              className={`lg:hidden shrink-0 font-comic text-xs sm:text-sm uppercase tracking-widest underline underline-offset-4 transition-opacity opacity-60 hover:opacity-100 mt-4 sm:mt-2 mb-2 ${darkMode ? "text-white" : "text-[#1E3D2A]"}`}
+              className={`lg:hidden shrink-0 font-comic text-sm sm:text-base font-bold uppercase tracking-widest underline underline-offset-4 transition-opacity hover:opacity-80 mt-4 sm:mt-2 mb-2 ${darkMode ? "text-[#65F0CD]" : "text-[#1A6241]"}`}
             >
               ↩ Retake quiz
             </button>
@@ -579,15 +559,9 @@ export default function Results() {
               </div>
               <div className="px-6 pt-4 pb-8">
                 <p className="font-heading text-[#65F0CD] text-xl mb-3">{tappedPlant.name}</p>
-                <div className="flex gap-2 flex-wrap mb-4">
-                  {tappedPlant.traits.filter(id => id !== 24).slice(0, 5).map(id => (
-                    <span key={id} style={{ fontSize: "10px", ...traitPillStyle(id) }} className="px-3 py-1 border-2 rounded-full font-bold uppercase tracking-widest">
-                      {traitName(id)}
-                    </span>
-                  ))}
-                </div>
+                <TraitPills plant={tappedPlant} traitName={traitName} className="mb-4" />
                 <p className="font-comic text-white/80 text-sm leading-relaxed mb-5">
-                  Placeholder sentence one - something captivating about this plant's personality and what makes it stand out. Placeholder sentence two - a note about the care routine and what kind of plant parent this suits best. Placeholder sentence three - something about its visual qualities, growth habits, or unique features. Placeholder sentence four - a fun or surprising fact that makes you love this plant even more.
+                  {tappedPlant.panelDescription ?? tappedPlant.description}
                 </p>
               </div>
             </motion.div>
@@ -616,15 +590,9 @@ export default function Results() {
               </div>
               <div className="flex-1 overflow-y-auto px-7 py-6">
                 <h2 className="font-heading text-[#65F0CD] text-2xl mb-4">{tappedPlant.name}</h2>
-                <div className="flex gap-2 flex-wrap mb-5">
-                  {tappedPlant.traits.filter(id => id !== 24).slice(0, 5).map(id => (
-                    <span key={id} style={{ fontSize: "10px", ...traitPillStyle(id) }} className="px-3 py-1 border-2 rounded-full font-bold uppercase tracking-widest">
-                      {traitName(id)}
-                    </span>
-                  ))}
-                </div>
+                <TraitPills plant={tappedPlant} traitName={traitName} className="mb-5" />
                 <p className="font-comic text-white/80 text-sm leading-relaxed">
-                  Placeholder sentence one - something captivating about this plant's personality and what makes it stand out. Placeholder sentence two - a note about the care routine and what kind of plant parent this suits best. Placeholder sentence three - something about its visual qualities, growth habits, or unique features. Placeholder sentence four - a fun or surprising fact that makes you love this plant even more.
+                  {tappedPlant.panelDescription ?? tappedPlant.description}
                 </p>
               </div>
             </motion.div>

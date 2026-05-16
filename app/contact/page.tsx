@@ -15,6 +15,13 @@ const IMAGES = [
   "/images/desktop-images/contactMe_07.svg",
 ];
 
+const inputClass = (darkMode: boolean) =>
+  `w-full px-4 py-3 rounded-2xl border text-sm outline-none focus:ring-2 transition-all ${
+    darkMode
+      ? "bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-[#65F0CD]/60"
+      : "bg-white/60 border-[#210E4A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:ring-[#210E4A]/40"
+  }`;
+
 export default function Contact() {
   const { darkMode } = useContext(DarkModeContext);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -95,7 +102,7 @@ export default function Contact() {
               objectFit: "contain",
               objectPosition: "center",
               zIndex: 20,
-              opacity: isHovering ? 1 : 0,
+              opacity: isHovering && isBreathing ? 1 : 0,
               transition: "opacity 0.3s ease-in-out",
               maskImage: `radial-gradient(circle 280px at ${mousePos.x}% ${mousePos.y}%, black 40%, transparent 100%)`,
               WebkitMaskImage: `radial-gradient(circle 280px at ${mousePos.x}% ${mousePos.y}%, black 40%, transparent 100%)`,
@@ -128,11 +135,7 @@ export default function Contact() {
                 <input
                   type="text"
                   placeholder="Your name"
-                  className={`w-full px-4 py-3 rounded-2xl border text-sm outline-none focus:ring-2 transition-all ${
-                    darkMode
-                      ? "bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-[#65F0CD]/60"
-                      : "bg-white/60 border-[#210E4A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:ring-[#210E4A]/40"
-                  }`}
+                  className={inputClass(darkMode)}
                 />
               </div>
 
@@ -145,11 +148,7 @@ export default function Contact() {
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className={`w-full px-4 py-3 rounded-2xl border text-sm outline-none focus:ring-2 transition-all ${
-                    darkMode
-                      ? "bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-[#65F0CD]/60"
-                      : "bg-white/60 border-[#210E4A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:ring-[#210E4A]/40"
-                  }`}
+                  className={inputClass(darkMode)}
                 />
               </div>
 
@@ -162,11 +161,7 @@ export default function Contact() {
                 <textarea
                   rows={5}
                   placeholder="Write your message here..."
-                  className={`w-full px-4 py-3 rounded-2xl border text-sm outline-none focus:ring-2 transition-all resize-none ${
-                    darkMode
-                      ? "bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-[#65F0CD]/60"
-                      : "bg-white/60 border-[#210E4A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:ring-[#210E4A]/40"
-                  }`}
+                  className={`${inputClass(darkMode)} resize-none`}
                 />
               </div>
 

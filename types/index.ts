@@ -9,6 +9,7 @@ export interface Plant {
   id: number;
   name: string;
   description: string;
+  panelDescription?: string;
   traits: number[];
   image: string;
   heightRank: number;

@@ -2,6 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import { createPortal } from "react-dom";
 import { DarkModeContext } from "../app/ClientProviders";
+import { accentBar, accentLine, popoverShadow } from "../lib/styles";
 
 export default function HotspotPopup({ hotspot, onClose }) {
   const { darkMode } = useContext(DarkModeContext);
@@ -29,21 +30,13 @@ export default function HotspotPopup({ hotspot, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{
-          boxShadow: darkMode
-            ? "0 24px 60px rgba(101,240,205,0.15), 0 8px 32px rgba(0,0,0,0.5)"
-            : "0 24px 60px rgba(30,61,42,0.12), 0 12px 40px rgba(0,0,0,0.18)",
-        }}
+        style={{ boxShadow: popoverShadow(darkMode) }}
         className={`relative w-full max-w-sm rounded-2xl overflow-hidden backdrop-blur-xl ${
           darkMode ? "bg-[#1A0B3B]/97" : "bg-white/97"
         }`}
       >
         {/* Top accent bar */}
-        <div className={`h-[3px] w-full ${
-          darkMode
-            ? "bg-gradient-to-r from-[#65F0CD] via-[#4FD4B3] to-[#65F0CD]/40"
-            : "bg-gradient-to-r from-[#2D6A4F] via-[#4CAF82] to-[#2D6A4F]/40"
-        }`} />
+        <div className={accentBar(darkMode)} />
 
         <div className="p-6">
           {/* Close */}
@@ -67,9 +60,7 @@ export default function HotspotPopup({ hotspot, onClose }) {
           </h3>
 
           {/* Accent line */}
-          <div className={`w-8 h-[2px] rounded-full mb-4 ${
-            darkMode ? "bg-[#65F0CD]/35" : "bg-[#2D6A4F]/30"
-          }`} />
+          <div className={`${accentLine(darkMode)} mb-4`} />
 
           {/* Content */}
           <p className={`font-comic text-base leading-relaxed ${

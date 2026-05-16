@@ -2,6 +2,7 @@
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { DarkModeContext } from "../app/ClientProviders";
+import { accentBar, popoverShadow } from "../lib/styles";
 
 const QUIZ_INFO = [
   { icon: "⚡", text: "5 seconds per question - quick and fun!" },
@@ -21,18 +22,10 @@ export default function BadgeWelcomeModal({ user, onClose }) {
         className={`w-full max-w-md rounded-2xl shadow-2xl relative overflow-hidden ${
           darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#1E3D2A]"
         }`}
-        style={{
-          boxShadow: darkMode
-            ? "0 24px 60px rgba(101,240,205,0.15), 0 8px 32px rgba(0,0,0,0.5)"
-            : "0 24px 60px rgba(30,61,42,0.12), 0 12px 40px rgba(0,0,0,0.18)",
-        }}
+        style={{ boxShadow: popoverShadow(darkMode) }}
       >
         {/* Top accent bar */}
-        <div className={`h-[3px] w-full ${
-          darkMode
-            ? "bg-gradient-to-r from-[#65F0CD] via-[#4FD4B3] to-[#65F0CD]/40"
-            : "bg-gradient-to-r from-[#2D6A4F] via-[#4CAF82] to-[#2D6A4F]/40"
-        }`} />
+        <div className={accentBar(darkMode)} />
 
         <div className="p-7">
           {/* Close */}

@@ -7,6 +7,8 @@ export default function Hotspot({ position, onClick, isHidden }) {
 
   if (isHidden) return null;
 
+  const dotColor = darkMode ? "bg-[#65F0CD]" : "bg-[#2D6A4F]";
+
   return (
     <button
       onClick={onClick}
@@ -20,17 +22,11 @@ export default function Hotspot({ position, onClick, isHidden }) {
       aria-label="View plant information"
     >
       {/* Pulsing outer ring */}
-      <span
-        className={`absolute inset-0 rounded-full animate-ping opacity-50 ${darkMode ? "bg-[#65F0CD]" : "bg-[#2D6A4F]"}`}
-      />
+      <span className={`absolute inset-0 rounded-full animate-ping opacity-50 ${dotColor}`} />
       {/* Static ring */}
-      <span
-        className={`absolute inset-0 rounded-full opacity-30 ${darkMode ? "bg-[#65F0CD]" : "bg-[#2D6A4F]"}`}
-      />
+      <span className={`absolute inset-0 rounded-full opacity-30 ${dotColor}`} />
       {/* Inner dot */}
-      <span
-        className={`relative w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full shadow-lg ${darkMode ? "bg-[#65F0CD]" : "bg-[#2D6A4F]"}`}
-      />
+      <span className={`relative w-3 h-3 lg:w-3.5 lg:h-3.5 rounded-full shadow-lg ${dotColor}`} />
     </button>
   );
 }

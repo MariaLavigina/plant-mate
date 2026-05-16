@@ -2,6 +2,7 @@
 import { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../app/ClientProviders";
 import { USER_KEY } from "../lib/constants";
+import { primaryButton } from "../lib/styles";
 
 export default function AuthModal({ type = "login", onClose, reason }) {
   const { darkMode } = useContext(DarkModeContext);
@@ -81,11 +82,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
       : "bg-white border-[#1E3D2A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:border-[#1E3D2A]"
   }`;
 
-  const buttonClass = `w-full py-2.5 rounded-lg font-semibold transition-all duration-200 border-2 ${
-    darkMode
-      ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3]"
-      : "bg-[#210E4A] border-[#210E4A] text-[#65F0CD] hover:bg-[#2D1260]"
-  }`;
+  const buttonClass = `w-full py-2.5 rounded-lg font-semibold transition-all duration-200 border-2 ${primaryButton(darkMode)}`;
 
   const linkClass = `mt-4 text-sm cursor-pointer text-center ${
     darkMode ? "text-[#65F0CD] hover:text-white" : "text-[#1E3D2A] hover:text-[#0f2116]"

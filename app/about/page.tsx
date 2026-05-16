@@ -1,43 +1,206 @@
 "use client";
 
 import { useContext } from "react";
+import { motion } from "motion/react";
 import Navbar from "../../components/Navbar";
 import { DarkModeContext } from "../ClientProviders";
-import { pageBg, primaryText } from "../../lib/styles";
+import { pageBg } from "../../lib/styles";
+
+const TIMELINE = [
+  {
+    id: 1,
+    label: "Central Saint Martins",
+    text: "Graduated with a BA in Design from one of the world's most respected art schools in London. Built a foundation in visual thinking, typography, and design systems that informs everything since.",
+  },
+  {
+    id: 2,
+    label: "National Museum of Scotland",
+    text: "Commissioned to create five original illustrations, each two metres tall, for the permanent fashion exhibition. Introduced herself directly to the museum's CEO. The first sketch was accepted without revision.",
+  },
+  {
+    id: 3,
+    label: "Edinburgh",
+    text: "Moved to Edinburgh city centre and made a deliberate pivot toward technology - convinced that creativity and coding were not opposites, and determined to find out what she could build.",
+  },
+  {
+    id: 4,
+    label: "Learning to Code",
+    text: "Started from scratch, working through a lifelong belief that coding required a kind of intelligence she didn't have. Three years later, that belief is completely gone.",
+  },
+  {
+    id: 5,
+    label: "Edinburgh Napier University",
+    text: "Currently in her third year of a software development degree, working professionally as a junior developer and building full-stack projects from the ground up.",
+  },
+  {
+    id: 6,
+    label: "PlantMate+",
+    text: "A full-stack plant matching app built to portfolio standard. Real auth, real database, real UX. The project where design experience and coding ability finally meet.",
+  },
+];
 
 export default function About() {
   const { darkMode } = useContext(DarkModeContext);
+
+  const nodeBase = `w-4 h-4 rounded-full border-2 shrink-0 z-10`;
+  const nodeColor = (isLast: boolean) =>
+    darkMode
+      ? isLast
+        ? "border-[#65F0CD] bg-[#65F0CD]"
+        : "border-[#65F0CD] bg-[#210E4A]"
+      : isLast
+      ? "border-[#1E3D2A] bg-[#1E3D2A]"
+      : "border-[#1E3D2A] bg-[#F4FBF0]";
 
   return (
     <div className={`relative min-h-screen ${pageBg(darkMode)}`}>
       <Navbar />
 
-      <div className="flex flex-col items-center justify-center min-h-screen pt-20 gap-12 px-2 sm:px-4 md:px-6">
-        <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-bold font-caveat text-center ${primaryText(darkMode)}`}>
+      <div className="flex flex-col items-center min-h-screen pt-28 pb-24 px-6">
+
+        {/* Heading */}
+        <motion.h1
+          className={`font-heading text-[clamp(2.5rem,5vw,4rem)] mb-3 text-center ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           About Me
-        </h1>
+        </motion.h1>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-[90%]">
-          <div
-            className={`space-y-4 md:w-1/2 ${primaryText(darkMode)}`}
-            style={{ fontSize: "clamp(1rem, 1.8vw, 1.125rem)" }}
-          >
-            <p>Hello! My name is Maria, and I love plants… and coding of course!</p>
-            <p>I created this website for people searching for their perfect plant companion - the one that will actually survive and thrive with you.</p>
-            <p>We all need a little help finding the plant that fits our lifestyle, and that's exactly what this app does: it tells you who your perfect plant match is.</p>
-            <p>A little about me: my biggest plant is almost 2.5 meters tall! It's a Euphorbia Trigona Cactus, and it just keeps growing and growing… I guess there's no escaping IKEA or any plant shop without bringing home a new green friend.</p>
-            <p>Why do we love plants so much? Honestly, I'm not sure, but I do know that plants make life better. Studies say they can even reduce anxiety and stress, and I can totally believe it - I feel calmer and happier surrounded by greenery every day.</p>
-            <p>Here's a photo of me with flowers projected on my face, because why not?</p>
-          </div>
+        <motion.p
+          className={`font-comic text-center max-w-lg text-[clamp(0.9rem,1.4vw,1.05rem)] mb-20 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/55"}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+        >
+          Designer turned developer. Edinburgh-based. Thinking visually, building seriously.
+        </motion.p>
 
-          <div className="flex justify-center">
-            <img
-              src="/images/placeholder-image.svg"
-              alt="Maria"
-              className="w-full h-auto max-h-96"
-            />
+        {/* DESKTOP TIMELINE (lg+) */}
+        <div className="hidden lg:block w-full max-w-6xl relative" style={{ minHeight: "440px" }}>
+
+          {/* The line - draws left to right on scroll */}
+          <motion.div
+            className={`absolute left-0 right-0 h-px ${darkMode ? "bg-white/15" : "bg-[#1E3D2A]/15"}`}
+            style={{ top: "50%", originX: 0 }}
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.4, ease: "easeInOut" }}
+          />
+
+          <div className="flex items-stretch h-full" style={{ minHeight: "440px" }}>
+            {TIMELINE.map((item, i) => {
+              const isAbove = i % 2 === 0;
+              const isLast = i === TIMELINE.length - 1;
+              return (
+                <div key={item.id} className="flex-1 flex flex-col items-center">
+
+                  {/* Top half - text if isAbove */}
+                  <div className="flex-1 flex items-end pb-7 px-3">
+                    {isAbove && (
+                      <motion.div
+                        className="text-center"
+                        initial={{ opacity: 0, y: 18 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.55, delay: i * 0.1, ease: "easeOut" }}
+                      >
+                        <p className={`font-heading text-[clamp(0.78rem,1vw,0.95rem)] mb-2 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
+                          {item.label}
+                        </p>
+                        <p className={`font-comic text-[clamp(0.68rem,0.8vw,0.82rem)] leading-snug ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
+                          {item.text}
+                        </p>
+                      </motion.div>
+                    )}
+                  </div>
+
+                  {/* Node */}
+                  <motion.div
+                    className={`${nodeBase} ${nodeColor(isLast)}`}
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: "spring", stiffness: 320, damping: 22, delay: i * 0.1 }}
+                  />
+
+                  {/* Bottom half - text if !isAbove */}
+                  <div className="flex-1 flex items-start pt-7 px-3">
+                    {!isAbove && (
+                      <motion.div
+                        className="text-center"
+                        initial={{ opacity: 0, y: -18 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.55, delay: i * 0.1, ease: "easeOut" }}
+                      >
+                        <p className={`font-heading text-[clamp(0.78rem,1vw,0.95rem)] mb-2 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
+                          {item.label}
+                        </p>
+                        <p className={`font-comic text-[clamp(0.68rem,0.8vw,0.82rem)] leading-snug ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
+                          {item.text}
+                        </p>
+                      </motion.div>
+                    )}
+                  </div>
+
+                </div>
+              );
+            })}
           </div>
         </div>
+
+        {/* MOBILE / TABLET TIMELINE (< lg) */}
+        <div className="lg:hidden w-full max-w-md relative pl-10">
+
+          {/* Vertical line - draws top to bottom on scroll */}
+          <motion.div
+            className={`absolute left-3 top-0 bottom-0 w-px ${darkMode ? "bg-white/15" : "bg-[#1E3D2A]/15"}`}
+            style={{ originY: 0 }}
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.4, ease: "easeInOut" }}
+          />
+
+          <div className="flex flex-col gap-12">
+            {TIMELINE.map((item, i) => {
+              const isLast = i === TIMELINE.length - 1;
+              return (
+                <div key={item.id} className="relative flex items-start">
+
+                  {/* Node */}
+                  <motion.div
+                    className={`absolute -left-7 top-1 ${nodeBase} ${nodeColor(isLast)}`}
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: "spring", stiffness: 320, damping: 22, delay: 0.1 }}
+                  />
+
+                  {/* Content */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 18 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+                  >
+                    <p className={`font-heading text-lg mb-1.5 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
+                      {item.label}
+                    </p>
+                    <p className={`font-comic text-sm leading-relaxed ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
+                      {item.text}
+                    </p>
+                  </motion.div>
+
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
       </div>
     </div>
   );
