@@ -82,7 +82,7 @@ export default function About() {
 
           {/* The line - draws left to right on scroll */}
           <motion.div
-            className={`absolute left-0 right-0 h-px ${darkMode ? "bg-white/15" : "bg-[#1E3D2A]/15"}`}
+            className="absolute left-0 right-0 h-[3px] bg-[#FFBD06]"
             style={{ top: "50%", originX: 0 }}
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -118,8 +118,10 @@ export default function About() {
                   </div>
 
                   {/* Node */}
-                  <motion.div
-                    className={`${nodeBase} ${nodeColor(isLast)}`}
+                  <motion.img
+                    src="/images/aboutMeFlora.svg"
+                    alt=""
+                    className="w-8 h-8 shrink-0 z-10"
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
@@ -172,8 +174,10 @@ export default function About() {
                 <div key={item.id} className="relative flex items-start">
 
                   {/* Node */}
-                  <motion.div
-                    className={`absolute -left-7 top-1 ${nodeBase} ${nodeColor(isLast)}`}
+                  <motion.img
+                    src="/images/aboutMeFlora.svg"
+                    alt=""
+                    className="absolute -left-7 top-1 w-8 h-8 shrink-0 z-10"
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}

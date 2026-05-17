@@ -1,14 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "Aglaonema",
-    "traits": [11, 4, 16, 1, 8, 10, 6],
-    "description": "A beginner's dream - vivid, patterned leaves that thrive even in low-light corners.",
-    "panelDescription": "NASA literally tested the Aglaonema and confirmed it filters benzene and formaldehyde from indoor air - so it's quietly cleaning your home while looking great doing it. It's been used as an office plant across Asia for centuries because it thrives under fluorescent lights. The more colourful the leaves, the more light it secretly craves, but it will never throw a tantrum about it. If plants had LinkedIn profiles, this one's would say 'thrives in toxic environments.'",
-    "image": "/images/plants-webP-images/agalonemas 1.webp",
-    "heightRank": 1
-  },
-  {
     "id": 2,
     "name": "Aglaonema Jungle Red",
     "traits": [11, 14, 4, 1, 8, 10, 6],
@@ -18,30 +9,12 @@
     "heightRank": 1
   },
   {
-    "id": 3,
-    "name": "Aglaonema Kiwi",
-    "traits": [12, 4, 16, 1, 8, 10, 6],
-    "description": "Creamy white and green variegation - cool, calm, and completely effortless to keep.",
-    "panelDescription": "The Aglaonema Kiwi proves you don't have to suffer for great houseplant aesthetics. Its creamy white and green variegation stays crisp even in low light, which most variegated plants absolutely refuse to do. It grows slowly and deliberately, like it knows exactly how good it looks. Zero drama, maximum style.",
-    "image": "/images/plants-webP-images/Aglaonema Kiwi 1.webp",
-    "heightRank": 1
-  },
-  {
     "id": 4,
     "name": "Aglaonema Orange Star",
     "traits": [11, 14, 2, 1, 8, 10, 6],
     "description": "Vibrant orange and green leaves that glow like a sunset - low effort, high impact.",
     "panelDescription": "This one glows like a sunset on your windowsill without requiring a single special skill to keep alive. The orange colouring deepens the more indirect light it receives - it's basically self-styling. It handles neglect, irregular watering, and dim corners without throwing a leaf. A proper overachiever in a very small package.",
     "image": "/images/plants-webP-images/Aglaonema Orange Star 1.webp",
-    "heightRank": 1
-  },
-  {
-    "id": 5,
-    "name": "Aglaonema Zebra Feathers",
-    "traits": [12, 14, 4, 1, 8, 10, 6],
-    "description": "Silvery striped leaves with a tropical flair - low effort, unmistakably stylish.",
-    "panelDescription": "Those silvery stripes aren't just pretty - they're a natural light-diffusion system that lets this plant photosynthesize efficiently even in shadowy corners. It's been in cultivation for so long that even seasoned collectors still get excited when they spot one. Slow to grow, but every new leaf arrives looking like it was designed. Basically indestructible, completely photogenic.",
-    "image": "/images/plants-webP-images/Aglaonema zebra feathers 1.webp",
     "heightRank": 1
   },
   {
@@ -115,15 +88,6 @@
     "panelDescription": "Caladium leaves are so vivid they look like someone painted them by hand - pink, white and green in patterns that vary leaf by leaf. They're tropical tubers that go completely dormant in winter, disappearing underground like they were never there, then exploding back to life in spring. They love humidity and warmth, which makes them perfect for steamy kitchens and bathrooms. The most theatrical seasonal plant you'll ever own.",
     "image": "/images/plants-webP-images/caladium carolyn1 1.webp",
     "heightRank": 1
-  },
-  {
-    "id": 14,
-    "name": "Calathea Lancifolia",
-    "traits": [13, 24, 14, 7, 5, 4, 25],
-    "description": "Rattlesnake-patterned leaves that fold up at night like they're going to sleep.",
-    "panelDescription": "The Calathea Lancifolia actually moves its leaves - they fold upward at night and open again in the morning in a process called nyctinasty. Scientists think this movement helps the plant retain warmth and conserve moisture overnight. It's one of the most responsive plants you can own, almost like it has a personality. High-maintenance, deeply rewarding, and genuinely never boring.",
-    "image": "/images/plants-webP-images/Calathea lancifolia1 1.webp",
-    "heightRank": 2
   },
   {
     "id": 15,
@@ -252,15 +216,6 @@
     "heightRank": 2
   },
   {
-    "id": 30,
-    "name": "Satin Pothos",
-    "traits": [20, 12, 27, 4, 9, 1, 6],
-    "description": "Silvery heart-shaped leaves that shimmer as they trail - subtle and completely enchanting.",
-    "panelDescription": "The Satin Pothos isn't actually a pothos at all - it's a Scindapsus, a different genus entirely, just wearing a confusingly similar name. Those silver patches on its leaves are tiny air pockets just below the surface that create the shimmer effect. It trails beautifully and grows with almost no effort, making it one of the most rewarding easy plants you can own. Deceptively simple, endlessly gorgeous.",
-    "image": "/images/plants-webP-images/scindapsus pictus 1.webp",
-    "heightRank": 1
-  },
-  {
     "id": 31,
     "name": "Peace Lily",
     "traits": [26, 19, 7, 4, 25, 6],
@@ -277,15 +232,6 @@
     "panelDescription": "The Strelitzia produces flowers that look like an exotic tropical bird mid-flight - each bloom is engineered so that visiting sunbirds spread pollen as they land. Indoors it rarely flowers, but the giant paddle leaves alone are worth every inch of space it takes up. In the wild in South Africa it can reach 3-4 metres tall. When it eventually blooms after years of patience, it feels like a genuine event.",
     "image": "/images/plants-webP-images/Strelitzia plant 1.webp",
     "heightRank": 3
-  },
-  {
-    "id": 34,
-    "name": "Sansevieria Zeylanica",
-    "traits": [23, 13, 19, 17, 4, 1, 6],
-    "description": "Sword-like leaves with wavy patterns - one of the most forgiving plants you can own.",
-    "panelDescription": "The Sansevieria Zeylanica is one of the most indestructible plants in existence - it has been documented surviving complete drought for over two years and still recovering. Like its cousins, it photosynthesises at night, making it a favourite for bedrooms. Its wavy crossband patterning is completely natural and varies slightly between plants. Completely unbothered by neglect, low light, or irregular care.",
-    "image": "/images/plants-webP-images/Sansevieria laurentii plant 1.webp",
-    "heightRank": 2
   },
   {
     "id": 35,

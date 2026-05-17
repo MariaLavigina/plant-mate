@@ -300,12 +300,7 @@ export default function Results() {
       a.plant.traits.length - b.plant.traits.length
     );
 
-    const devPreviewId = localStorage.getItem("devPreviewId");
-    if (devPreviewId) {
-      localStorage.removeItem("devPreviewId");
-      const idx = scored.findIndex(s => s.plant.id === Number(devPreviewId));
-      if (idx > 0) { const [item] = scored.splice(idx, 1); scored.unshift(item); }
-    }
+    localStorage.removeItem("devPreviewId");
 
     const top3 = scored.slice(0, 3);
 
