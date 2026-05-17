@@ -488,7 +488,7 @@ export default function Results() {
                           alt={plant.name}
                           className="h-[340px] w-auto object-contain"
                         />
-                        </div>
+                      </div>
                     </button>
 
                     {/* Why text - shown immediately after the best match plant */}

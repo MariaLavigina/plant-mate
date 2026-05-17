@@ -1,7 +1,8 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { motion } from "motion/react";
+import Link from "next/link";
 import Navbar from "../../components/Navbar";
 import { DarkModeContext } from "../ClientProviders";
 import { pageBg } from "../../lib/styles";
@@ -9,31 +10,37 @@ import { pageBg } from "../../lib/styles";
 const TIMELINE = [
   {
     id: 1,
+    date: "2017",
     label: "Central Saint Martins",
     text: "Graduated with a BA in Design from one of the world's most respected art schools in London. Built a foundation in visual thinking, typography, and design systems that informs everything since.",
   },
   {
     id: 2,
+    date: "2019",
     label: "National Museum of Scotland",
     text: "Commissioned to create five original illustrations, each two metres tall, for the permanent fashion exhibition. Introduced herself directly to the museum's CEO. The first sketch was accepted without revision.",
   },
   {
     id: 3,
+    date: "2021",
     label: "Edinburgh",
     text: "Moved to Edinburgh city centre and made a deliberate pivot toward technology - convinced that creativity and coding were not opposites, and determined to find out what she could build.",
   },
   {
     id: 4,
+    date: "2022",
     label: "Learning to Code",
     text: "Started from scratch, working through a lifelong belief that coding required a kind of intelligence she didn't have. Three years later, that belief is completely gone.",
   },
   {
     id: 5,
+    date: "2023 – Present",
     label: "Edinburgh Napier University",
     text: "Currently in her third year of a software development degree, working professionally as a junior developer and building full-stack projects from the ground up.",
   },
   {
     id: 6,
+    date: "2025",
     label: "PlantMate+",
     text: "A full-stack plant matching app built to portfolio standard. Real auth, real database, real UX. The project where design experience and coding ability finally meet.",
   },
@@ -41,22 +48,13 @@ const TIMELINE = [
 
 export default function About() {
   const { darkMode } = useContext(DarkModeContext);
-
-  const nodeBase = `w-4 h-4 rounded-full border-2 shrink-0 z-10`;
-  const nodeColor = (isLast: boolean) =>
-    darkMode
-      ? isLast
-        ? "border-[#65F0CD] bg-[#65F0CD]"
-        : "border-[#65F0CD] bg-[#210E4A]"
-      : isLast
-      ? "border-[#1E3D2A] bg-[#1E3D2A]"
-      : "border-[#1E3D2A] bg-[#F4FBF0]";
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className={`relative min-h-screen ${pageBg(darkMode)}`}>
+    <div className={`relative min-h-screen overflow-x-hidden ${pageBg(darkMode)}`}>
       <Navbar />
 
-      <div className="flex flex-col items-center min-h-screen pt-28 pb-24 px-6">
+      <div className="flex flex-col items-center min-h-screen pt-28 pb-20 px-6">
 
         {/* Heading */}
         <motion.h1
@@ -74,7 +72,7 @@ export default function About() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.25 }}
         >
-          Designer turned developer. Edinburgh-based. Thinking visually, building seriously.
+          Designer turned developer. Edinburgh-based. Thinking visually.
         </motion.p>
 
         {/* DESKTOP TIMELINE (lg+) */}
@@ -82,7 +80,7 @@ export default function About() {
 
           {/* The line - draws left to right on scroll */}
           <motion.div
-            className="absolute left-0 right-0 h-[3px] bg-[#FFBD06]"
+            className={`absolute left-0 right-0 h-[5px] ${darkMode ? "bg-[#FFBD06]" : "bg-[#1E3D2A]"}`}
             style={{ top: "50%", originX: 0 }}
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -95,58 +93,73 @@ export default function About() {
               const isAbove = i % 2 === 0;
               const isLast = i === TIMELINE.length - 1;
               return (
-                <div key={item.id} className="flex-1 flex flex-col items-center">
+                <div
+                  key={item.id}
+                  className="flex-1 relative"
+                >
 
-                  {/* Top half - text if isAbove */}
-                  <div className="flex-1 flex items-end pb-7 px-3">
-                    {isAbove && (
-                      <motion.div
-                        className="text-center"
-                        initial={{ opacity: 0, y: 18 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.55, delay: i * 0.1, ease: "easeOut" }}
-                      >
-                        <p className={`font-heading text-[clamp(0.78rem,1vw,0.95rem)] mb-2 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
-                          {item.label}
-                        </p>
-                        <p className={`font-comic text-[clamp(0.68rem,0.8vw,0.82rem)] leading-snug ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
-                          {item.text}
-                        </p>
-                      </motion.div>
-                    )}
+                  {/* Normal flower node */}
+                  <div
+                    className="absolute w-14 h-14 z-10 cursor-pointer"
+                    style={isAbove
+                      ? { bottom: "50%", left: "50%", transform: "translateX(-50%) rotate(180deg)" }
+                      : { top: "50%", left: "50%", transform: "translateX(-50%)" }
+                    }
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <motion.div
+                      className="relative w-full h-full"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ type: "spring", stiffness: 320, damping: 22, delay: i * 0.1 }}
+                    >
+                      <img src={darkMode ? "/images/desktop-images/aboutMeFlora-darkMode.svg" : "/images/desktop-images/aboutMeFlora-lightMode.svg"} alt="" className="absolute inset-0 w-full h-full transition-opacity duration-300" style={{ opacity: hoveredIndex === i ? 0 : 1 }} />
+                    </motion.div>
                   </div>
 
-                  {/* Node */}
-                  <motion.img
-                    src="/images/aboutMeFlora.svg"
+                  {/* Hover flower - positioned independently so rotation doesn't affect it */}
+                  <img
+                    src={darkMode ? "/images/desktop-images/aboutMeFlorahover-darkMode.svg" : "/images/desktop-images/aboutMeFlorahover-lightMode.svg"}
                     alt=""
-                    className="w-8 h-8 shrink-0 z-10"
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ type: "spring", stiffness: 320, damping: 22, delay: i * 0.1 }}
+                    className="absolute pointer-events-none transition-opacity duration-300"
+                    style={{
+                      ...(isAbove
+                        ? { bottom: "50%", transform: "translateX(-50%) rotate(180deg)" }
+                        : { top: "50%", transform: "translateX(-50%)" }),
+                      left: "50%",
+                      width: "61px",
+                      height: "70px",
+                      zIndex: 11,
+                      opacity: hoveredIndex === i ? 1 : 0,
+                    }}
                   />
 
-                  {/* Bottom half - text if !isAbove */}
-                  <div className="flex-1 flex items-start pt-7 px-3">
-                    {!isAbove && (
-                      <motion.div
-                        className="text-center"
-                        initial={{ opacity: 0, y: -18 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.55, delay: i * 0.1, ease: "easeOut" }}
-                      >
-                        <p className={`font-heading text-[clamp(0.78rem,1vw,0.95rem)] mb-2 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
-                          {item.label}
-                        </p>
-                        <p className={`font-comic text-[clamp(0.68rem,0.8vw,0.82rem)] leading-snug ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
-                          {item.text}
-                        </p>
-                      </motion.div>
-                    )}
-                  </div>
+                  {/* Text - absolutely positioned above or below the line */}
+                  <motion.div
+                    className="absolute px-2 text-left cursor-default z-20"
+                    style={isAbove
+                      ? { bottom: "calc(50% + 62px)", left: "-3rem", right: "-3rem" }
+                      : { top: "calc(50% + 62px)", left: "-3rem", right: "-3rem" }
+                    }
+                    initial={{ opacity: 0, y: isAbove ? 18 : -18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.55, delay: i * 0.1, ease: "easeOut" }}
+                    onMouseEnter={() => setHoveredIndex(i)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <p className={`font-comic text-[clamp(0.6rem,0.7vw,0.72rem)] mb-1 ${darkMode ? "text-[#FFBD06]/60" : "text-[#1E3D2A]/45"}`}>
+                      {item.date}
+                    </p>
+                    <p className={`font-heading text-[clamp(0.88rem,1.15vw,1.1rem)] mb-2 ${darkMode ? "text-[#FFBD06]" : "text-[#1E3D2A]"}`}>
+                      {item.label}
+                    </p>
+                    <p className={`font-comic text-[clamp(0.8rem,1vw,0.95rem)] leading-snug ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
+                      {item.text}
+                    </p>
+                  </motion.div>
 
                 </div>
               );
@@ -159,7 +172,7 @@ export default function About() {
 
           {/* Vertical line - draws top to bottom on scroll */}
           <motion.div
-            className={`absolute left-3 top-0 bottom-0 w-px ${darkMode ? "bg-white/15" : "bg-[#1E3D2A]/15"}`}
+            className={`absolute left-3 top-0 bottom-0 w-[5px] ${darkMode ? "bg-[#FFBD06]" : "bg-[#1E3D2A]"}`}
             style={{ originY: 0 }}
             initial={{ scaleY: 0 }}
             whileInView={{ scaleY: 1 }}
@@ -171,18 +184,24 @@ export default function About() {
             {TIMELINE.map((item, i) => {
               const isLast = i === TIMELINE.length - 1;
               return (
-                <div key={item.id} className="relative flex items-start">
+                <div
+                  key={item.id}
+                  className="relative flex items-start"
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
 
                   {/* Node */}
-                  <motion.img
-                    src="/images/aboutMeFlora.svg"
-                    alt=""
-                    className="absolute -left-7 top-1 w-8 h-8 shrink-0 z-10"
+                  <motion.div
+                    className="absolute w-14 h-14 shrink-0 z-10" style={{ left: "-53.5px", top: "-8px" }}
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ type: "spring", stiffness: 320, damping: 22, delay: 0.1 }}
-                  />
+                  >
+                    <img src={darkMode ? "/images/mobile-images/mobile-aboutMe-darkMode.svg" : "/images/mobile-images/mobile-aboutMe-lightMode.svg"} alt="" className="absolute inset-0 w-full h-full transition-opacity duration-300" style={{ opacity: hoveredIndex === i ? 0 : 1 }} />
+                    <img src={darkMode ? "/images/mobile-images/mobile-aboutMe-darkMode-hover.svg" : "/images/mobile-images/mobile-aboutMe-lightMode-hover.svg"} alt="" className="absolute w-20 h-20 transition-opacity duration-300" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", opacity: hoveredIndex === i ? 1 : 0 }} />
+                  </motion.div>
 
                   {/* Content */}
                   <motion.div
@@ -191,7 +210,10 @@ export default function About() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
                   >
-                    <p className={`font-heading text-lg mb-1.5 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
+                    <p className={`font-comic text-xs mb-0.5 ${darkMode ? "text-[#FFBD06]/60" : "text-[#1E3D2A]/45"}`}>
+                      {item.date}
+                    </p>
+                    <p className={`font-heading text-lg mb-1.5 ${darkMode ? "text-[#FFBD06]" : "text-[#1E3D2A]"}`}>
                       {item.label}
                     </p>
                     <p className={`font-comic text-sm leading-relaxed ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
@@ -203,6 +225,25 @@ export default function About() {
               );
             })}
           </div>
+        </div>
+
+        {/* Fixed CTA bar */}
+        <div className={`fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-4 px-6 py-3 backdrop-blur-sm border-t ${darkMode ? "bg-[#210E4A]/85 border-white/10" : "bg-white/85 border-[#1E3D2A]/10"}`}>
+          <p className={`font-comic text-sm hidden sm:block ${darkMode ? "text-white/45" : "text-[#1E3D2A]/50"}`}>
+            Curious what plant matches your personality?
+          </p>
+          <Link
+            href="/quiz"
+            className={`font-heading text-sm px-5 py-2 rounded-full transition-all duration-200 ${darkMode ? "bg-[#65F0CD] text-[#210E4A] hover:bg-[#FFBD06]" : "bg-[#1E3D2A] text-white hover:bg-[#FFBD06] hover:text-[#1E3D2A]"}`}
+          >
+            Take the Quiz
+          </Link>
+          <Link
+            href="/contact"
+            className={`font-heading text-sm px-5 py-2 rounded-full border transition-all duration-200 ${darkMode ? "border-[#65F0CD]/40 text-[#65F0CD] hover:border-[#65F0CD]" : "border-[#1E3D2A]/40 text-[#1E3D2A] hover:border-[#1E3D2A]"}`}
+          >
+            Get in Touch
+          </Link>
         </div>
 
       </div>
