@@ -9,6 +9,9 @@ const NAV_LINKS = [
   { href: "/about", label: "About Me" },
   { href: "/contact", label: "Contact Me" },
   { href: "/quiz", label: "Take Quiz" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/gallery2", label: "Gallery 2" },
+  { href: "/gallery3", label: "Gallery 3" },
 ];
 
 function DarkModeIcon({ darkMode }) {
