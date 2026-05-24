@@ -8,7 +8,8 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Me" },
   { href: "/contact", label: "Contact Me" },
-  { href: "/quiz", label: "Take Quiz" },
+  { href: "/quiz", label: "Plant Match" },
+  { href: "/quiz/badge", label: "Play & Win" },
   { href: "/gallery", label: "Gallery" },
   { href: "/gallery2", label: "Gallery 2" },
   { href: "/gallery3", label: "Gallery 3" },
@@ -31,8 +32,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [authModal, setAuthModal] = useState(null);
 
-  const navLinkClass = darkMode ? "text-[#E2CFFA] hover:text-[#65F0CD]" : "text-[#1E3D2A] hover:text-[#4CAF82]";
-  const authButtonClass = darkMode ? "text-[#65F0CD] hover:text-[#E2CFFA] font-semibold uppercase tracking-widest text-sm" : "text-[#3A8A52] hover:text-[#4CAF82] font-semibold uppercase tracking-widest text-sm";
+  const navLinkClass = darkMode ? "text-[clamp(0.7rem,1.1vw,1rem)] text-[#E2CFFA] hover:text-[#65F0CD]" : "text-[clamp(0.7rem,1.1vw,1rem)] text-[#1E3D2A] hover:text-[#4CAF82]";
+  const authButtonClass = darkMode ? "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#65F0CD] hover:text-[#E2CFFA] font-semibold uppercase tracking-widest" : "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#3A8A52] hover:text-[#4CAF82] font-semibold uppercase tracking-widest";
   const iconClass = darkMode ? "text-[#65F0CD] hover:text-[#E2CFFA]" : "text-[#1E3D2A] hover:text-[#4CAF82]";
 
   return (
@@ -41,10 +42,10 @@ export default function Navbar() {
         <div className="pl-8 md:pl-12 lg:pl-16 xl:pl-20 2xl:pl-28 pr-4 sm:pr-6 lg:pr-8">
           <div className="flex items-center h-16">
 
-            {/* Mobile Hamburger */}
+            {/* Mobile/Tablet Hamburger */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`md:hidden focus:outline-none mr-4 ${iconClass}`}
+              className={`lg:hidden focus:outline-none mr-4 ${iconClass}`}
             >
               <svg className="h-6 w-6" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
@@ -52,7 +53,7 @@ export default function Navbar() {
             </button>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-8">
               {NAV_LINKS.map(({ href, label }) => (
                 <Link key={href} href={href} className={navLinkClass}>{label}</Link>
               ))}
@@ -63,8 +64,8 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile Dark Mode Toggle */}
-            <button onClick={toggleDarkMode} className={`md:hidden ml-auto focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
+            {/* Mobile/Tablet Dark Mode Toggle */}
+            <button onClick={toggleDarkMode} className={`lg:hidden ml-auto focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
               <DarkModeIcon darkMode={darkMode} />
             </button>
           </div>
@@ -72,7 +73,7 @@ export default function Navbar() {
 
         {/* Mobile Menu - full width, outside the padded container */}
         {isOpen && (
-          <div className="md:hidden flex flex-col px-6 pb-4" style={{ backgroundColor: darkMode ? "rgba(33,14,74,0.97)" : "rgba(244,251,240,0.97)" }}>
+          <div className="lg:hidden flex flex-col px-6 pb-4" style={{ backgroundColor: darkMode ? "rgba(33,14,74,0.97)" : "rgba(244,251,240,0.97)" }}>
             {NAV_LINKS.map(({ href, label }) => (
               <Link
                 key={href}

@@ -1,7 +1,39 @@
 @import "tailwindcss";
 
 html, body {
-  overflow-x: hidden;
+  overflow-x: hidden; 
+}
+
+@keyframes plant-pulse {
+  0%,100% { filter: drop-shadow(0 0 6px rgba(101,240,205,0.85)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(101,240,205,0.25)); }
+}
+.plant-pulse {
+  animation: plant-pulse 2s ease-in-out infinite;
+}
+
+@keyframes plant-pulse-secondary {
+  0%,100% { filter: drop-shadow(0 0 5px rgba(244,200,66,0.75)); }
+  50%      { filter: drop-shadow(0 0 18px rgba(244,200,66,0.2)); }
+}
+.plant-pulse-secondary {
+  animation: plant-pulse-secondary 2s ease-in-out infinite;
+}
+
+@keyframes plant-pulse-light {
+  0%,100% { filter: drop-shadow(0 0 7px rgba(255,89,0,0.9)); }
+  50%      { filter: drop-shadow(0 0 24px rgba(255,89,0,0.3)); }
+}
+.plant-pulse-light {
+  animation: plant-pulse-light 2s ease-in-out infinite;
+}
+
+@keyframes plant-pulse-secondary-light {
+  0%,100% { filter: drop-shadow(0 0 5px rgba(255,89,0,0.75)); }
+  50%      { filter: drop-shadow(0 0 18px rgba(255,89,0,0.2)); }
+}
+.plant-pulse-secondary-light {
+  animation: plant-pulse-secondary-light 2s ease-in-out infinite;
 }
 
 /* Breathing fade between image 4 and 5 on contact page */

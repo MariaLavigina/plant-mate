@@ -2,8 +2,10 @@
 
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import Navbar from "../../components/Navbar";
+import AuthModal from "../../components/AuthModal";
 import { DarkModeContext } from "../ClientProviders";
 import { QUIZ_RESULTS_KEY } from "../../lib/constants";
 import { Plant, Trait, SelectedAnswers } from "../../types";
@@ -20,48 +22,48 @@ interface ScoredPlant {
 
 // Maps each answer ID → a sentence explaining why that choice led to this plant.
 const ANSWER_REASON: Record<number, (n: string, mt: number[]) => string | null> = {
-  1:  (n) => `You told us plants genuinely thrive in your care - ${n} will reward that attention with steady, reliable growth.`,
-  2:  (n) => `You said you find a rhythm and mostly stick to it - ${n} is a natural fit for that easy, consistent pace.`,
-  3:  (n) => `You said you forget sometimes but you try - ${n} stores what it needs and waits patiently without drama.`,
-  4:  (n) => `You told us you need something basically indestructible - ${n} is exactly that, thriving on minimal input.`,
-  5:  (n) => `Your big sunny windows are perfect - ${n} loves direct light and uses every bit of it to stay vibrant.`,
-  6:  (n) => `Your soft filtered light suits ${n} well - it grows steadily without needing harsh direct sun.`,
-  7:  (n) => `Even your dim space is fine - ${n} is built for shadier spots most plants simply give up in.`,
-  8:  (n) => `With a mix of bright and dark spots in your home, ${n} is flexible enough to settle in wherever you put it.`,
-  9:  (n, mt) => mt.includes(5) ? `Safety around pets and kids was a priority for you - ${n} is completely non-toxic and worry-free.` : null,
-  10: (n, mt) => mt.includes(5) ? `You wanted peace of mind about safety - ${n} is non-toxic and perfectly safe to have around.` : null,
-  11: (n) => `With no restrictions at home, you could pick anything - and ${n} proves you have genuinely good taste.`,
-  12: (n, mt) => mt.includes(5) ? `You prefer non-toxic for peace of mind - ${n} keeps things completely worry-free.` : null,
-  13: (n) => `You love the ritual of misting and checking soil - ${n} rewards that hands-on, attentive care.`,
-  14: (n) => `You said you don't want to fuss with humidity - ${n} is completely at home in dry air, no misting needed.`,
-  15: (n) => `You prefer watering every couple of weeks - ${n} stores water and stays healthy on exactly that relaxed schedule.`,
-  16: (n) => `You want a plant you can almost forget - ${n} is built for that, thriving happily on neglect.`,
-  17: (n) => `You want a lush tropical corner - ${n} brings that layered, jungle energy to any space.`,
-  18: (n) => `You said you want one dramatic architectural plant that owns the entire room - ${n} does exactly that.`,
-  19: (n) => `You love colour and pattern everywhere - ${n} delivers that vivid, living personality.`,
-  20: (n) => `You told us you want a living sculpture, clean and minimal - ${n} is precisely that, nothing more and nothing less.`,
-  21: (n) => `You want a floor statement you admire every time you walk past it - ${n} is made for exactly that spot.`,
+  1:  (n) => `Since plants genuinely thrive in your care - ${n} will reward that attention with steady, reliable growth.`,
+  2:  (n) => `You naturally find a rhythm and mostly stick to it - ${n} is a natural fit for that easy, consistent pace.`,
+  3:  (n) => `Even when you forget sometimes, you always try - ${n} stores what it needs and waits patiently without drama.`,
+  4:  (n) => `Low-maintenance and basically indestructible was the brief - ${n} is exactly that, thriving on minimal input.`,
+  5:  (n) => `Those big sunny windows of yours are a real asset - ${n} loves direct light and uses every bit of it to stay vibrant.`,
+  6:  (n) => `Soft filtered light actually suits your space perfectly - ${n} grows steadily without needing harsh direct sun.`,
+  7:  (n) => `Even that dim corner everyone ignores works just fine - ${n} is built for shadier spots most plants simply give up in.`,
+  8:  (n) => `A mix of light levels actually works in your favour - ${n} is flexible enough to settle in wherever you put it.`,
+  9:  (n, mt) => mt.includes(5) ? `Keeping pets and kids safe was a real priority for you - ${n} is completely non-toxic and worry-free.` : null,
+  10: (n, mt) => mt.includes(5) ? `Peace of mind around safety genuinely matters to you - ${n} is non-toxic and perfectly safe to have around.` : null,
+  11: (n) => `No restrictions at home meant total freedom to choose - and ${n} proves you have genuinely good taste.`,
+  12: (n, mt) => mt.includes(5) ? `Non-toxic was simply non-negotiable for you - ${n} keeps things completely worry-free.` : null,
+  13: (n) => `That ritual of misting and checking soil is very much your thing - ${n} rewards that hands-on, attentive care.`,
+  14: (n) => `Fussing with humidity just isn't on your radar - ${n} is completely at home in dry air, no misting needed.`,
+  15: (n) => `Every couple of weeks is your ideal watering rhythm - ${n} stores water and stays healthy on exactly that relaxed schedule.`,
+  16: (n) => `A plant you can almost forget about was precisely the brief - ${n} is built for that, thriving happily on neglect.`,
+  17: (n) => `That lush tropical corner is absolutely the dream - ${n} brings that layered, jungle energy to any space.`,
+  18: (n) => `One dramatic architectural plant that owns the entire room is what you described - ${n} does exactly that.`,
+  19: (n) => `Colour and pattern everywhere is completely your style - ${n} delivers that vivid, living personality.`,
+  20: (n) => `A living sculpture, clean and minimal, was precisely your vision - ${n} is exactly that, nothing more and nothing less.`,
+  21: (n) => `A floor statement you stop to admire every time you walk past - ${n} is made for exactly that spot.`,
   22: (n, mt) => mt.includes(21)
-    ? `You want something compact and perfectly placed on a shelf - ${n} sits exactly there.`
-    : `You want something that earns its place without taking over - ${n} is a calm, considered presence.`,
-  23: (n) => `You picture it trailing down beautifully - ${n} lends itself perfectly to that kind of flowing display.`,
-  24: (n) => `Your warm, steamy bathroom or kitchen is ideal - ${n} thrives in that kind of naturally humid warmth.`,
-  25: (n) => `You picture watching a brand new leaf slowly unfurl - ${n} gives you that moment regularly.`,
-  26: (n) => `You imagine it trailing down a bookshelf, filling a corner with life - ${n} grows naturally into exactly that.`,
-  27: (n) => `You want guests to stop mid-sentence asking what on earth it is - ${n} will absolutely do that.`,
-  28: (n) => `You said you want a plant that moves and responds like living magic - ${n} has that kind of quiet, captivating presence.`,
-  29: (n) => `You told us the plant should be the star - massive, dramatic, impossible to ignore - ${n} delivers exactly that presence.`,
-  30: (n) => `You want a solid presence without stealing the whole spotlight - ${n} sits naturally in that understated role.`,
-  31: (n) => `Small and perfectly placed on a shelf was exactly what you pictured - ${n} is made for that kind of considered space.`,
-  32: (n) => `You want something that trails and wanders, filling a corner with life - ${n} is built for that.`,
-  33: (n) => `You wanted something truly unforgettable - ${n} never disappoints on that front.`,
-  34: (n) => `You said you prefer calm and peaceful over flashy - ${n} has real presence without ever demanding attention.`,
-  35: (n) => `You wanted something interesting but not overwhelming - ${n} hits that balance perfectly.`,
-  40: (n) => `You'd love a plant that actually blooms at home - ${n} can surprise you with flowers when conditions are right.`,
-  36: (n) => `When you told us you instantly love cacti as living sculptures - that settled it. ${n} is exactly your kind of plant.`,
-  37: (n) => `Cacti aren't really your thing, and ${n} is the lush, leafy alternative you were looking for.`,
-  38: (n) => `You said you could be convinced by the right cactus - and ${n} is definitely the right one.`,
-  39: (n) => `You want something lush and leafy over anything spiky - ${n} gives you exactly that.`,
+    ? `Compact and perfectly placed on a shelf was exactly what you pictured - ${n} sits exactly there.`
+    : `Something that earns its place without taking over the room - ${n} is a calm, considered presence.`,
+  23: (n) => `You said you'd love a hanging spot where it can trail down beautifully - ${n} lends itself perfectly to that kind of flowing display.`,
+  24: (n) => `That warm, steamy bathroom or kitchen of yours is a hidden gem - ${n} thrives in that kind of naturally humid warmth.`,
+  25: (n) => `You said you love picturing a brand new leaf slowly unfurling - ${n} gives you that moment regularly.`,
+  26: (n) => `You imagined it trailing down from a bookshelf, filling a corner with life - ${n} grows naturally into exactly that.`,
+  27: (n) => `Stopping guests mid-sentence with a "what on earth is that?" was the goal - ${n} will absolutely do that.`,
+  28: (n) => `A plant that moves and responds like living magic is what you described - ${n} has that kind of quiet, captivating presence.`,
+  29: (n) => `You said the plant needs to be massive, dramatic, impossible to ignore - ${n} delivers exactly that presence.`,
+  30: (n) => `Solid presence without stealing the whole spotlight was the balance you wanted - ${n} sits naturally in that understated role.`,
+  31: (n) => `Small, considered, perfectly placed on a shelf was exactly the vision - ${n} is made for that kind of space.`,
+  32: (n) => `Something that trails and wanders, filling a corner with life, was what you had in mind - ${n} is built for that.`,
+  33: (n) => `You said you wanted something truly unforgettable, full stop - ${n} never disappoints on that front.`,
+  34: (n) => `Calm and peaceful over flashy, every single time - ${n} has real presence without ever demanding attention.`,
+  35: (n) => `Interesting but not overwhelming was the sweet spot you described - ${n} hits that balance perfectly.`,
+  40: (n) => `A plant that actually blooms at home was high on the wish list - ${n} can surprise you with flowers when conditions are right.`,
+  36: (n) => `The moment you said you love cacti as living sculptures, that settled it - ${n} is exactly your kind of plant.`,
+  37: (n) => `Cacti aren't really your thing, and that's perfectly fine - ${n} is the lush, leafy alternative you were looking for.`,
+  38: (n) => `You said the right cactus could win you over - and ${n} is definitely that cactus.`,
+  39: (n) => `Lush and leafy over anything spiky, every single time - ${n} gives you exactly that.`,
 };
 
 function buildPersonalizedWhyText(parsedAnswers: SelectedAnswers, bestPlant: Plant): string[] {
@@ -108,6 +110,130 @@ function traitPillStyle(id: number): React.CSSProperties {
   };
 }
 
+
+function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = false }: { darkMode: boolean; className?: string; delay?: number; horizontal?: boolean }) {
+  const [authModal, setAuthModal] = useState<"register" | "login" | null>(null);
+
+  const cardStyle = {
+    background: darkMode ? "#210E4A" : "#1E3D2A",
+    border: darkMode ? "1px solid rgba(101,240,205,0.18)" : "1px solid rgba(255,255,255,0.1)",
+  };
+
+  if (horizontal) {
+    return (
+      <motion.div
+        className={className}
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, delay, ease: "easeOut" }}
+      >
+        <div className="rounded-2xl overflow-hidden" style={cardStyle}>
+          <div className="h-1 w-full bg-[#65F0CD]" />
+          <div className="flex items-center gap-6 px-8 py-4">
+            {/* Badges */}
+            <div className="flex items-end gap-2 shrink-0 self-end pb-1">
+              <img src="/images/bronze-badge.svg" alt="Bronze" className="h-12 w-auto" style={{ clipPath: "inset(0 8% 0 0)" }} />
+              <img src="/images/gold-badge.svg" alt="Gold" className="h-[68px] w-auto -mt-5" style={{ clipPath: "inset(0 8% 0 0)" }} />
+              <img src="/images/silver-badge.svg" alt="Silver" className="h-12 w-auto" style={{ clipPath: "inset(0 8% 0 0)" }} />
+            </div>
+
+            <div className="h-12 w-px bg-white/15 shrink-0" />
+
+            {/* Text */}
+            <div className="flex-1 min-w-0">
+              <p className="font-heading text-[1.15rem] leading-snug text-white/90">
+                One last thing...{" "}
+                <span className="text-[#65F0CD]">Could you earn the Gold badge?</span>
+              </p>
+              <p className="font-comic text-[0.82rem] leading-relaxed text-white/55 mt-1.5">
+                You've found your plant. Now find out how much you really know - 10 fun questions, Bronze to Gold badges to earn.
+              </p>
+            </div>
+
+            <div className="h-12 w-px bg-white/15 shrink-0" />
+
+            {/* Buttons */}
+            <div className="flex flex-col gap-2.5 shrink-0 w-[190px]">
+              <button
+                onClick={() => setAuthModal("register")}
+                className="w-full py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A]"
+              >
+                Register free
+              </button>
+              <button
+                onClick={() => setAuthModal("login")}
+                className="w-full py-2 border rounded-full font-heading text-xs font-bold tracking-wide transition-all duration-300 hover:scale-105 border-white/25 text-white/55 hover:border-white/50 hover:text-white/80"
+              >
+                Log in
+              </button>
+            </div>
+          </div>
+        </div>
+        {authModal && <AuthModal type={authModal} reason="badge" onClose={() => setAuthModal(null)} />}
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, delay, ease: "easeOut" }}
+    >
+      <div className="rounded-2xl overflow-hidden" style={cardStyle}>
+        {/* Teal accent stripe */}
+        <div className="h-1 w-full bg-[#65F0CD]" />
+
+        {/* Headline */}
+        <div className="text-center px-8 pt-7 pb-4">
+          <p className="font-heading text-[1.7rem] leading-snug text-white/90">One last thing...</p>
+          <p className="font-heading text-[1.7rem] leading-snug text-[#65F0CD]">Could you earn the Gold badge?</p>
+        </div>
+
+        {/* Explanatory text */}
+        <div className="text-center px-8 pb-4">
+          <p className="font-comic text-base leading-relaxed mb-3 text-white/70">
+            You've found your plant. Now find out how much you really know about the world they come from.
+          </p>
+          <p className="font-comic text-sm leading-relaxed text-white/45">
+            10 fun questions, some genuinely cool plant facts, and a Bronze, Silver or Gold badge to earn along the way.
+          </p>
+        </div>
+
+        {/* Badges */}
+        <div className="flex items-end justify-center gap-4 pt-14 pb-6">
+          <img src="/images/bronze-badge.svg" alt="Bronze" className="h-24 w-auto" style={{ clipPath: "inset(0 8% 0 0)" }} />
+          <img src="/images/gold-badge.svg" alt="Gold" className="h-36 w-auto -mt-14" style={{ clipPath: "inset(0 8% 0 0)" }} />
+          <img src="/images/silver-badge.svg" alt="Silver" className="h-24 w-auto" style={{ clipPath: "inset(0 8% 0 0)" }} />
+        </div>
+
+        {/* Sign-in note + buttons */}
+        <div className="text-center px-8 pb-10">
+          <p className="font-heading text-[1.15rem] leading-snug text-white/90 mb-1">Think you know your plants?</p>
+          <p className="font-comic text-sm leading-relaxed text-white/50 mb-6">
+            It's free to play - register in seconds and keep your badge forever.
+          </p>
+          <button
+            onClick={() => setAuthModal("register")}
+            className="block w-full py-4 border-2 rounded-full font-heading text-lg font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A] mb-3"
+          >
+            Register free
+          </button>
+          <button
+            onClick={() => setAuthModal("login")}
+            className="block w-full py-3.5 border rounded-full font-heading text-base font-bold tracking-wide transition-all duration-300 hover:scale-105 border-white/25 text-white/55 hover:border-white/50 hover:text-white/80"
+          >
+            Log in
+          </button>
+        </div>
+      </div>
+
+      {authModal && <AuthModal type={authModal} reason="badge" onClose={() => setAuthModal(null)} />}
+    </motion.div>
+  );
+}
+
 function WhyTextLine({ line, darkMode, className = "" }: { line: string; darkMode: boolean; className?: string }) {
   const dashIdx = line.indexOf(" - ");
   const before = dashIdx !== -1 ? line.slice(0, dashIdx) : line;
@@ -145,10 +271,11 @@ interface DesktopPlantCardProps {
   hidePills?: boolean;
   onClick?: () => void;
   darkMode?: boolean;
+  pulse?: boolean;
 }
 
-function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCenter = false, isTopPick = false, hidePills = false, onClick, darkMode = true }: DesktopPlantCardProps) {
-  const imgClass = `h-[130px] lg:h-[min(34vh,25vw,300px)] w-auto object-contain object-bottom${isCenter ? " scale-[1.6] origin-bottom" : ""}`;
+function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCenter = false, isTopPick = false, hidePills = false, onClick, darkMode = true, pulse = false }: DesktopPlantCardProps) {
+  const imgClass = `h-[130px] lg:h-[min(26vh,19vw,220px)] w-auto object-contain object-bottom${isCenter ? " scale-[1.6] origin-bottom" : ""}${pulse ? (darkMode ? " plant-pulse" : " plant-pulse-light") : ""}`;
 
   return (
     <motion.div
@@ -167,17 +294,6 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
       )}
       <div className="relative">
         <img src={plant.image} alt={plant.name} className={imgClass} style={{ pointerEvents: "none" }} />
-        {isTopPick && (
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 px-4 py-1.5 border border-[#F4C842]/60 text-[#F4C842] bg-[#210E4A]/80 rounded-full font-medium tracking-widest uppercase whitespace-nowrap"
-            style={{ fontSize: "clamp(10px,1vw,12px)" }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={revealed ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.4, delay: 0.05 }}
-          >
-            ★ Best Match
-          </motion.div>
-        )}
       </div>
 
       {/* Name + score below the image */}
@@ -249,6 +365,7 @@ export default function Results() {
   const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [tappedPlant, setTappedPlant] = useState<Plant | null>(null);
+  const [hasDiscoveredPlant, setHasDiscoveredPlant] = useState(false);
 
   useEffect(() => {
     if (displayPlants.length > 0) {
@@ -337,7 +454,7 @@ export default function Results() {
             {/* ── Header: tablet + mobile only ── */}
             <div className="lg:hidden shrink-0 flex flex-col items-center text-center mt-2 gap-1">
               <p className={`font-comic text-[1.1rem] sm:text-[0.95rem] uppercase tracking-widest ${darkMode ? "text-white/40" : "text-[#1A6241]/50"}`}>
-                Your Plants Match!
+                We found your match
               </p>
               <h1 className={`font-heading text-[clamp(2rem,4.5vw,3rem)] leading-none ${darkMode ? "text-[#F4C842]" : "text-[#1E3D2A]"}`}>
                 {centerPlant.name}
@@ -345,41 +462,43 @@ export default function Results() {
               <p className={`font-comic font-bold text-[clamp(0.9rem,1.5vw,1.1rem)] ${darkMode ? "text-[#F4C842]" : "text-[#0F3D26]"}`}>· {centerScore}% match</p>
               {whyText.length > 0 && (
                 <div className="hidden sm:block max-w-sm sm:max-w-xl text-center space-y-2 mt-4">
-                  {whyText.map((line, i) => (
+                  {whyText.slice(0, 5).map((line, i) => (
                     <WhyTextLine key={i} line={line} darkMode={darkMode} className="font-comic text-[0.85rem]" />
                   ))}
                 </div>
               )}
             </div>
 
-            {/* ── Desktop (lg+): two-column ── */}
-            <div className="hidden lg:flex flex-1 min-h-0 w-full mt-2">
+            {/* ── Desktop heading — centered across full width ── */}
+            <div className="hidden lg:block shrink-0 text-center mt-24 mb-2">
+              <p className={`font-comic text-[0.95rem] uppercase tracking-widest ${darkMode ? "text-white/40" : "text-[#1A6241]/50"}`}>
+                We found your match
+              </p>
+              <h1 className={`font-heading text-[clamp(1.8rem,3vw,2.6rem)] leading-none ${darkMode ? "text-[#F4C842]" : "text-[#1E3D2A]"}`}>
+                {centerPlant.name}
+              </h1>
+              <p className={`font-comic font-bold text-[clamp(0.85rem,1.1vw,1rem)] mt-0.5 ${darkMode ? "text-[#F4C842]" : "text-[#0F3D26]"}`}>· {centerScore}% match</p>
+            </div>
 
-              {/* LEFT: heading + overlapping plants + names + score bars */}
-              <div className="flex flex-col flex-1 min-h-0 items-center justify-center">
-                <div className="shrink-0 text-center">
-                  <p className={`font-comic text-[1.1rem] sm:text-[0.95rem] uppercase tracking-widest ${darkMode ? "text-white/40" : "text-[#1A6241]/50"}`}>
-                    Your Plants Match!
-                  </p>
-                  <h1 className={`font-heading text-[clamp(1.8rem,3vw,2.6rem)] leading-none ${darkMode ? "text-[#F4C842]" : "text-[#1E3D2A]"}`}>
-                    {centerPlant.name}
-                  </h1>
-                  <p className={`font-comic font-bold text-[clamp(0.85rem,1.1vw,1rem)] mt-0.5 ${darkMode ? "text-[#F4C842]" : "text-[#0F3D26]"}`}>· {centerScore}% match</p>
-                </div>
+            {/* ── Desktop (lg+): two-column ── */}
+            <div className="hidden lg:flex flex-1 min-h-0 w-full">
+
+              {/* LEFT: overlapping plants + names + score bars */}
+              <div className="flex flex-col flex-1 min-h-0 items-center justify-end">
 
                 {(() => {
                   const leighton = centerPlant?.id === 35 || centerPlant?.id === 20;
                   return (
-                    <div className="flex items-end justify-center w-full mt-44"
+                    <div className="flex items-end justify-center w-full"
                       style={{ paddingBottom: "clamp(16px,4vh,48px)" }}>
                       <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginRight: "clamp(-40px,-3vw,-20px)" }}>
-                        <DesktopPlantCard plant={leftPlant} score={leftScore} revealed={revealed} traitName={traitName} nameDelay={0.4} hidePills onClick={() => setTappedPlant(leftPlant)} darkMode={darkMode} />
+                        <DesktopPlantCard plant={leftPlant} score={leftScore} revealed={revealed} traitName={traitName} nameDelay={0.4} hidePills onClick={() => { setTappedPlant(leftPlant); setHasDiscoveredPlant(true); }} darkMode={darkMode} />
                       </div>
                       <div className="flex-shrink-0" style={{ zIndex: leighton ? 10 : 20 }}>
-                        <DesktopPlantCard plant={centerPlant} score={centerScore} revealed={revealed} traitName={traitName} nameDelay={0.2} isCenter isTopPick hidePills onClick={() => setTappedPlant(centerPlant)} darkMode={darkMode} />
+                        <DesktopPlantCard plant={centerPlant} score={centerScore} revealed={revealed} traitName={traitName} nameDelay={0.2} isCenter isTopPick hidePills pulse={!hasDiscoveredPlant} onClick={() => { setTappedPlant(centerPlant); setHasDiscoveredPlant(true); }} darkMode={darkMode} />
                       </div>
                       <div className="flex-shrink-0" style={{ zIndex: leighton ? 20 : 10, marginLeft: "clamp(-40px,-3vw,-20px)" }}>
-                        <DesktopPlantCard plant={rightPlant} score={rightScore} revealed={revealed} traitName={traitName} nameDelay={0.55} hidePills onClick={() => setTappedPlant(rightPlant)} darkMode={darkMode} />
+                        <DesktopPlantCard plant={rightPlant} score={rightScore} revealed={revealed} traitName={traitName} nameDelay={0.55} hidePills onClick={() => { setTappedPlant(rightPlant); setHasDiscoveredPlant(true); }} darkMode={darkMode} />
                       </div>
                     </div>
                   );
@@ -387,18 +506,32 @@ export default function Results() {
               </div>
 
               {/* RIGHT: why text + best plant's trait pills + comparison + retake */}
-              <div className="flex flex-col justify-center w-[540px] xl:w-[580px] shrink-0 pl-12 pr-4"
-                style={{ paddingBottom: "clamp(24px,5vh,60px)" }}>
+              <div className="flex flex-col justify-end w-[540px] xl:w-[580px] shrink-0 pl-12 pr-4 pb-12">
                 {whyText.length > 0 && (
                   <motion.div
-                    className="font-comic space-y-4"
                     initial={{ opacity: 0, x: 20 }}
                     animate={revealed ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                     transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                   >
-                    {whyText.map((line, i) => (
-                      <WhyTextLine key={i} line={line} darkMode={darkMode} className="text-[0.95rem]" />
-                    ))}
+                    <div className="space-y-4">
+                      {whyText.slice(0, 5).map((line, i) => {
+                        const dashIdx = line.indexOf(" - ");
+                        const before = dashIdx !== -1 ? line.slice(0, dashIdx) : line;
+                        const after  = dashIdx !== -1 ? line.slice(dashIdx + 3) : null;
+                        return (
+                          <div key={i}>
+                            <p className={`font-comic text-[0.78rem] leading-snug ${darkMode ? "text-white/42" : "text-[#1A6241]/50"}`}>
+                              {before}
+                            </p>
+                            {after && (
+                              <p className={`font-comic text-[0.9rem] leading-snug font-semibold mt-1 ${darkMode ? "text-[#65F0CD]" : "text-[#0F3D26]"}`}>
+                                {after}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </motion.div>
                 )}
                 <button
@@ -410,13 +543,13 @@ export default function Results() {
               </div>
             </div>
 
+            {/* Desktop horizontal Play & Win footer */}
+            <PlayAndWinCard darkMode={darkMode} horizontal className="hidden lg:block w-full shrink-0 mb-4" delay={0.8} />
+
             {/* ── Tablet (sm–lg): center hero + two side plants ── */}
             <div className="hidden sm:flex lg:hidden flex-col items-center w-full mt-6 pb-8 gap-6">
 
               <button type="button" onClick={() => setTappedPlant(centerPlant)} className={`flex flex-col items-center transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: "150ms" }}>
-                <div className="mb-1 px-3 py-0.5 border-2 border-[#F4C842] text-[#F4C842] rounded-full text-[10px] font-semibold tracking-widest uppercase">
-                  ★ Best Match
-                </div>
                 <p className={`font-heading text-3xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1A3A0A]"}`}>{centerPlant.name}</p>
                 <div className="w-[180px] mt-1.5">
                   <div className="flex justify-between mb-0.5">
@@ -466,10 +599,17 @@ export default function Results() {
                       type="button"
                       className={`flex flex-col items-center w-full transition-all duration-700 ${revealed ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
                       style={{ transitionDelay: `${200 + i * 180}ms` }}
-                      onClick={() => setTappedPlant(plant)}
+                      onClick={() => { setTappedPlant(plant); setHasDiscoveredPlant(true); }}
                     >
                       <p className={`font-heading text-2xl leading-tight ${darkMode ? "text-[#65F0CD]" : "text-[#1A3A0A]"}`}>{plant.name}</p>
-                      <div className="w-[180px] mt-1.5 mb-1">
+                      <div className="relative mt-4">
+                        <img
+                          src={plant.image}
+                          alt={plant.name}
+                          className={`h-[340px] w-auto object-contain${!hasDiscoveredPlant ? (i === 0 ? (darkMode ? " plant-pulse" : " plant-pulse-light") : (darkMode ? " plant-pulse-secondary" : " plant-pulse-secondary-light")) : ""}`}
+                        />
+                      </div>
+                      <div className="w-[180px] mt-2">
                         <div className="flex justify-between mb-0.5">
                           <span className={`font-comic text-[11px] font-semibold ${darkMode ? (i === 0 ? "text-[#F4C842]" : "text-white/90") : "text-[#0F3D26]"}`}>
                             {sc}% match
@@ -482,19 +622,12 @@ export default function Results() {
                           />
                         </div>
                       </div>
-                      <div className="relative mt-4">
-                        <img
-                          src={plant.image}
-                          alt={plant.name}
-                          className="h-[340px] w-auto object-contain"
-                        />
-                      </div>
                     </button>
 
                     {/* Why text - shown immediately after the best match plant */}
                     {i === 0 && whyText.length > 0 && (
                       <div className="w-full px-4 space-y-4 -mt-2">
-                        {whyText.map((line, j) => (
+                        {whyText.slice(0, 5).map((line, j) => (
                           <WhyTextLine key={j} line={line} darkMode={darkMode} className="font-comic text-[0.9rem] text-center" />
                         ))}
                       </div>
@@ -506,13 +639,22 @@ export default function Results() {
             </div>
 
 
-            {/* ── Retake quiz: tablet + mobile only (desktop has it in right column) ── */}
+            {/* ── Retake quiz + Play & Win: tablet + mobile only ── */}
             <button
               onClick={() => router.push("/quiz")}
-              className={`lg:hidden shrink-0 font-comic text-sm sm:text-base font-bold uppercase tracking-widest underline underline-offset-4 transition-opacity hover:opacity-80 mt-4 sm:mt-2 mb-2 ${darkMode ? "text-[#65F0CD]" : "text-[#1A6241]"}`}
+              className={`lg:hidden shrink-0 font-comic text-sm sm:text-base font-bold uppercase tracking-widest underline underline-offset-4 transition-opacity hover:opacity-80 mt-10 sm:mt-8 mb-12 ${darkMode ? "text-[#65F0CD]" : "text-[#1A6241]"}`}
             >
               ↩ Retake quiz
             </button>
+
+            {/* Divider */}
+            <div className={`lg:hidden w-full px-4 sm:px-6 mb-12`}>
+              <div className={`w-full h-px ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/12"}`} />
+            </div>
+
+            <div className="lg:hidden w-full mb-12 px-4 sm:px-6">
+              <PlayAndWinCard darkMode={darkMode} delay={0.5} />
+            </div>
 
           </div>
         )}
@@ -527,7 +669,7 @@ export default function Results() {
 
             {/* Mobile + tablet: bottom sheet */}
             <motion.div
-              className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-[#210E4A] rounded-t-3xl overflow-hidden"
+              className={`fixed bottom-0 left-0 right-0 z-50 lg:hidden rounded-t-3xl overflow-hidden ${darkMode ? "bg-[#210E4A]" : "bg-[#1E3D2A]"}`}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -563,7 +705,7 @@ export default function Results() {
 
             {/* Desktop: slide-in drawer from right */}
             <motion.div
-              className="fixed top-0 right-0 h-full z-50 hidden lg:flex flex-col bg-[#210E4A] border-l border-white/10 overflow-hidden"
+              className={`fixed top-0 right-0 h-full z-50 hidden lg:flex flex-col border-l border-white/10 overflow-hidden ${darkMode ? "bg-[#210E4A]" : "bg-[#1E3D2A]"}`}
               style={{ width: "clamp(360px, 30vw, 480px)" }}
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
