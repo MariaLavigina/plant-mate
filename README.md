@@ -23,6 +23,8 @@ npm run lint     # ESLint
 The quiz and results page work without a backend. Auth and badge saving require the Express API
 running on `localhost:5000`.
 
+The backend lives in a separate repo: **[plant-mate-api](../plant-mate-api)** — see its README for setup instructions.
+
 ## Tech stack
 
 | Layer | Technology |
@@ -31,8 +33,8 @@ running on `localhost:5000`.
 | UI | React 19, TypeScript |
 | Styling | Tailwind CSS v4 |
 | Animation | Framer Motion |
-| Database | PostgreSQL 17.9 (in progress) |
-| Backend | Node.js + Express + bcrypt + JWT (in progress) |
+| Database | PostgreSQL 17.9 |
+| Backend | Node.js + Express + bcrypt + JWT (separate repo) |
 
 ## Project structure
 
@@ -42,6 +44,24 @@ components/     Shared UI components
 data/           Static JSON - plants, traits, quiz questions
 lib/            Style helpers and constants
 public/images/  Plant images and SVG assets
+```
+
+## Viewing the database
+
+The database is managed through **pgAdmin 4**, which was installed alongside PostgreSQL.
+
+To open it: press the Windows key and search **pgAdmin 4**.
+
+Once open:
+1. Expand **Servers** on the left
+2. Expand your server -> **Databases** -> **plant_mate**
+3. Expand **Schemas** -> **public** -> **Tables**
+
+All tables (`users`, `play_scores`, etc.) are listed there. Click any table to view its columns and data.
+
+To start PostgreSQL if it is not running, open PowerShell and run:
+```powershell
+net start postgresql-x64-17
 ```
 
 See `TOMORROW.md` for the full roadmap.

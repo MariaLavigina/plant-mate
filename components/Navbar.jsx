@@ -1,8 +1,9 @@
 "use client";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import AuthModal from "./AuthModal";
 import { DarkModeContext } from "../app/ClientProviders";
+import { USER_KEY } from "../lib/constants";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -31,9 +32,27 @@ export default function Navbar() {
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [authModal, setAuthModal] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(USER_KEY);
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
+
+  const handleAuthClose = () => {
+    setAuthModal(null);
+    const stored = localStorage.getItem(USER_KEY);
+    if (stored) setUser(JSON.parse(stored));
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem(USER_KEY);
+    setUser(null);
+  };
 
   const navLinkClass = darkMode ? "text-[clamp(0.7rem,1.1vw,1rem)] text-[#E2CFFA] hover:text-[#65F0CD]" : "text-[clamp(0.7rem,1.1vw,1rem)] text-[#1E3D2A] hover:text-[#4CAF82]";
   const authButtonClass = darkMode ? "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#65F0CD] hover:text-[#E2CFFA] font-semibold uppercase tracking-widest" : "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#3A8A52] hover:text-[#4CAF82] font-semibold uppercase tracking-widest";
+  const welcomeClass = darkMode ? "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#65F0CD] font-semibold" : "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#3A8A52] font-semibold";
   const iconClass = darkMode ? "text-[#65F0CD] hover:text-[#E2CFFA]" : "text-[#1E3D2A] hover:text-[#4CAF82]";
 
   return (
@@ -57,8 +76,17 @@ export default function Navbar() {
               {NAV_LINKS.map(({ href, label }) => (
                 <Link key={href} href={href} className={navLinkClass}>{label}</Link>
               ))}
-              <button onClick={() => setAuthModal("register")} className={authButtonClass}>Register</button>
-              <button onClick={() => setAuthModal("login")} className={authButtonClass}>Login</button>
+              {user ? (
+                <>
+                  <span className={welcomeClass}>Welcome, {user.first_name}!</span>
+                  <button onClick={handleLogout} className={authButtonClass}>Logout</button>
+                </>
+              ) : (
+                <>
+                  <button onClick={() => setAuthModal("register")} className={authButtonClass}>Register</button>
+                  <button onClick={() => setAuthModal("login")} className={authButtonClass}>Login</button>
+                </>
+              )}
               <button onClick={toggleDarkMode} className={`focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
                 <DarkModeIcon darkMode={darkMode} />
               </button>
@@ -82,19 +110,33 @@ export default function Navbar() {
                 className={`${navLinkClass} py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"} tracking-wide`}
               >{label}</Link>
             ))}
-            <button
-              onClick={() => setAuthModal("register")}
-              className={`${authButtonClass} py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"} text-left tracking-wide`}
-            >Register</button>
-            <button
-              onClick={() => setAuthModal("login")}
-              className={`${authButtonClass} py-4 text-left tracking-wide`}
-            >Login</button>
+            {user ? (
+              <>
+                <span className={`${welcomeClass} py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"} block`}>
+                  Welcome, {user.first_name}!
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className={`${authButtonClass} py-4 text-left tracking-wide`}
+                >Logout</button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setAuthModal("register")}
+                  className={`${authButtonClass} py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"} text-left tracking-wide`}
+                >Register</button>
+                <button
+                  onClick={() => setAuthModal("login")}
+                  className={`${authButtonClass} py-4 text-left tracking-wide`}
+                >Login</button>
+              </>
+            )}
           </div>
         )}
       </nav>
 
-      {authModal && <AuthModal type={authModal} onClose={() => setAuthModal(null)} />}
+      {authModal && <AuthModal type={authModal} onClose={handleAuthClose} />}
     </>
   );
 }
