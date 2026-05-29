@@ -42,17 +42,23 @@ export default function Navbar() {
   const handleAuthClose = () => {
     setAuthModal(null);
     const stored = localStorage.getItem(USER_KEY);
-    if (stored) setUser(JSON.parse(stored));
+    if (stored) {
+      setUser(JSON.parse(stored));
+      window.dispatchEvent(new Event("plant-mate-login"));
+    }
   };
 
   const handleLogout = () => {
     localStorage.removeItem(USER_KEY);
     setUser(null);
+    window.dispatchEvent(new Event("plant-mate-logout"));
   };
 
   const navLinkClass = darkMode ? "text-[clamp(0.7rem,1.1vw,1rem)] text-[#E2CFFA] hover:text-[#65F0CD]" : "text-[clamp(0.7rem,1.1vw,1rem)] text-[#1E3D2A] hover:text-[#4CAF82]";
   const authButtonClass = darkMode ? "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#65F0CD] hover:text-[#E2CFFA] font-semibold uppercase tracking-widest" : "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#3A8A52] hover:text-[#4CAF82] font-semibold uppercase tracking-widest";
-  const welcomeClass = darkMode ? "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#65F0CD] font-semibold" : "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#3A8A52] font-semibold";
+  const welcomeClass = darkMode ? "text-[clamp(0.65rem,1vw,0.95rem)] text-[#FFBD06] font-semibold" : "text-[clamp(0.65rem,1vw,0.95rem)] text-[#00FF88] font-semibold";
+  const signOutClass = darkMode ? "text-[clamp(0.55rem,0.8vw,0.8rem)] text-white/40 hover:text-white/70 transition-colors duration-200" : "text-[clamp(0.55rem,0.8vw,0.8rem)] text-[#1E3D2A]/40 hover:text-[#1E3D2A]/80 transition-colors duration-200";
+  const separatorClass = darkMode ? "text-white/20" : "text-[#1E3D2A]/20";
   const iconClass = darkMode ? "text-[#65F0CD] hover:text-[#E2CFFA]" : "text-[#1E3D2A] hover:text-[#4CAF82]";
 
   return (
@@ -72,24 +78,38 @@ export default function Navbar() {
             </button>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
-              {NAV_LINKS.map(({ href, label }) => (
-                <Link key={href} href={href} className={navLinkClass}>{label}</Link>
-              ))}
-              {user ? (
-                <>
-                  <span className={welcomeClass}>Welcome, {user.first_name}!</span>
-                  <button onClick={handleLogout} className={authButtonClass}>Logout</button>
-                </>
-              ) : (
-                <>
-                  <button onClick={() => setAuthModal("register")} className={authButtonClass}>Register</button>
-                  <button onClick={() => setAuthModal("login")} className={authButtonClass}>Login</button>
-                </>
-              )}
-              <button onClick={toggleDarkMode} className={`focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
-                <DarkModeIcon darkMode={darkMode} />
-              </button>
+            <div className="hidden lg:flex items-center w-full">
+              {/* Nav links - left */}
+              <div className="flex items-center space-x-8">
+                {NAV_LINKS.map(({ href, label }) => (
+                  <Link key={href} href={href} className={navLinkClass}>{label}</Link>
+                ))}
+              </div>
+
+              {/* Auth + dark mode - far right */}
+              <div className="ml-auto flex items-center gap-4">
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={darkMode ? "text-[#FFBD06]" : "text-[#00FF88]"}>
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                      </svg>
+                      <span className={welcomeClass}>Welcome, {user.first_name}</span>
+                    </div>
+                    <span className={separatorClass}>|</span>
+                    <button onClick={handleLogout} className={signOutClass}>Sign out</button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => setAuthModal("register")} className={authButtonClass}>Register</button>
+                    <button onClick={() => setAuthModal("login")} className={authButtonClass}>Login</button>
+                  </>
+                )}
+                <button onClick={toggleDarkMode} className={`focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
+                  <DarkModeIcon darkMode={darkMode} />
+                </button>
+              </div>
             </div>
 
             {/* Mobile/Tablet Dark Mode Toggle */}
@@ -112,13 +132,17 @@ export default function Navbar() {
             ))}
             {user ? (
               <>
-                <span className={`${welcomeClass} py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"} block`}>
-                  Welcome, {user.first_name}!
-                </span>
+                <div className={`flex items-center gap-2 py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={darkMode ? "text-[#FFBD06]" : "text-[#00FF88]"}>
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  </svg>
+                  <span className={welcomeClass}>Welcome, {user.first_name}</span>
+                </div>
                 <button
                   onClick={handleLogout}
-                  className={`${authButtonClass} py-4 text-left tracking-wide`}
-                >Logout</button>
+                  className={`${signOutClass} py-4 text-left`}
+                >Sign out</button>
               </>
             ) : (
               <>
