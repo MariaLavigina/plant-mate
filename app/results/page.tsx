@@ -111,8 +111,24 @@ function traitPillStyle(id: number): React.CSSProperties {
 }
 
 
-function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = false }: { darkMode: boolean; className?: string; delay?: number; horizontal?: boolean }) {
+function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = false, onAuthSuccess }: { darkMode: boolean; className?: string; delay?: number; horizontal?: boolean; onAuthSuccess?: () => void }) {
   const [authModal, setAuthModal] = useState<"register" | "login" | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    setIsLoggedIn(!!(stored && JSON.parse(stored).token));
+  }, []);
+
+  function handleAuthClose() {
+    setAuthModal(null);
+    const stored = localStorage.getItem("user");
+    if (stored && JSON.parse(stored).token) {
+      setIsLoggedIn(true);
+      onAuthSuccess?.();
+      window.dispatchEvent(new Event("plant-mate-login"));
+    }
+  }
 
   const cardStyle = {
     background: darkMode ? "#210E4A" : "#1E3D2A",
@@ -133,7 +149,7 @@ function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = fa
             {/* Badges */}
             <div className="flex items-end gap-2 shrink-0 self-end pb-1">
               <img src="/images/bronze-badge.svg" alt="Bronze" className="h-12 w-auto" style={{ clipPath: "inset(0 8% 0 0)" }} />
-              <img src="/images/gold-badge.svg" alt="Gold" className="h-[68px] w-auto -mt-5" style={{ clipPath: "inset(0 8% 0 0)" }} />
+              <img src="/images/gold-badge.svg" alt="Gold" className="h-[58px] w-auto -mt-3" style={{ clipPath: "inset(0 8% 0 0)" }} />
               <img src="/images/silver-badge.svg" alt="Silver" className="h-12 w-auto" style={{ clipPath: "inset(0 8% 0 0)" }} />
             </div>
 
@@ -150,26 +166,42 @@ function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = fa
               </p>
             </div>
 
-            <div className="h-12 w-px bg-white/15 shrink-0" />
+            {isLoggedIn ? (
+              <>
+                <div className="h-12 w-px bg-white/15 shrink-0" />
+                <div className="flex flex-col gap-2.5 shrink-0 w-[190px]">
+                  <Link
+                    href="/quiz/badge"
+                    className="w-full py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A] text-center"
+                  >
+                    Play &amp; Win
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="h-12 w-px bg-white/15 shrink-0" />
 
-            {/* Buttons */}
-            <div className="flex flex-col gap-2.5 shrink-0 w-[190px]">
-              <button
-                onClick={() => setAuthModal("register")}
-                className="w-full py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A]"
-              >
-                Register free
-              </button>
-              <button
-                onClick={() => setAuthModal("login")}
-                className="w-full py-2 border rounded-full font-heading text-xs font-bold tracking-wide transition-all duration-300 hover:scale-105 border-white/25 text-white/55 hover:border-white/50 hover:text-white/80"
-              >
-                Log in
-              </button>
-            </div>
+                {/* Buttons */}
+                <div className="flex flex-col gap-2.5 shrink-0 w-[190px]">
+                  <button
+                    onClick={() => setAuthModal("register")}
+                    className="w-full py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A]"
+                  >
+                    Register free
+                  </button>
+                  <button
+                    onClick={() => setAuthModal("login")}
+                    className="w-full py-2 border rounded-full font-heading text-xs font-bold tracking-wide transition-all duration-300 hover:scale-105 border-white/25 text-white/55 hover:border-white/50 hover:text-white/80"
+                  >
+                    Log in
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
-        {authModal && <AuthModal type={authModal} reason="badge" onClose={() => setAuthModal(null)} />}
+        {authModal && <AuthModal type={authModal} reason="badge" onClose={handleAuthClose} />}
       </motion.div>
     );
   }
@@ -209,27 +241,38 @@ function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = fa
         </div>
 
         {/* Sign-in note + buttons */}
-        <div className="text-center px-8 pb-10">
-          <p className="font-heading text-[1.15rem] leading-snug text-white/90 mb-1">Think you know your plants?</p>
-          <p className="font-comic text-sm leading-relaxed text-white/50 mb-6">
-            It's free to play - register in seconds and keep your badge forever.
-          </p>
-          <button
-            onClick={() => setAuthModal("register")}
-            className="block w-full py-4 border-2 rounded-full font-heading text-lg font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A] mb-3"
-          >
-            Register free
-          </button>
-          <button
-            onClick={() => setAuthModal("login")}
-            className="block w-full py-3.5 border rounded-full font-heading text-base font-bold tracking-wide transition-all duration-300 hover:scale-105 border-white/25 text-white/55 hover:border-white/50 hover:text-white/80"
-          >
-            Log in
-          </button>
-        </div>
+        {isLoggedIn ? (
+          <div className="text-center px-8 pb-10">
+            <Link
+              href="/quiz/badge"
+              className="block w-full py-4 border-2 rounded-full font-heading text-lg font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A]"
+            >
+              Play &amp; Win
+            </Link>
+          </div>
+        ) : (
+          <div className="text-center px-8 pb-10">
+            <p className="font-heading text-[1.15rem] leading-snug text-white/90 mb-1">Think you know your plants?</p>
+            <p className="font-comic text-sm leading-relaxed text-white/50 mb-6">
+              It's free to play - register in seconds and keep your badge forever.
+            </p>
+            <button
+              onClick={() => setAuthModal("register")}
+              className="block w-full py-4 border-2 rounded-full font-heading text-lg font-bold tracking-wide transition-all duration-300 backdrop-blur-md hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A] mb-3"
+            >
+              Register free
+            </button>
+            <button
+              onClick={() => setAuthModal("login")}
+              className="block w-full py-3.5 border rounded-full font-heading text-base font-bold tracking-wide transition-all duration-300 hover:scale-105 border-white/25 text-white/55 hover:border-white/50 hover:text-white/80"
+            >
+              Log in
+            </button>
+          </div>
+        )}
       </div>
 
-      {authModal && <AuthModal type={authModal} reason="badge" onClose={() => setAuthModal(null)} />}
+      {authModal && <AuthModal type={authModal} reason="badge" onClose={handleAuthClose} />}
     </motion.div>
   );
 }
@@ -370,6 +413,10 @@ export default function Results() {
   useEffect(() => {
     if (displayPlants.length > 0) {
       const t = setTimeout(() => setRevealed(true), 120);
+      // Save plant for already-logged-in users
+      const [, plant] = displayPlants;
+      const [, pct]   = displayScores;
+      if (plant && pct != null) saveTopPlant(plant, pct);
       return () => clearTimeout(t);
     }
   }, [displayPlants]);
@@ -430,6 +477,18 @@ export default function Results() {
     setDisplayScores(ordered.map(s => s.pct));
     setLoading(false);
   }, []);
+
+  function saveTopPlant(plant: Plant, pct: number) {
+    const stored = localStorage.getItem("user");
+    if (!stored) return;
+    const { token } = JSON.parse(stored);
+    if (!token) return;
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/plant`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ plantName: plant.name, matchPct: pct }),
+    }).catch(() => {});
+  }
 
   const traitName = (id: number) => (traits as Trait[]).find(t => t.id === id)?.name ?? "";
 
@@ -544,7 +603,7 @@ export default function Results() {
             </div>
 
             {/* Desktop horizontal Play & Win footer */}
-            <PlayAndWinCard darkMode={darkMode} horizontal className="hidden lg:block w-full shrink-0 mb-4" delay={0.8} />
+            <PlayAndWinCard darkMode={darkMode} horizontal className="hidden lg:block w-full shrink-0 mb-4" delay={0.8} onAuthSuccess={() => saveTopPlant(centerPlant, centerScore)} />
 
             {/* ── Tablet (sm–lg): center hero + two side plants ── */}
             <div className="hidden sm:flex lg:hidden flex-col items-center w-full mt-6 pb-8 gap-6">
@@ -653,7 +712,7 @@ export default function Results() {
             </div>
 
             <div className="lg:hidden w-full mb-12 px-4 sm:px-6">
-              <PlayAndWinCard darkMode={darkMode} delay={0.5} />
+              <PlayAndWinCard darkMode={darkMode} delay={0.5} onAuthSuccess={() => saveTopPlant(centerPlant, centerScore)} />
             </div>
 
           </div>

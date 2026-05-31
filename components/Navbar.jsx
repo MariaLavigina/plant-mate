@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import AuthModal from "./AuthModal";
 import { DarkModeContext } from "../app/ClientProviders";
-import { USER_KEY } from "../lib/constants";
+import { USER_KEY, QUIZ_RESULTS_KEY } from "../lib/constants";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -37,6 +37,18 @@ export default function Navbar() {
   useEffect(() => {
     const stored = localStorage.getItem(USER_KEY);
     if (stored) setUser(JSON.parse(stored));
+
+    const onLogin = () => {
+      const s = localStorage.getItem(USER_KEY);
+      if (s) setUser(JSON.parse(s));
+    };
+    const onLogout = () => setUser(null);
+    window.addEventListener("plant-mate-login", onLogin);
+    window.addEventListener("plant-mate-logout", onLogout);
+    return () => {
+      window.removeEventListener("plant-mate-login", onLogin);
+      window.removeEventListener("plant-mate-logout", onLogout);
+    };
   }, []);
 
   const handleAuthClose = () => {
@@ -50,6 +62,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(QUIZ_RESULTS_KEY);
     setUser(null);
     window.dispatchEvent(new Event("plant-mate-logout"));
   };
@@ -95,7 +108,7 @@ export default function Navbar() {
                         <circle cx="12" cy="8" r="4"/>
                         <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
                       </svg>
-                      <span className={welcomeClass}>Welcome, {user.first_name}</span>
+                      <Link href="/profile" className={welcomeClass}>Welcome, {user.first_name}</Link>
                     </div>
                     <span className={separatorClass}>|</span>
                     <button onClick={handleLogout} className={signOutClass}>Sign out</button>
@@ -132,13 +145,17 @@ export default function Navbar() {
             ))}
             {user ? (
               <>
-                <div className={`flex items-center gap-2 py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"}`}>
+                <Link
+                  href="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-2 py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"}`}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={darkMode ? "text-[#FFBD06]" : "text-[#00FF88]"}>
                     <circle cx="12" cy="8" r="4"/>
                     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
                   </svg>
                   <span className={welcomeClass}>Welcome, {user.first_name}</span>
-                </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className={`${signOutClass} py-4 text-left`}

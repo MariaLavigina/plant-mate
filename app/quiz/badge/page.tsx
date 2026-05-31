@@ -1,12 +1,26 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import Navbar from "../../../components/Navbar";
+import AuthModal from "../../../components/AuthModal";
 import { DarkModeContext } from "../../ClientProviders";
 import { pageBg } from "../../../lib/styles";
 import allQuestions from "../../../data/play-and-win.json";
+
+const BADGE_GLOW: Record<string, string> = {
+  gold:   "rgba(244,200,66,0.55)",
+  silver: "rgba(180,210,240,0.65)",
+  bronze: "rgba(240,144,64,0.6)",
+};
+
+const BADGE_COLOR: Record<string, string> = {
+  gold:   "#F4C842",
+  silver: "#C8DCF0",
+  bronze: "#FF9A30",
+};
 
 type Phase = "intro" | "countdown" | "quiz" | "result";
 type Badge = "bronze" | "silver" | "gold";
@@ -47,10 +61,34 @@ export default function BadgeQuiz() {
   const [answered, setAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [countdown, setCountdown] = useState(5);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authModal, setAuthModal] = useState<"register" | "login" | null>(null);
+  const scoreSaved = useRef(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    setIsLoggedIn(!!(stored && JSON.parse(stored).token));
+  }, []);
+
+  function submitScore(finalScore: number) {
+    const stored = localStorage.getItem("user");
+    if (!stored) return;
+    const { token } = JSON.parse(stored);
+    if (!token) return;
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/play/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ score: finalScore }),
+    }).catch(() => {});
+  }
 
   const currentQuestion = gameQuestions[currentIndex];
   const isLast = currentIndex === gameQuestions.length - 1;
   const badge = getBadge(score);
+
+  const bg = darkMode
+    ? "bg-gradient-to-b from-[#210E4A] to-[#5A1B27] transition-colors duration-500"
+    : "bg-[#1E3D2A] transition-colors duration-500";
 
   // Countdown timer
   useEffect(() => {
@@ -74,6 +112,18 @@ export default function BadgeQuiz() {
     }, 1400);
     return () => clearTimeout(t);
   }, [answered, isLast]);
+
+  // Save score when result phase starts (logged-in users only)
+  useEffect(() => {
+    if (phase !== "result") return;
+    scoreSaved.current = false;
+    const stored = localStorage.getItem("user");
+    if (!stored) return;
+    const { token } = JSON.parse(stored);
+    if (!token) return;
+    scoreSaved.current = true;
+    submitScore(score);
+  }, [phase]);
 
   function startQuiz() {
     setGameQuestions(pickRandom(allQuestions as Question[], 10));
@@ -134,9 +184,10 @@ export default function BadgeQuiz() {
   // ── INTRO ────────────────────────────────────────────────────────────────────
   if (phase === "intro") {
     return (
-      <div className={`min-h-screen flex flex-col ${pageBg(darkMode)}`}>
+      <div className={`min-h-screen flex flex-col ${bg}`}>
         <Navbar />
-        <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
+
+        <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
@@ -144,8 +195,8 @@ export default function BadgeQuiz() {
             className="w-full max-w-md flex flex-col items-center"
           >
             {/* Three badges */}
-            <div className="flex items-end justify-center gap-6 mb-10">
-              {(["bronze", "silver", "gold"] as Badge[]).map((b, i) => (
+            <div className="flex items-end justify-center gap-8 mb-10">
+              {(["bronze", "gold", "silver"] as Badge[]).map((b, i) => (
                 <motion.div
                   key={b}
                   initial={{ opacity: 0, y: 20 }}
@@ -156,20 +207,21 @@ export default function BadgeQuiz() {
                   <img
                     src={`/images/${b}-badge.svg`}
                     alt={b}
-                    className={`drop-shadow-xl ${b === "gold" ? "w-[72px] h-[72px]" : "w-12 h-12 opacity-70"}`}
+                    className={`drop-shadow-xl ${b === "gold" ? "w-36 h-36" : "w-24 h-24 opacity-80"}`}
+                    style={b === "silver" ? { filter: "brightness(1.4) contrast(1.1)" } : undefined}
                   />
-                  <span className={`font-comic text-[10px] uppercase tracking-widest ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`}>
+                  <span className="font-comic text-[10px] uppercase tracking-widest text-white/40">
                     {BADGE_CONFIG[b].range}
                   </span>
                 </motion.div>
               ))}
             </div>
 
-            <h1 className={`font-caveat font-bold leading-none mb-3 ${darkMode ? "text-[#65F0CD]" : "text-[#2D6A4F]"}`}
+            <h1 className="font-caveat font-bold leading-none mb-3 text-[#65F0CD]"
               style={{ fontSize: "clamp(3rem,12vw,5rem)" }}>
               Play & Grow
             </h1>
-            <p className={`font-comic text-base mb-10 ${darkMode ? "text-white/50" : "text-[#1E3D2A]/50"}`}>
+            <p className="font-comic text-base mb-12 text-white/50">
               10 questions. Earn your badge.
             </p>
 
@@ -177,11 +229,7 @@ export default function BadgeQuiz() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               onClick={startQuiz}
-              className={`font-comic text-sm uppercase tracking-[0.2em] px-12 py-4 rounded-full font-bold shadow-2xl transition-colors duration-300 ${
-                darkMode
-                  ? "bg-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3]"
-                  : "bg-[#210E4A] text-[#65F0CD] hover:bg-[#2D1260]"
-              }`}
+              className="w-full max-w-xs font-comic text-sm uppercase tracking-[0.2em] px-12 py-4 rounded-full font-bold shadow-2xl transition-colors duration-300 bg-[#65F0CD] text-[#1E3D2A] hover:bg-[#4FD4B3]"
             >
               Start
             </motion.button>
@@ -194,7 +242,7 @@ export default function BadgeQuiz() {
   // ── COUNTDOWN ────────────────────────────────────────────────────────────────
   if (phase === "countdown") {
     return (
-      <div className={`min-h-screen overflow-hidden flex flex-col items-center justify-center ${pageBg(darkMode)}`}>
+      <div className={`min-h-screen overflow-hidden flex flex-col items-center justify-center ${bg}`}>
         <Navbar />
         <div className="relative w-[96vw] h-[96vw] sm:w-[80vw] sm:h-[80vw] max-w-[800px] max-h-[800px]">
           {/* Big flower — fills container, rotates one way */}
@@ -240,7 +288,8 @@ export default function BadgeQuiz() {
   if (phase === "result") {
     const cfg = BADGE_CONFIG[badge];
     return (
-      <div className={`min-h-screen flex flex-col ${pageBg(darkMode)}`}>
+      <>
+      <div className={`min-h-screen flex flex-col ${bg}`}>
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
           <motion.div
@@ -258,31 +307,81 @@ export default function BadgeQuiz() {
                 darkMode ? "border-[#65F0CD]/30 bg-white/[0.07]" : "border-[#2D6A4F]/25 bg-white/40"
               }`}
             >
-              <span className={`font-caveat text-5xl font-bold leading-none ${darkMode ? "text-[#65F0CD]" : "text-[#2D6A4F]"}`}>
+              <span className="font-caveat text-5xl font-bold leading-none text-[#65F0CD]">
                 {score}
               </span>
-              <span className={`font-comic text-xs ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`}>/ 10</span>
+              <span className="font-comic text-xs text-white/40">/ 10</span>
             </motion.div>
 
-            {/* Badge */}
-            <motion.img
-              src={`/images/${badge}-badge.svg`}
-              alt={badge}
-              className="w-24 h-24 drop-shadow-2xl mb-4"
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 13, delay: 0.25 }}
-            />
+            {/* Badge — float wrapper + glow */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
+              className="relative flex items-center justify-center mb-6"
+            >
+              {/* Glow ring */}
+              <motion.div
+                animate={{ scale: [1, 1.25, 1], opacity: [0.45, 0.75, 0.45] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
+                className="absolute w-28 h-28 rounded-full blur-2xl"
+                style={{ background: BADGE_GLOW[badge] }}
+              />
+              {/* Badge image */}
+              <motion.img
+                src={`/images/${badge}-badge.svg`}
+                alt={badge}
+                className="relative w-28 h-28 drop-shadow-2xl"
+                initial={{ scale: 0, rotate: -20 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 13, delay: 0.25 }}
+              />
+            </motion.div>
 
-            <h1 className={`font-caveat font-bold mb-2 ${darkMode ? "text-[#65F0CD]" : "text-[#2D6A4F]"}`}
-              style={{ fontSize: "clamp(2.5rem,10vw,4rem)" }}>
+            <h1 className="font-caveat font-bold mb-2"
+              style={{ fontSize: "clamp(2.5rem,10vw,4rem)", color: BADGE_COLOR[badge] }}>
               {cfg.label} Badge!
             </h1>
-            <p className={`font-comic text-sm max-w-xs mx-auto mb-10 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/50"}`}>
+            <p className="font-comic text-sm max-w-xs mx-auto mb-6 text-white/50">
               {cfg.message}
             </p>
 
-            <div className="flex items-center gap-5">
+            {/* Profile link — logged-in users only */}
+            {isLoggedIn && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1, duration: 0.4 }}
+                className="mb-8"
+              >
+                <Link
+                  href="/profile"
+                  className="font-comic text-sm underline underline-offset-4 transition-opacity hover:opacity-70 text-[#65F0CD]"
+                >
+                  See all your badges on your profile →
+                </Link>
+              </motion.div>
+            )}
+
+            {!isLoggedIn && (
+              <div className={`mt-8 w-full max-w-xs mx-auto p-5 rounded-2xl text-center ${darkMode ? "bg-white/[0.06] border border-white/10" : "bg-white/60 border border-[#1E3D2A]/10"}`}>
+                <p className="font-heading text-base mb-1 text-white/90">Save your badge!</p>
+                <p className="font-comic text-xs mb-4 text-white/50">Create a free account to keep your result.</p>
+                <button
+                  onClick={() => setAuthModal("register")}
+                  className={`w-full py-2.5 mb-2 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105 bg-white/5 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#1E3D2A]`}
+                >
+                  Register free
+                </button>
+                <button
+                  onClick={() => setAuthModal("login")}
+                  className={`w-full py-2 border rounded-full font-heading text-xs font-bold tracking-wide transition-all duration-300 hover:scale-105 border-white/25 text-white/55 hover:border-white/50 hover:text-white/80`}
+                >
+                  Log in
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center gap-5 mt-8">
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
@@ -298,7 +397,7 @@ export default function BadgeQuiz() {
               <button
                 onClick={() => router.back()}
                 className={`font-comic text-sm underline underline-offset-4 opacity-45 hover:opacity-80 transition-opacity ${
-                  darkMode ? "text-white" : "text-[#1E3D2A]"
+                  "text-white"
                 }`}
               >
                 Back
@@ -307,12 +406,32 @@ export default function BadgeQuiz() {
           </motion.div>
         </div>
       </div>
+
+      {authModal && (
+        <AuthModal
+          type={authModal}
+          reason="badge"
+          onClose={() => {
+            setAuthModal(null);
+            const stored = localStorage.getItem("user");
+            if (stored && JSON.parse(stored).token) {
+              setIsLoggedIn(true);
+              window.dispatchEvent(new Event("plant-mate-login"));
+              if (!scoreSaved.current) {
+                scoreSaved.current = true;
+                submitScore(score);
+              }
+            }
+          }}
+        />
+      )}
+      </>
     );
   }
 
   // ── QUIZ ─────────────────────────────────────────────────────────────────────
   return (
-    <div className={`min-h-screen flex flex-col overflow-hidden ${pageBg(darkMode)}`}>
+    <div className={`min-h-screen flex flex-col overflow-hidden ${bg}`}>
       <Navbar />
 
       <div className="flex-1 flex flex-col relative px-4 sm:px-8 pt-4 pb-6 max-w-2xl w-full mx-auto justify-center">

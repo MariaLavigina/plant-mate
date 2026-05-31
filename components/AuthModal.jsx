@@ -49,7 +49,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
         return;
       }
 
-      localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+      localStorage.setItem(USER_KEY, JSON.stringify({ ...data.user, token: data.token }));
       onClose();
     } catch {
       setMessage("Server error. Please try again.");
