@@ -10,39 +10,40 @@ import { pageBg } from "../../lib/styles";
 const TIMELINE = [
   {
     id: 1,
-    date: "2017",
+    date: "2014",
     label: "Central Saint Martins",
-    text: "Graduated with a BA in Design from one of the world's most respected art schools in London. Built a foundation in visual thinking, typography, and design systems that informs everything since.",
+    text: "Built a foundation in visual thinking, typography, and design systems that informs everything since.",
   },
   {
     id: 2,
-    date: "2019",
+    date: "2016",
     label: "National Museum of Scotland",
     text: "Commissioned to create five original illustrations, each two metres tall, for the permanent fashion exhibition. Introduced herself directly to the museum's CEO. The first sketch was accepted without revision.",
   },
   {
     id: 3,
-    date: "2021",
+    date: "2023",
     label: "Edinburgh",
-    text: "Moved to Edinburgh city centre and made a deliberate pivot toward technology - convinced that creativity and coding were not opposites, and determined to find out what she could build.",
+    text: "Made a deliberate pivot toward technology - convinced that creativity and coding were not opposites, and determined to find out what she could build.",
   },
   {
     id: 4,
-    date: "2022",
+    date: "2023",
     label: "Learning to Code",
     text: "Started from scratch, working through a lifelong belief that coding required a kind of intelligence she didn't have. Three years later, that belief is completely gone.",
   },
   {
     id: 5,
     date: "2023 – Present",
-    label: "Edinburgh Napier University",
-    text: "Currently in her third year of a software development degree, working professionally as a junior developer and building full-stack projects from the ground up.",
+    label: "Postcode Lottery",
+    sublabel: "Edinburgh Napier University",
+    text: "Working as a junior developer at Postcode Lottery and building full-stack projects from the ground up.",
   },
   {
     id: 6,
-    date: "2025",
+    date: "2026",
     label: "PlantMate+",
-    text: "A full-stack plant matching app built to portfolio standard. Real auth, real database, real UX. The project where design experience and coding ability finally meet.",
+    text: "Built an app that matches people to plants. Real auth, real database, real UX - and a personality quiz that will tell you, with full confidence, that you are a monstera. Design experience and coding ability, finally in the same room.",
   },
 ];
 
@@ -54,11 +55,11 @@ export default function About() {
     <div className={`relative min-h-screen overflow-x-hidden ${pageBg(darkMode)}`}>
       <Navbar />
 
-      <div className="flex flex-col items-center min-h-screen pt-28 pb-20 px-6">
+      <div className="flex flex-col items-center min-h-screen pt-16 pb-20 px-6">
 
         {/* Heading */}
         <motion.h1
-          className={`font-heading text-[clamp(2.5rem,5vw,4rem)] mb-3 text-center ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}
+          className={`font-heading text-[clamp(2.5rem,5vw,4rem)] mb-1 text-center ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
@@ -67,7 +68,7 @@ export default function About() {
         </motion.h1>
 
         <motion.p
-          className={`font-comic text-center max-w-lg text-[clamp(0.9rem,1.4vw,1.05rem)] mb-20 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/55"}`}
+          className={`font-comic text-center whitespace-nowrap text-[clamp(1rem,1.8vw,1.3rem)] mb-10 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/55"}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.25 }}
@@ -150,13 +151,18 @@ export default function About() {
                     onMouseEnter={() => setHoveredIndex(i)}
                     onMouseLeave={() => setHoveredIndex(null)}
                   >
-                    <p className={`font-comic text-[clamp(0.6rem,0.7vw,0.72rem)] mb-1 ${darkMode ? "text-[#FFBD06]/60" : "text-[#1E3D2A]/45"}`}>
+                    <p className={`font-comic font-semibold text-[clamp(0.6rem,0.7vw,0.72rem)] mb-1 ${darkMode ? "text-[#FFBD06]/60" : "text-[#1E3D2A]/90"}`}>
                       {item.date}
                     </p>
-                    <p className={`font-heading text-[clamp(0.88rem,1.15vw,1.1rem)] mb-2 ${darkMode ? "text-[#FFBD06]" : "text-[#1E3D2A]"}`}>
+                    <p className={`font-heading text-[clamp(0.88rem,1.15vw,1.1rem)] mb-0.5 ${darkMode ? "text-[#FFBD06]" : "text-[#1E3D2A]"}`}>
                       {item.label}
                     </p>
-                    <p className={`font-comic text-[clamp(0.8rem,1vw,0.95rem)] leading-snug ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
+                    {item.sublabel && (
+                      <p className={`font-heading text-[clamp(0.75rem,0.95vw,0.9rem)] mb-2 ${darkMode ? "text-[#FFBD06]/70" : "text-[#1E3D2A]/70"}`}>
+                        {item.sublabel}
+                      </p>
+                    )}
+                    <p className={`font-comic text-[clamp(0.85rem,1.1vw,1rem)] leading-snug ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
                       {item.text}
                     </p>
                   </motion.div>
@@ -205,17 +211,23 @@ export default function About() {
 
                   {/* Content */}
                   <motion.div
+                    className="pl-2"
                     initial={{ opacity: 0, x: 18 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
                   >
-                    <p className={`font-comic text-xs mb-0.5 ${darkMode ? "text-[#FFBD06]/60" : "text-[#1E3D2A]/45"}`}>
+                    <p className={`font-comic font-semibold text-xs mb-0.5 ${darkMode ? "text-[#FFBD06]/60" : "text-[#1E3D2A]/90"}`}>
                       {item.date}
                     </p>
-                    <p className={`font-heading text-lg mb-1.5 ${darkMode ? "text-[#FFBD06]" : "text-[#1E3D2A]"}`}>
+                    <p className={`font-heading text-lg mb-0.5 ${darkMode ? "text-[#FFBD06]" : "text-[#1E3D2A]"}`}>
                       {item.label}
                     </p>
+                    {item.sublabel && (
+                      <p className={`font-heading text-sm mb-1.5 ${darkMode ? "text-[#FFBD06]/70" : "text-[#1E3D2A]/70"}`}>
+                        {item.sublabel}
+                      </p>
+                    )}
                     <p className={`font-comic text-sm leading-relaxed ${darkMode ? "text-white/50" : "text-[#1E3D2A]/60"}`}>
                       {item.text}
                     </p>
