@@ -35,11 +35,12 @@ export default function Navbar() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem(USER_KEY);
+    localStorage.removeItem(USER_KEY);
+    const stored = sessionStorage.getItem(USER_KEY);
     if (stored) setUser(JSON.parse(stored));
 
     const onLogin = () => {
-      const s = localStorage.getItem(USER_KEY);
+      const s = sessionStorage.getItem(USER_KEY);
       if (s) setUser(JSON.parse(s));
     };
     const onLogout = () => setUser(null);
@@ -53,7 +54,7 @@ export default function Navbar() {
 
   const handleAuthClose = () => {
     setAuthModal(null);
-    const stored = localStorage.getItem(USER_KEY);
+    const stored = sessionStorage.getItem(USER_KEY);
     if (stored) {
       setUser(JSON.parse(stored));
       window.dispatchEvent(new Event("plant-mate-login"));
@@ -61,7 +62,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem(USER_KEY);
+    sessionStorage.removeItem(USER_KEY);
     localStorage.removeItem(QUIZ_RESULTS_KEY);
     setUser(null);
     window.dispatchEvent(new Event("plant-mate-logout"));
@@ -69,7 +70,7 @@ export default function Navbar() {
 
   const navLinkClass = darkMode ? "text-[clamp(0.7rem,1.1vw,1rem)] text-[#E2CFFA] hover:text-[#65F0CD]" : "text-[clamp(0.7rem,1.1vw,1rem)] text-[#1E3D2A] hover:text-[#4CAF82]";
   const authButtonClass = darkMode ? "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#65F0CD] hover:text-[#E2CFFA] font-semibold uppercase tracking-widest" : "text-[clamp(0.6rem,0.9vw,0.875rem)] text-[#3A8A52] hover:text-[#4CAF82] font-semibold uppercase tracking-widest";
-  const welcomeClass = darkMode ? "text-[clamp(0.65rem,1vw,0.95rem)] text-[#FFBD06] font-semibold" : "text-[clamp(0.65rem,1vw,0.95rem)] text-[#00FF88] font-semibold";
+  const welcomeClass = darkMode ? "text-[clamp(0.65rem,1vw,0.95rem)] text-[#FFBD06] font-semibold" : "text-[clamp(0.65rem,1vw,0.95rem)] text-[#6B2FA0] font-semibold";
   const signOutClass = darkMode ? "text-[clamp(0.55rem,0.8vw,0.8rem)] text-white/40 hover:text-white/70 transition-colors duration-200" : "text-[clamp(0.55rem,0.8vw,0.8rem)] text-[#1E3D2A]/40 hover:text-[#1E3D2A]/80 transition-colors duration-200";
   const separatorClass = darkMode ? "text-white/20" : "text-[#1E3D2A]/20";
   const iconClass = darkMode ? "text-[#65F0CD] hover:text-[#E2CFFA]" : "text-[#1E3D2A] hover:text-[#4CAF82]";
@@ -104,7 +105,7 @@ export default function Navbar() {
                 {user ? (
                   <>
                     <div className="flex items-center gap-1.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={darkMode ? "text-[#FFBD06]" : "text-[#00FF88]"}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}>
                         <circle cx="12" cy="8" r="4"/>
                         <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
                       </svg>
@@ -150,7 +151,7 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-2 py-4 border-b ${darkMode ? "border-white/10" : "border-[#1E3D2A]/15"}`}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={darkMode ? "text-[#FFBD06]" : "text-[#00FF88]"}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}>
                     <circle cx="12" cy="8" r="4"/>
                     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
                   </svg>

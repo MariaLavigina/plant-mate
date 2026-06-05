@@ -1,9 +1,9 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { DarkModeContext } from "../ClientProviders";
-import { pageBg, primaryText, primaryButton } from "../../lib/styles";
+import { pageBg, primaryText } from "../../lib/styles";
 
 const IMAGES = [
   "/images/desktop-images/contactMe_01.svg",
@@ -15,19 +15,40 @@ const IMAGES = [
   "/images/desktop-images/contactMe_07.svg",
 ];
 
-const inputClass = (darkMode: boolean) =>
-  `w-full px-4 py-3 rounded-2xl border text-sm outline-none focus:ring-2 transition-all ${
-    darkMode
-      ? "bg-white/10 border-white/20 text-white placeholder-white/40 focus:ring-[#65F0CD]/60"
-      : "bg-white/60 border-[#210E4A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:ring-[#210E4A]/40"
-  }`;
-
 export default function Contact() {
   const { darkMode } = useContext(DarkModeContext);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isBreathing, setIsBreathing] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [focused, setFocused] = useState({ name: false, email: false, message: false });
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(false);
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "contact",
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }).toString(),
+      });
+      setSubmitted(true);
+    } catch {
+      setError(true);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   useEffect(() => {
     const timers = [
@@ -112,66 +133,111 @@ export default function Contact() {
 
         {/* Right - contact form */}
         <div className="flex-1 flex items-center justify-center px-6 sm:px-10 pt-24 pb-10 md:py-0">
-          <div className="w-full max-w-sm">
-            <h1
-              className={`text-[clamp(2rem,3vw,2.75rem)] font-caveat mb-2 ${primaryText(darkMode)}`}
-            >
-              Get in Touch
-            </h1>
-            <p className={`text-sm mb-8 ${primaryText(darkMode)} opacity-70`}>
-              Drop me a message - I&apos;d love to hear from you!
-            </p>
+          <div className="w-full max-w-md">
+            {!submitted && (
+              <>
+                <h1 className={`text-[clamp(2rem,3vw,2.75rem)] font-caveat mb-2 ${primaryText(darkMode)}`}>
+                  Get in Touch
+                </h1>
+                <p className={`text-sm mb-10 ${primaryText(darkMode)} opacity-60`}>
+                  Drop me a message - I&apos;d love to hear from you!
+                </p>
+              </>
+            )}
 
-            <form
-              className="flex flex-col gap-5"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${primaryText(darkMode)}`}
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  className={inputClass(darkMode)}
-                />
+            {submitted ? (
+              <div className="flex flex-col gap-3 py-8">
+                <h1 className={`text-[clamp(2.5rem,4vw,3.5rem)] font-caveat leading-tight ${primaryText(darkMode)}`}>
+                  Message sent!
+                </h1>
+                <p className={`text-base ${primaryText(darkMode)} opacity-60`}>
+                  Thanks for reaching out. I'll get back to you soon.
+                </p>
               </div>
+            ) : (
+              <form name="contact" data-netlify="true" netlify-honeypot="bot-field" className="flex flex-col gap-8" onSubmit={handleSubmit}>
+                <input type="hidden" name="form-name" value="contact" />
+                <input type="hidden" name="bot-field" />
 
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${primaryText(darkMode)}`}
+                {/* Name */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={e => setForm(s => ({ ...s, name: e.target.value }))}
+                    onFocus={() => setFocused(s => ({ ...s, name: true }))}
+                    onBlur={() => setFocused(s => ({ ...s, name: false }))}
+                    className={`w-full bg-transparent border-0 border-b-2 pb-2 pt-5 text-sm outline-none transition-all duration-300 ${
+                      darkMode
+                        ? `text-white ${focused.name ? "border-[#65F0CD]" : "border-white/20"}`
+                        : `text-[#1E3D2A] ${focused.name ? "border-[#1E3D2A]" : "border-[#1E3D2A]/25"}`
+                    }`}
+                  />
+                  <label className={`absolute left-0 transition-all duration-200 pointer-events-none ${
+                    focused.name || form.name
+                      ? `top-0 text-[10px] uppercase tracking-[0.18em] font-semibold ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]/60"}`
+                      : `top-5 text-sm ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`
+                  }`}>Name</label>
+                </div>
+
+                {/* Email */}
+                <div className="relative">
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={e => setForm(s => ({ ...s, email: e.target.value }))}
+                    onFocus={() => setFocused(s => ({ ...s, email: true }))}
+                    onBlur={() => setFocused(s => ({ ...s, email: false }))}
+                    className={`w-full bg-transparent border-0 border-b-2 pb-2 pt-5 text-sm outline-none transition-all duration-300 ${
+                      darkMode
+                        ? `text-white ${focused.email ? "border-[#65F0CD]" : "border-white/20"}`
+                        : `text-[#1E3D2A] ${focused.email ? "border-[#1E3D2A]" : "border-[#1E3D2A]/25"}`
+                    }`}
+                  />
+                  <label className={`absolute left-0 transition-all duration-200 pointer-events-none ${
+                    focused.email || form.email
+                      ? `top-0 text-[10px] uppercase tracking-[0.18em] font-semibold ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]/60"}`
+                      : `top-5 text-sm ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`
+                  }`}>Email</label>
+                </div>
+
+                {/* Message */}
+                <div className="relative">
+                  <textarea
+                    rows={4}
+                    value={form.message}
+                    onChange={e => setForm(s => ({ ...s, message: e.target.value }))}
+                    onFocus={() => setFocused(s => ({ ...s, message: true }))}
+                    onBlur={() => setFocused(s => ({ ...s, message: false }))}
+                    className={`w-full bg-transparent border-0 border-b-2 pb-2 pt-5 text-sm outline-none resize-none transition-all duration-300 ${
+                      darkMode
+                        ? `text-white ${focused.message ? "border-[#65F0CD]" : "border-white/20"}`
+                        : `text-[#1E3D2A] ${focused.message ? "border-[#1E3D2A]" : "border-[#1E3D2A]/25"}`
+                    }`}
+                  />
+                  <label className={`absolute left-0 transition-all duration-200 pointer-events-none ${
+                    focused.message || form.message
+                      ? `top-0 text-[10px] uppercase tracking-[0.18em] font-semibold ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]/60"}`
+                      : `top-5 text-sm ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`
+                  }`}>Message</label>
+                </div>
+
+                {error && (
+                  <p className="text-red-400 text-xs text-center -mt-2">Something went wrong. Please try again.</p>
+                )}
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={`mt-2 w-full py-3.5 rounded-full font-semibold text-sm tracking-wide transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
+                    darkMode
+                      ? "bg-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] shadow-[#65F0CD]/20"
+                      : "bg-[#1E3D2A] text-white hover:bg-[#2D5A3D] shadow-[#1E3D2A]/20"
+                  }`}
                 >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className={inputClass(darkMode)}
-                />
-              </div>
-
-              <div>
-                <label
-                  className={`block text-sm font-medium mb-1 ${primaryText(darkMode)}`}
-                >
-                  Message
-                </label>
-                <textarea
-                  rows={5}
-                  placeholder="Write your message here..."
-                  className={`${inputClass(darkMode)} resize-none`}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className={`py-3 px-8 rounded-2xl font-semibold text-sm transition-all border-2 ${primaryButton(darkMode)}`}
-              >
-                Send Message
-              </button>
-            </form>
+                  {submitting ? "Sending..." : "Send Message"}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

@@ -116,13 +116,13 @@ function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = fa
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
+    const stored = sessionStorage.getItem("user");
     setIsLoggedIn(!!(stored && JSON.parse(stored).token));
   }, []);
 
   function handleAuthClose() {
     setAuthModal(null);
-    const stored = localStorage.getItem("user");
+    const stored = sessionStorage.getItem("user");
     if (stored && JSON.parse(stored).token) {
       setIsLoggedIn(true);
       onAuthSuccess?.();
@@ -409,6 +409,7 @@ export default function Results() {
   const [loading, setLoading] = useState(true);
   const [tappedPlant, setTappedPlant] = useState<Plant | null>(null);
   const [hasDiscoveredPlant, setHasDiscoveredPlant] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     if (displayPlants.length > 0) {
@@ -422,6 +423,9 @@ export default function Results() {
   }, [displayPlants]);
 
   useEffect(() => {
+    const storedUser = sessionStorage.getItem("user");
+    if (storedUser) setIsLoggedIn(true);
+
     const storedAnswers = localStorage.getItem(QUIZ_RESULTS_KEY);
     if (!storedAnswers) {
       router.replace("/quiz");
@@ -479,7 +483,7 @@ export default function Results() {
   }, []);
 
   function saveTopPlant(plant: Plant, pct: number) {
-    const stored = localStorage.getItem("user");
+    const stored = sessionStorage.getItem("user");
     if (!stored) return;
     const { token } = JSON.parse(stored);
     if (!token) return;
@@ -519,6 +523,19 @@ export default function Results() {
                 {centerPlant.name}
               </h1>
               <p className={`font-comic font-bold text-[clamp(0.9rem,1.5vw,1.1rem)] ${darkMode ? "text-[#F4C842]" : "text-[#0F3D26]"}`}>· {centerScore}% match</p>
+              {isLoggedIn && revealed && (
+                <motion.p
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1 }}
+                  className={`font-comic text-[0.75rem] mt-1 ${darkMode ? "text-white/70" : "text-[#1A6241]/80"}`}
+                >
+                  Saved to your profile.{" "}
+                  <Link href="/profile" className={`underline underline-offset-2 transition-opacity hover:opacity-70 ${darkMode ? "text-[#65F0CD]" : "text-[#1A6241]"}`}>
+                    View it →
+                  </Link>
+                </motion.p>
+              )}
               {whyText.length > 0 && (
                 <div className="hidden sm:block max-w-sm sm:max-w-xl text-center space-y-2 mt-4">
                   {whyText.slice(0, 5).map((line, i) => (
@@ -537,6 +554,19 @@ export default function Results() {
                 {centerPlant.name}
               </h1>
               <p className={`font-comic font-bold text-[clamp(0.85rem,1.1vw,1rem)] mt-0.5 ${darkMode ? "text-[#F4C842]" : "text-[#0F3D26]"}`}>· {centerScore}% match</p>
+              {isLoggedIn && revealed && (
+                <motion.p
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1 }}
+                  className={`font-comic text-[0.75rem] mt-1 ${darkMode ? "text-white/70" : "text-[#1A6241]/80"}`}
+                >
+                  Saved to your profile.{" "}
+                  <Link href="/profile" className={`underline underline-offset-2 transition-opacity hover:opacity-70 ${darkMode ? "text-[#65F0CD]" : "text-[#1A6241]"}`}>
+                    View it →
+                  </Link>
+                </motion.p>
+              )}
             </div>
 
             {/* ── Desktop (lg+): two-column ── */}

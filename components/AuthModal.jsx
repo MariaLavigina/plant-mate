@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../app/ClientProviders";
-import { USER_KEY } from "../lib/constants";
+import { USER_KEY, QUIZ_RESULTS_KEY } from "../lib/constants";
 import { primaryButton } from "../lib/styles";
 
 export default function AuthModal({ type = "login", onClose, reason }) {
@@ -49,7 +49,9 @@ export default function AuthModal({ type = "login", onClose, reason }) {
         return;
       }
 
-      localStorage.setItem(USER_KEY, JSON.stringify({ ...data.user, token: data.token }));
+      sessionStorage.setItem(USER_KEY, JSON.stringify({ ...data.user, token: data.token }));
+      localStorage.removeItem(USER_KEY);
+      localStorage.removeItem(QUIZ_RESULTS_KEY);
       onClose();
     } catch {
       setMessage("Server error. Please try again.");
@@ -64,14 +66,14 @@ export default function AuthModal({ type = "login", onClose, reason }) {
     setResetMessage("");
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reset-password`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resetEmail }),
       });
 
       const data = await res.json();
-      setResetMessage(data.message);
+      setResetMessage(data.message || "Check your email for a reset link.");
     } catch {
       setResetMessage("Server error. Please try again.");
     } finally {
@@ -82,13 +84,17 @@ export default function AuthModal({ type = "login", onClose, reason }) {
   const inputClass = `w-full px-4 py-2.5 rounded-lg border-2 outline-none transition-all duration-200 ${
     darkMode
       ? "bg-white/10 border-white/20 text-white placeholder-white/50 focus:border-[#65F0CD]"
-      : "bg-white border-[#1E3D2A]/20 text-[#1E3D2A] placeholder-[#1E3D2A]/40 focus:border-[#1E3D2A]"
+      : "bg-[#F4FBF0] border-[#1E3D2A]/30 text-[#1E3D2A] placeholder-[#1E3D2A]/35 focus:border-[#1E3D2A]"
   }`;
 
-  const buttonClass = `w-full py-2.5 rounded-lg font-semibold transition-all duration-200 border-2 ${primaryButton(darkMode)}`;
+  const buttonClass = `w-full py-2.5 rounded-full font-semibold transition-all duration-200 border-2 ${
+    darkMode
+      ? "bg-[#65F0CD] border-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] hover:border-[#4FD4B3]"
+      : "bg-[#1E3D2A] border-[#1E3D2A] text-white hover:bg-[#2D5A3D]"
+  }`;
 
   const linkClass = `mt-4 text-sm cursor-pointer text-center ${
-    darkMode ? "text-[#65F0CD] hover:text-white" : "text-[#1E3D2A] hover:text-[#0f2116]"
+    darkMode ? "text-[#65F0CD] hover:text-white" : "text-[#1E3D2A]/70 hover:text-[#1E3D2A]"
   }`;
 
   return (
@@ -115,7 +121,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
               <div className={`mb-4 px-4 py-3 rounded-xl text-sm text-center font-comic ${
                 darkMode
                   ? "bg-[#65F0CD]/10 text-[#65F0CD] border border-[#65F0CD]/20"
-                  : "bg-[#2D6A4F]/8 text-[#2D6A4F] border border-[#2D6A4F]/20"
+                  : "bg-[#1E3D2A]/8 text-[#1E3D2A] border border-[#1E3D2A]/20"
               }`}>
                 🏆 Create your free account to earn your plant badge and save your results!
               </div>
@@ -143,7 +149,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   tabIndex={-1}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#18FFC9] hover:opacity-80"
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-80 ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]/50"}`}
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

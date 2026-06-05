@@ -175,12 +175,12 @@ export default function Home() {
 
 
   useEffect(() => {
-    const stored = localStorage.getItem(USER_KEY);
+    const stored = sessionStorage.getItem(USER_KEY);
     if (stored) setUser(JSON.parse(stored));
 
     const onLogout = () => setUser(null);
     const onLogin = () => {
-      const fresh = localStorage.getItem(USER_KEY);
+      const fresh = sessionStorage.getItem(USER_KEY);
       if (fresh) setUser(JSON.parse(fresh));
     };
     window.addEventListener("plant-mate-logout", onLogout);
@@ -212,7 +212,7 @@ export default function Home() {
         <div className="flex flex-col justify-center w-1/3 pr-6 z-10">
           <div className="max-w-md">
             {user?.first_name && (
-              <p className={`font-heading leading-tight mb-1 text-[clamp(1.8rem,3.5vw,3rem)] ${darkMode ? "text-[#FFBD06]" : "text-[#00FF88]"}`}>
+              <p className={`font-heading leading-tight mb-1 text-[clamp(1.8rem,3.5vw,3rem)] ${darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}`}>
                 Hi, {user.first_name}
               </p>
             )}
@@ -231,9 +231,13 @@ export default function Home() {
             <button
               onClick={handleMobileClick}
               className={`px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-4 border-2 font-bold rounded-full transition-all duration-300 shadow-2xl hover:scale-105 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] backdrop-blur-md text-[clamp(0.875rem,1.5vw,1.25rem)] ${
-                darkMode
-                  ? "bg-[#20083D]/40 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#20083D]"
-                  : "bg-white/30 border-[#1E3D2A] text-[#1E3D2A] hover:bg-[#1E3D2A]/80 hover:text-white"
+                user
+                  ? darkMode
+                    ? "bg-[#20083D]/40 border-[#FFBD06] text-[#FFBD06] hover:bg-[#FFBD06]/80 hover:text-[#20083D]"
+                    : "bg-white/30 border-[#6B2FA0] text-[#6B2FA0] hover:bg-[#6B2FA0]/80 hover:text-white"
+                  : darkMode
+                    ? "bg-[#20083D]/40 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#20083D]"
+                    : "bg-white/30 border-[#1E3D2A] text-[#1E3D2A] hover:bg-[#1E3D2A]/80 hover:text-white"
               }`}
             >
               Find Your Plant Match
@@ -349,7 +353,7 @@ export default function Home() {
         style={{ opacity: isAnimating ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}
       >
         {user?.first_name && (
-          <p className={`font-heading text-4xl sm:text-5xl mb-1 mt-10 ${darkMode ? "text-[#FFBD06]" : "text-[#00FF88]"}`}>
+          <p className={`font-heading text-4xl sm:text-5xl mb-1 mt-10 ${darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}`}>
             Hi, {user.first_name}
           </p>
         )}
@@ -383,9 +387,13 @@ export default function Home() {
           className={`absolute top-[45%] left-1/2 z-30 transform -translate-x-1/2 -translate-y-1/2 w-[85%] px-6 py-5 text-lg border-2 font-semibold rounded-full transition-all duration-300 shadow-2xl whitespace-nowrap backdrop-blur-md ${
             isAnimating ? "opacity-0 pointer-events-none" : ""
           } ${
-            darkMode
-              ? "bg-[#20083D]/40 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#20083D]"
-              : "bg-white/30 border-[#1E3D2A] text-[#1E3D2A] hover:bg-[#1E3D2A]/80 hover:text-white"
+            user
+              ? darkMode
+                ? "bg-[#20083D]/40 border-[#FFBD06] text-[#FFBD06] hover:bg-[#FFBD06]/80 hover:text-[#20083D]"
+                : "bg-white/30 border-[#6B2FA0] text-[#6B2FA0] hover:bg-[#6B2FA0]/80 hover:text-white"
+              : darkMode
+                ? "bg-[#20083D]/40 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/80 hover:text-[#20083D]"
+                : "bg-white/30 border-[#1E3D2A] text-[#1E3D2A] hover:bg-[#1E3D2A]/80 hover:text-white"
           }`}
         >
           Find Your Plant Match

@@ -62,7 +62,7 @@ export default function ProfilePage() {
   const [showAll, setShowAll]   = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
+    const stored = sessionStorage.getItem("user");
     if (!stored) { router.replace("/"); return; }
     const { token } = JSON.parse(stored);
     if (!token) { router.replace("/"); return; }
@@ -99,7 +99,7 @@ export default function ProfilePage() {
   const heading = darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]";
 
   return (
-    <div className={`min-h-screen flex flex-col ${bg}`}>
+    <div className={`min-h-screen lg:h-screen lg:overflow-hidden flex flex-col ${bg}`}>
       <Navbar />
 
       {loading && (
@@ -107,10 +107,12 @@ export default function ProfilePage() {
       )}
 
       {!loading && profile && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+        <motion.div
+          className="flex-1 min-h-0 flex flex-col lg:overflow-hidden"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
 
           {/* ── Hero ── */}
-          <div className="relative w-full overflow-hidden" style={{ minHeight: 220 }}>
+          <div className="relative w-full overflow-hidden shrink-0" style={{ minHeight: 160 }}>
             {matchedPlant && (
               <img src={matchedPlant.image} alt="" aria-hidden
                 className="absolute inset-0 w-full h-full object-cover object-center scale-125 blur-2xl opacity-20 pointer-events-none"
@@ -121,10 +123,10 @@ export default function ProfilePage() {
                 ? "linear-gradient(to bottom, rgba(33,14,74,0.4) 0%, rgba(33,14,74,1) 100%)"
                 : "linear-gradient(to bottom, rgba(244,251,240,0.4) 0%, rgba(244,251,240,1) 100%)",
             }} />
-            <div className="relative px-6 sm:px-12 pt-28 pb-8">
+            <div className="relative px-6 sm:px-12 pt-20 lg:pt-20 pb-6">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.15 }}>
                 <p className={`font-comic text-xs uppercase tracking-widest mb-1 ${sub}`}>Your profile</p>
-                <h1 className={`font-heading leading-none ${heading}`} style={{ fontSize: "clamp(2rem,5vw,3.2rem)" }}>
+                <h1 className={`font-heading leading-none ${heading}`} style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)" }}>
                   {profile.first_name} {profile.last_name}
                 </h1>
                 <p className={`font-comic text-sm mt-1 ${sub}`}>{profile.email}</p>
@@ -133,7 +135,7 @@ export default function ProfilePage() {
           </div>
 
           {/* ── Two cards + badge strip, all same container ── */}
-          <div className="flex flex-col gap-6 px-4 sm:px-10 pb-16 max-w-4xl mx-auto w-full">
+          <div className="flex flex-col gap-4 px-4 sm:px-10 pb-6 max-w-4xl mx-auto w-full flex-1 min-h-0 lg:overflow-hidden">
 
           {/* Badge + Stats combined strip */}
           {profile.badge && totalPlays > 0 && (
@@ -191,37 +193,35 @@ export default function ProfilePage() {
           )}
 
           {/* ── Two cards side by side ── */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:flex-1 lg:min-h-0">
 
             {/* Plant match */}
             <motion.div
-              className="rounded-2xl overflow-hidden h-full"
+              className="rounded-2xl overflow-hidden"
               style={{ background: darkMode ? "rgba(255,255,255,0.06)" : "#1E3D2A", border: darkMode ? "1px solid rgba(255,255,255,0.1)" : "none" }}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.4 }}>
               <div className="h-1 w-full bg-[#65F0CD]" />
-              <div className="p-6 sm:p-8">
-                <p className="font-comic text-xs uppercase tracking-widest mb-4 text-white/45">Your perfect plant</p>
+              <div style={{ padding: "clamp(1rem,2vh,1.75rem)" }}>
+                <p className="font-comic text-xs uppercase tracking-widest text-white/45" style={{ marginBottom: "clamp(0.5rem,1.5vh,1rem)" }}>Your perfect plant</p>
                 {matchedPlant ? (
                   <>
-                    <div className="flex flex-col items-center text-center gap-4">
+                    <div className="flex flex-col items-center text-center" style={{ gap: "clamp(0.5rem,1.5vh,1rem)" }}>
                       <img src={matchedPlant.image} alt={matchedPlant.name}
-                        className="h-56 w-auto object-contain" />
+                        style={{ height: "clamp(5rem,14vh,10rem)" }}
+                        className="w-auto object-contain" />
                       <div>
-                        <h2 className="font-heading text-3xl leading-tight text-[#65F0CD]">{matchedPlant.name}</h2>
+                        <h2 className="font-heading text-[#65F0CD]" style={{ fontSize: "clamp(1.3rem,2.5vh,1.8rem)" }}>{matchedPlant.name}</h2>
                         {profile.match_pct != null && (
-                          <p className="font-comic font-bold text-[#F4C842] text-base mt-1">{profile.match_pct}% match</p>
+                          <p className="font-comic font-bold text-[#F4C842]" style={{ fontSize: "clamp(0.75rem,1.5vh,0.9rem)", marginTop: "0.25rem" }}>{profile.match_pct}% match</p>
                         )}
-                        <p className="font-comic text-sm leading-relaxed mt-3 text-white/75">{matchedPlant.description}</p>
+                        <p className="font-comic text-white/75" style={{ fontSize: "clamp(0.7rem,1.3vh,0.875rem)", lineHeight: 1.5, marginTop: "clamp(0.4rem,1vh,0.75rem)" }}>{matchedPlant.description}</p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between mt-6 pt-5 border-t flex-wrap gap-3"
-                      style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-                      <Link href="/quiz"
-                        className="font-comic text-xs underline underline-offset-4 opacity-45 hover:opacity-80 transition-opacity text-white">
-                        Retake quiz
-                      </Link>
-                      <Link href="/results"
-                        className="px-5 py-2 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/10">
+                    <div className="flex items-center justify-between flex-wrap gap-3 border-t"
+                      style={{ marginTop: "clamp(0.75rem,1.5vh,1.25rem)", paddingTop: "clamp(0.75rem,1.5vh,1.25rem)", borderColor: "rgba(255,255,255,0.08)" }}>
+                      <Link href="/quiz" className="font-comic text-xs underline underline-offset-4 opacity-45 hover:opacity-80 transition-opacity text-white">Retake quiz</Link>
+                      <Link href="/results" className="px-4 border-2 rounded-full font-heading font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/10"
+                        style={{ fontSize: "clamp(0.7rem,1.2vh,0.875rem)", paddingTop: "clamp(0.3rem,0.8vh,0.5rem)", paddingBottom: "clamp(0.3rem,0.8vh,0.5rem)" }}>
                         View full results →
                       </Link>
                     </div>
@@ -229,10 +229,7 @@ export default function ProfilePage() {
                 ) : (
                   <div className="flex flex-col items-center py-6 gap-4">
                     <p className="font-comic text-sm text-white/45">You haven't taken the Plant Match quiz yet.</p>
-                    <Link href="/quiz"
-                      className="px-6 py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/10">
-                      Find my plant
-                    </Link>
+                    <Link href="/quiz" className="px-6 py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD]/10">Find my plant</Link>
                   </div>
                 )}
               </div>
@@ -240,53 +237,50 @@ export default function ProfilePage() {
 
             {/* Badge history */}
             <motion.div
-              className="rounded-2xl overflow-hidden h-full"
+              className="rounded-2xl overflow-hidden"
               style={{ background: darkMode ? "rgba(255,255,255,0.06)" : "#1E3D2A", border: darkMode ? "1px solid rgba(255,255,255,0.1)" : "none" }}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.5 }}>
               <div className="h-1 w-full bg-[#F4C842]" />
-              <div className="p-6 sm:p-8">
-                <p className="font-comic text-xs uppercase tracking-widest mb-4 text-white/45">Play & Win history</p>
+              <div style={{ padding: "clamp(1rem,2vh,1.75rem)" }}>
+                <p className="font-comic text-xs uppercase tracking-widest text-white/45" style={{ marginBottom: "clamp(0.5rem,1.5vh,1rem)" }}>Play & Win history</p>
 
                 {totalPlays === 0 ? (
                   <div className="flex flex-col items-center py-6 gap-4">
                     <p className="font-comic text-sm text-white/45">No badge quiz results yet.</p>
-                    <Link href="/quiz/badge"
-                      className="px-6 py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#F4C842] text-[#F4C842] hover:bg-[#F4C842]/10">
-                      Play now
-                    </Link>
+                    <Link href="/quiz/badge" className="px-6 py-2.5 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#F4C842] text-[#F4C842] hover:bg-[#F4C842]/10">Play now</Link>
                   </div>
                 ) : (
                   <>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col" style={{ gap: "clamp(0.4rem,1vh,0.75rem)" }}>
                       {displayed.map((row, i) => (
                         <motion.div key={`${row.created_at}-${i}`}
-                          className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.06]"
+                          className="flex items-center gap-3 rounded-xl bg-white/[0.06]"
+                          style={{ padding: "clamp(0.4rem,1vh,0.75rem) clamp(0.6rem,1.2vh,0.875rem)" }}
                           initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.05, duration: 0.3 }}>
-                          <BadgeImg badge={row.badge_earned} />
+                          <BadgeImg badge={row.badge_earned} size={`h-[clamp(1.8rem,4vh,2.5rem)]`} />
                           <div className="flex-1 min-w-0">
-                            <p className="font-heading text-sm" style={{ color: BADGE_COLOR[row.badge_earned] }}>
+                            <p className="font-heading" style={{ fontSize: "clamp(0.75rem,1.3vh,0.875rem)", color: BADGE_COLOR[row.badge_earned] }}>
                               {row.badge_earned.charAt(0).toUpperCase() + row.badge_earned.slice(1)} Badge
                             </p>
-                            <p className="font-comic text-[0.7rem] mt-0.5 text-white/40">{formatDate(row.created_at)}</p>
+                            <p className="font-comic text-white/40" style={{ fontSize: "clamp(0.6rem,1vh,0.7rem)", marginTop: "0.1rem" }}>{formatDate(row.created_at)}</p>
                           </div>
                           <div className="text-right shrink-0">
-                            <p className="font-heading text-xl text-white/90">{row.score}</p>
-                            <p className="font-comic text-[0.65rem] text-white/40">/ 10</p>
+                            <p className="font-heading text-white/90" style={{ fontSize: "clamp(1rem,2vh,1.25rem)" }}>{row.score}</p>
+                            <p className="font-comic text-white/40" style={{ fontSize: "clamp(0.55rem,0.9vh,0.65rem)" }}>/ 10</p>
                           </div>
                         </motion.div>
                       ))}
                     </div>
 
-                    <div className="flex items-center justify-between mt-5 flex-wrap gap-3">
+                    <div className="flex items-center justify-between flex-wrap gap-3" style={{ marginTop: "clamp(0.6rem,1.5vh,1.25rem)" }}>
                       {totalPlays > 4 && (
-                        <button onClick={() => setShowAll(v => !v)}
-                          className="font-comic text-xs underline underline-offset-4 opacity-45 hover:opacity-80 transition-opacity text-white">
+                        <button onClick={() => setShowAll(v => !v)} className="font-comic text-xs underline underline-offset-4 opacity-45 hover:opacity-80 transition-opacity text-white">
                           {showAll ? "Show recent 4 ↑" : `Show all ${totalPlays} ↓`}
                         </button>
                       )}
-                      <Link href="/quiz/badge"
-                        className="ml-auto px-5 py-2 border-2 rounded-full font-heading text-sm font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#F4C842] text-[#F4C842] hover:bg-[#F4C842]/10">
+                      <Link href="/quiz/badge" className="ml-auto border-2 rounded-full font-heading font-bold tracking-wide transition-all duration-300 hover:scale-105 border-[#F4C842] text-[#F4C842] hover:bg-[#F4C842]/10 px-4"
+                        style={{ fontSize: "clamp(0.7rem,1.2vh,0.875rem)", paddingTop: "clamp(0.3rem,0.8vh,0.5rem)", paddingBottom: "clamp(0.3rem,0.8vh,0.5rem)" }}>
                         Play again
                       </Link>
                     </div>

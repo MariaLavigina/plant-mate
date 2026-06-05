@@ -18,8 +18,8 @@ export default function ClientProviders({ children }: ClientProvidersProps) {
 
   // runs once on page load - reads saved preference from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem(DARK_MODE_KEY) === "true"; // "true" string → boolean
-    setDarkMode(stored); // update state with saved value
+    const saved = localStorage.getItem(DARK_MODE_KEY);
+    setDarkMode(saved === null ? true : saved === "true");
   }, []); // empty [] means run once only
 
   // runs every time darkMode changes - saves the new value to localStorage
