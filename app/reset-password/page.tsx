@@ -1,12 +1,12 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import { DarkModeContext } from "../ClientProviders";
 import { pageBg, primaryText } from "../../lib/styles";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const { darkMode } = useContext(DarkModeContext);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -141,5 +141,13 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
