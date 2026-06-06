@@ -202,17 +202,17 @@ export default function BadgeQuiz() {
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: "easeOut" }}
-            className="w-full max-w-md flex flex-col items-center"
+            className="w-full max-w-lg flex flex-col items-center"
           >
             {/* Three badges */}
-            <div className="flex items-end justify-center gap-8 mb-10">
+            <div className="flex items-end justify-center gap-10 mb-10">
               {(["bronze", "gold", "silver"] as Badge[]).map((b, i) => (
                 <motion.div
                   key={b}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.12 + 0.2 }}
-                  className="flex flex-col items-center gap-2"
+                  className="flex flex-col items-center gap-1"
                 >
                   <div className="relative flex items-center justify-center">
                     <motion.div
@@ -232,7 +232,10 @@ export default function BadgeQuiz() {
                       style={b === "silver" ? { filter: "brightness(1.4) contrast(1.1)" } : undefined}
                     />
                   </div>
-                  <span className="font-comic text-[10px] uppercase tracking-widest text-white/40">
+                  <span className="font-comic text-sm font-bold capitalize" style={{ color: BADGE_COLOR[b] }}>
+                    {BADGE_CONFIG[b].label}
+                  </span>
+                  <span className="font-comic text-[11px] uppercase tracking-widest text-white/55">
                     {BADGE_CONFIG[b].range}
                   </span>
                 </motion.div>
@@ -243,7 +246,7 @@ export default function BadgeQuiz() {
               style={{ fontSize: "clamp(3rem,12vw,5rem)" }}>
               Play & Grow
             </h1>
-            <p className="font-comic text-base text-white/50">
+            <p className="font-comic text-lg text-white/80">
               10 questions. Earn your badge.
             </p>
 
