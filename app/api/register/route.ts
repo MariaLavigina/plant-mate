@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, { expiresIn: '8h' });
     return NextResponse.json({ user, token });
   } catch (err: unknown) {
+    console.error('Register error:', err);
     if ((err as { code?: string }).code === '23505')
       return NextResponse.json({ error: 'Email already in use' }, { status: 409 });
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
