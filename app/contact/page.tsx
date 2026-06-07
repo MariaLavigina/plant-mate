@@ -67,7 +67,7 @@ export default function Contact() {
     <div className={`relative min-h-screen ${pageBg(darkMode)}`}>
       <Navbar />
 
-      <div className="flex min-h-screen md:pl-16">
+      <div className="flex min-h-screen md:pl-16 max-w-[1400px] mx-auto w-full">
         {/* Left - animated illustration, desktop only */}
         <div
           className="hidden md:block relative w-2/5 overflow-hidden"

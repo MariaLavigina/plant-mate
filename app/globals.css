@@ -42,6 +42,14 @@ html, body {
   40%, 60% { opacity: 1; }
 }
 
+@keyframes pill-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%       { opacity: 1; }
+}
+.pill-pulse {
+  animation: pill-pulse 2s ease-in-out infinite;
+}
+
 @theme {
   --font-heading: var(--font-akaya), system-ui;
   --font-caveat: var(--font-akaya), system-ui;

@@ -116,8 +116,17 @@ function PlayAndWinCard({ darkMode, className = "", delay = 0.6, horizontal = fa
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("user");
-    setIsLoggedIn(!!(stored && JSON.parse(stored).token));
+    const check = () => {
+      const stored = sessionStorage.getItem("user");
+      setIsLoggedIn(!!(stored && JSON.parse(stored).token));
+    };
+    check();
+    window.addEventListener("plant-mate-login", check);
+    window.addEventListener("plant-mate-logout", check);
+    return () => {
+      window.removeEventListener("plant-mate-login", check);
+      window.removeEventListener("plant-mate-logout", check);
+    };
   }, []);
 
   function handleAuthClose() {
@@ -337,6 +346,25 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
       )}
       <div className="relative">
         <img src={plant.image} alt={plant.name} className={imgClass} style={{ pointerEvents: "none" }} />
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={revealed ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.4, delay: nameDelay + 0.6 }}
+        >
+          <span
+            className="pill-pulse inline-flex items-center gap-1 px-2.5 py-[3px] rounded-full border font-comic font-semibold"
+            style={{
+              fontSize: "13px",
+              color: darkMode ? "#65F0CD" : "#ffffff",
+              borderColor: darkMode ? "rgba(101,240,205,0.5)" : "rgba(26,98,65,0.8)",
+              background: darkMode ? "rgba(15,10,40,0.55)" : "#1A6241",
+              backdropFilter: "blur(4px)",
+            }}
+          >
+            explore
+          </span>
+        </motion.div>
       </div>
 
       {/* Name + score below the image */}
@@ -394,6 +422,7 @@ function DesktopPlantCard({ plant, score, revealed, traitName, nameDelay, isCent
           ))}
         </div>
       )}
+
     </motion.div>
   );
 }
@@ -648,7 +677,12 @@ export default function Results() {
                     <div className="h-full rounded-full bg-[#F4C842]" style={{ width: `${centerScore}%` }} />
                   </div>
                 </div>
-                <img src={centerPlant.image} alt={centerPlant.name} className="mt-4 h-[42vh] w-auto object-contain" />
+                <div className="relative mt-4">
+                  <img src={centerPlant.image} alt={centerPlant.name} className="h-[42vh] w-auto object-contain" />
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="pill-pulse inline-flex items-center gap-1 px-2.5 py-[3px] rounded-full border font-comic font-semibold" style={{ fontSize: "12px", color: darkMode ? "#65F0CD" : "#1A6241", borderColor: darkMode ? "rgba(101,240,205,0.5)" : "rgba(26,98,65,0.5)", background: darkMode ? "rgba(15,10,40,0.55)" : "rgba(255,255,255,0.6)", backdropFilter: "blur(4px)" }}>explore</span>
+                  </div>
+                </div>
               </button>
 
               <div className="flex gap-8 justify-center w-full">
@@ -665,7 +699,12 @@ export default function Results() {
                           <div className="h-full rounded-full bg-[#65F0CD]/55" style={{ width: `${sc}%` }} />
                         </div>
                       </div>
-                      <img src={plant.image} alt={plant.name} className="mt-3 h-[28vh] w-auto object-contain" />
+                      <div className="relative mt-3">
+                        <img src={plant.image} alt={plant.name} className="h-[28vh] w-auto object-contain" />
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <span className="pill-pulse inline-flex items-center gap-1 px-2.5 py-[3px] rounded-full border font-comic font-semibold" style={{ fontSize: "12px", color: darkMode ? "#65F0CD" : "#1A6241", borderColor: darkMode ? "rgba(101,240,205,0.5)" : "rgba(26,98,65,0.5)", background: darkMode ? "rgba(15,10,40,0.55)" : "rgba(255,255,255,0.6)", backdropFilter: "blur(4px)" }}>explore</span>
+                        </div>
+                      </div>
                     </button>
                   );
                 })}
@@ -697,6 +736,9 @@ export default function Results() {
                           alt={plant.name}
                           className={`h-[340px] w-auto object-contain${!hasDiscoveredPlant ? (i === 0 ? (darkMode ? " plant-pulse" : " plant-pulse-light") : (darkMode ? " plant-pulse-secondary" : " plant-pulse-secondary-light")) : ""}`}
                         />
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <span className="pill-pulse inline-flex items-center gap-1 px-4 py-1.5 rounded-full border-2 font-comic font-semibold" style={{ fontSize: "15px", color: darkMode ? "#65F0CD" : "#ffffff", borderColor: darkMode ? "rgba(101,240,205,0.5)" : "rgba(26,98,65,0.8)", background: darkMode ? "rgba(15,10,40,0.55)" : "#1A6241", backdropFilter: "blur(4px)" }}>explore</span>
+                        </div>
                       </div>
                       <div className="w-[180px] mt-2">
                         <div className="flex justify-between mb-0.5">
@@ -753,8 +795,15 @@ export default function Results() {
       <AnimatePresence>
         {tappedPlant && (
           <>
-            {/* Invisible click-catcher - no colour, just captures clicks anywhere to dismiss */}
-            <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setTappedPlant(null)} />
+            {/* Backdrop - dark overlay on desktop, transparent on mobile (bottom sheet covers it) */}
+            <motion.div
+              className="fixed inset-0 z-40 bg-transparent lg:bg-black/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setTappedPlant(null)}
+            />
 
             {/* Mobile + tablet: bottom sheet */}
             <motion.div

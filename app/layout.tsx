@@ -1,7 +1,6 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import ClientProviders from "./ClientProviders";
-import DevPanel from "../components/DevPanel";
 import { Akaya_Kanadaka } from "next/font/google";
 
 const akayaKanadaka = Akaya_Kanadaka({
@@ -11,8 +10,21 @@ const akayaKanadaka = Akaya_Kanadaka({
 });
 
 export const metadata = {
-  title: "PlantMate",
-  description: "Matching people with plants",
+  metadataBase: new URL("https://plant-mate.netlify.app"),
+  title: {
+    default: "PlantMate+ | Find Your Perfect Plant Match",
+    template: "%s | PlantMate+",
+  },
+  description: "PlantMate+ matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just plants you'll actually keep alive.",
+  openGraph: {
+    siteName: "PlantMate+",
+    images: [{ url: "/images/og-image.png", width: 1200, height: 630, alt: "PlantMate+" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/images/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -20,7 +32,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className={akayaKanadaka.variable}>
       <body>
         <ClientProviders>{children}</ClientProviders>
-        <DevPanel />
       </body>
     </html>
   );

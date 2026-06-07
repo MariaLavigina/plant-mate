@@ -47,7 +47,10 @@ const BADGE_CONFIG: Record<Badge, { label: string; message: string; range: strin
 };
 
 function pickRandom(arr: Question[], n: number): Question[] {
-  return [...arr].sort(() => Math.random() - 0.5).slice(0, n);
+  return [...arr]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, n)
+    .map(q => ({ ...q, choices: [...q.choices].sort(() => Math.random() - 0.5) }));
 }
 
 function getBadge(score: number): Badge {

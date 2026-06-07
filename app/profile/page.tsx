@@ -123,7 +123,7 @@ export default function ProfilePage() {
                 ? "linear-gradient(to bottom, rgba(33,14,74,0.4) 0%, rgba(33,14,74,1) 100%)"
                 : "linear-gradient(to bottom, rgba(244,251,240,0.4) 0%, rgba(244,251,240,1) 100%)",
             }} />
-            <div className="relative px-6 sm:px-12 pt-20 lg:pt-20 pb-6">
+            <div className="relative px-6 sm:px-12 pt-[72px] sm:pt-20 pb-4 sm:pb-6">
               <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.15 }}>
                 <p className={`font-comic text-xs uppercase tracking-widest mb-1 ${sub}`}>Your profile</p>
                 <h1 className={`font-heading leading-none ${heading}`} style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)" }}>
@@ -176,7 +176,7 @@ export default function ProfilePage() {
                 <div className="hidden sm:block w-px h-10 shrink-0 bg-white/15" />
 
                 {/* Stats */}
-                <div className="flex items-center gap-6 flex-wrap">
+                <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
                   {[
                     { label: "plays",     value: totalPlays },
                     { label: "avg score", value: avgScore },

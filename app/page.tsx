@@ -208,7 +208,7 @@ export default function Home() {
       <Navbar />
 
       {/* Desktop Layout */}
-      <div className="hidden md:flex relative px-6 md:px-12 lg:px-20 xl:px-28 2xl:px-36 flex-row items-center justify-center min-h-[calc(100vh-64px)]">
+      <div className="hidden md:flex relative px-6 md:px-12 lg:px-20 xl:px-24 2xl:px-28 flex-row items-center justify-center min-h-[calc(100vh-64px)] max-w-[1500px] mx-auto w-full">
         <div className="flex flex-col justify-center w-1/3 pr-6 z-10">
           <div className="max-w-md">
             {user?.first_name && (
@@ -220,11 +220,11 @@ export default function Home() {
               PlantMate+
             </h1>
 
-            <p className={`font-sans mb-3 leading-relaxed text-[clamp(1rem,2.2vw,1.4rem)] ${primaryText(darkMode)}`}>
+            <p className={`font-sans mb-3 leading-relaxed text-[clamp(0.85rem,1.7vw,1.15rem)] ${primaryText(darkMode)}`}>
               <span className="font-heading text-[1.4em]">PlantMate+</span> matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just plants you'll actually keep alive.
             </p>
 
-            <p className={`font-sans mb-6 leading-relaxed text-[clamp(1rem,2.2vw,1.4rem)] ${primaryText(darkMode)}`}>
+            <p className={`font-sans mb-6 leading-relaxed text-[clamp(0.85rem,1.7vw,1.15rem)] ${primaryText(darkMode)}`}>
               Take our quick quiz and meet your perfect plant match.
             </p>
 
@@ -353,14 +353,14 @@ export default function Home() {
         style={{ opacity: isAnimating ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}
       >
         {user?.first_name && (
-          <p className={`font-heading text-4xl sm:text-5xl mb-1 mt-10 ${darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}`}>
+          <p className={`font-heading text-3xl sm:text-4xl mb-1 mt-10 ${darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}`}>
             Hi, {user.first_name}
           </p>
         )}
-        <h1 className={`font-heading text-5xl sm:text-6xl lg:text-7xl mb-6 ${user?.first_name ? "" : "mt-10"} ${primaryText(darkMode)}`}>
+        <h1 className={`font-heading text-4xl sm:text-5xl lg:text-7xl mb-6 ${user?.first_name ? "" : "mt-10"} ${primaryText(darkMode)}`}>
           PlantMate+
         </h1>
-        <p className={`font-sans text-xl sm:text-2xl mb-8 ${primaryText(darkMode)}`}>
+        <p className={`font-sans text-base sm:text-lg mb-8 ${primaryText(darkMode)}`}>
           <span className="font-heading text-[1.4em]">PlantMate+</span> matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just plants you'll actually keep alive. Take our quick quiz and meet your perfect plant match.
         </p>
       </div>

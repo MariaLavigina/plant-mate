@@ -10,11 +10,6 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Me" },
   { href: "/contact", label: "Contact Me" },
-  { href: "/quiz", label: "Plant Match" },
-  { href: "/quiz/badge", label: "Play & Win" },
-  { href: "/gallery", label: "Gallery", desktopOnly: true },
-  { href: "/gallery2", label: "Gallery 2", desktopOnly: true },
-  { href: "/gallery3", label: "Gallery 3", desktopOnly: true },
 ];
 
 const MOBILE_LINKS = NAV_LINKS.filter(l => !l.desktopOnly);
@@ -81,7 +76,7 @@ export default function Navbar() {
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 ${darkMode ? "bg-gradient-to-b from-[#210E4A]/90 to-transparent backdrop-blur-sm" : "bg-white/70 backdrop-blur-md"}`}>
-        <div className="pl-8 md:pl-12 lg:pl-16 xl:pl-20 2xl:pl-28 pr-4 sm:pr-6 lg:pr-8">
+        <div className="pl-8 md:pl-12 lg:pl-16 xl:pl-20 2xl:pl-28 pr-4 sm:pr-6 lg:pr-8 max-w-[1600px] mx-auto">
           <div className="flex items-center h-16">
 
             {/* Mobile/Tablet Hamburger */}

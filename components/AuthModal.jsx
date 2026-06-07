@@ -2,7 +2,6 @@
 import { useState, useEffect, useContext } from "react";
 import { DarkModeContext } from "../app/ClientProviders";
 import { USER_KEY, QUIZ_RESULTS_KEY } from "../lib/constants";
-import { primaryButton } from "../lib/styles";
 
 export default function AuthModal({ type = "login", onClose, reason }) {
   const { darkMode } = useContext(DarkModeContext);
@@ -28,6 +27,17 @@ export default function AuthModal({ type = "login", onClose, reason }) {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+
+    if (!email || !password) {
+      setMessage("Please fill in all fields.");
+      setLoading(false);
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setMessage("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
 
     const base = process.env.NEXT_PUBLIC_API_URL;
     const url = type === "login" ? `${base}/login` : `${base}/register`;
@@ -127,7 +137,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
               {type === "register" && (
                 <>
                   <input placeholder="First Name" value={name} onChange={(e) => setName(e.target.value)} required className={inputClass} />
@@ -183,7 +193,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
           <>
             <h2 className="text-2xl font-bold mb-6 text-center font-caveat">Reset Password</h2>
 
-            <form onSubmit={handleReset} className="flex flex-col gap-4">
+            <form onSubmit={handleReset} noValidate className="flex flex-col gap-4">
               <input placeholder="Enter your email" type="email" value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} required className={inputClass} />
               <button type="submit" disabled={loading} className={buttonClass}>
                 {loading ? "Sending..." : "Send Reset Link"}

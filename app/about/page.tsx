@@ -55,7 +55,7 @@ export default function About() {
     <div className={`relative min-h-screen overflow-x-hidden ${pageBg(darkMode)}`}>
       <Navbar />
 
-      <div className="flex flex-col items-center min-h-screen pt-16 pb-20 px-6">
+      <div className="flex flex-col items-center min-h-screen pt-16 pb-20 px-6 max-w-6xl mx-auto w-full">
 
         {/* Heading */}
         <motion.h1
