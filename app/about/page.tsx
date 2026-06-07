@@ -68,7 +68,7 @@ export default function About() {
         </motion.h1>
 
         <motion.p
-          className={`font-comic text-center whitespace-nowrap text-[clamp(1rem,1.8vw,1.3rem)] mb-10 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/55"}`}
+          className={`font-comic text-center px-4 text-[clamp(1rem,1.8vw,1.3rem)] mb-10 ${darkMode ? "text-white/45" : "text-[#1E3D2A]/55"}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.25 }}

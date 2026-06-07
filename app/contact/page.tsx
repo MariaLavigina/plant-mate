@@ -64,10 +64,10 @@ export default function Contact() {
   }, []);
 
   return (
-    <div className={`relative min-h-screen ${pageBg(darkMode)}`}>
+    <div className={`relative h-screen overflow-hidden ${pageBg(darkMode)}`}>
       <Navbar />
 
-      <div className="flex min-h-screen md:pl-16 max-w-[1400px] mx-auto w-full">
+      <div className="flex h-full md:pl-16 max-w-[1400px] mx-auto w-full">
         {/* Left - animated illustration, desktop only */}
         <div
           className="hidden md:block relative w-2/5 overflow-hidden"
@@ -132,14 +132,14 @@ export default function Contact() {
         </div>
 
         {/* Right - contact form */}
-        <div className="flex-1 flex items-center justify-center px-6 sm:px-10 pt-24 pb-10 md:py-0">
+        <div className="flex-1 flex items-center justify-center px-6 sm:px-10 pt-20 pb-4 md:py-0">
           <div className="w-full max-w-md">
             {!submitted && (
               <>
                 <h1 className={`text-[clamp(2rem,3vw,2.75rem)] font-caveat mb-2 ${primaryText(darkMode)}`}>
                   Get in Touch
                 </h1>
-                <p className={`text-sm mb-10 ${primaryText(darkMode)} opacity-60`}>
+                <p className={`text-sm mb-4 sm:mb-10 ${primaryText(darkMode)} opacity-60`}>
                   Drop me a message - I&apos;d love to hear from you!
                 </p>
               </>
@@ -155,7 +155,7 @@ export default function Contact() {
                 </p>
               </div>
             ) : (
-              <form name="contact" data-netlify="true" netlify-honeypot="bot-field" className="flex flex-col gap-8" onSubmit={handleSubmit}>
+              <form name="contact" data-netlify="true" netlify-honeypot="bot-field" className="flex flex-col gap-4 sm:gap-8" onSubmit={handleSubmit}>
                 <input type="hidden" name="form-name" value="contact" />
                 <input type="hidden" name="bot-field" />
 
@@ -204,7 +204,7 @@ export default function Contact() {
                 {/* Message */}
                 <div className="relative">
                   <textarea
-                    rows={4}
+                    rows={3}
                     value={form.message}
                     onChange={e => setForm(s => ({ ...s, message: e.target.value }))}
                     onFocus={() => setFocused(s => ({ ...s, message: true }))}

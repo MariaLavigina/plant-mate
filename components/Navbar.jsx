@@ -146,7 +146,7 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="lg:hidden fixed inset-0 z-[60] flex flex-col"
+            className="lg:hidden fixed inset-0 z-[60] flex flex-col overflow-hidden"
             style={{ background: darkMode ? "linear-gradient(160deg, #210E4A 0%, #5A1B27 100%)" : "linear-gradient(160deg, #A75B2B 0%, #F4E5FB 100%)" }}
           >
             {/* Top bar */}
@@ -164,42 +164,29 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Nav links */}
-            <div className="flex flex-col flex-1 justify-center px-8 gap-1 pb-8">
-              {MOBILE_LINKS.map(({ href, label }, i) => (
-                <motion.div
-                  key={href}
-                  initial={{ opacity: 0, x: -24 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.07 + 0.15, duration: 0.3, ease: "easeOut" }}
-                >
-                  <Link
-                    href={href}
-                    onClick={() => setIsOpen(false)}
-                    className={`block font-heading py-3 transition-colors duration-200 ${
-                      darkMode ? "text-white/80 hover:text-[#65F0CD]" : "text-[#210E4A]/80 hover:text-[#210E4A]"
-                    }`}
-                    style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}
-                  >
-                    {label}
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-
             {/* Auth section */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.3 }}
-              className={`px-8 py-8 shrink-0 border-t ${darkMode ? "border-white/10" : "border-[#210E4A]/15"}`}
+              transition={{ delay: 0.15, duration: 0.3 }}
+              className={`px-8 py-4 shrink-0 border-b ${darkMode ? "border-white/10" : "border-[#210E4A]/15"}`}
             >
               {user ? (
                 <div className="flex items-center justify-between">
-                  <Link href="/profile" onClick={() => setIsOpen(false)} className={welcomeClass}>
-                    Welcome, {user.first_name}
+                  <Link href="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-3">
+                    <img
+                      src={darkMode ? "/images/darkMode-flora.svg" : "/images/lightMode-flora.svg"}
+                      alt=""
+                      className="w-9 h-9 shrink-0"
+                    />
+                    <span className={`font-heading text-2xl font-semibold ${darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}`}>
+                      Welcome, {user.first_name}
+                    </span>
                   </Link>
-                  <button onClick={() => { handleLogout(); setIsOpen(false); }} className={signOutClass}>
+                  <button
+                    onClick={() => { handleLogout(); setIsOpen(false); }}
+                    className={`font-heading text-sm px-4 py-1.5 rounded-full border transition-all duration-200 ${darkMode ? "border-white/30 text-white/70 hover:border-white hover:text-white" : "border-[#210E4A]/40 text-[#210E4A]/70 hover:border-[#210E4A] hover:text-[#210E4A]"}`}
+                  >
                     Sign out
                   </button>
                 </div>
@@ -228,6 +215,29 @@ export default function Navbar() {
                 </div>
               )}
             </motion.div>
+
+            {/* Nav links */}
+            <div className="flex flex-col flex-1 justify-start px-8 gap-1 pt-6">
+              {MOBILE_LINKS.map(({ href, label }, i) => (
+                <motion.div
+                  key={href}
+                  initial={{ opacity: 0, x: -24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.07 + 0.25, duration: 0.3, ease: "easeOut" }}
+                >
+                  <Link
+                    href={href}
+                    onClick={() => setIsOpen(false)}
+                    className={`block font-heading py-3 transition-colors duration-200 ${
+                      darkMode ? "text-white/80 hover:text-[#65F0CD]" : "text-[#210E4A]/80 hover:text-[#210E4A]"
+                    }`}
+                    style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}
+                  >
+                    {label}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -162,7 +162,7 @@ export default function BadgeQuiz() {
   }
 
   function tileBase() {
-    return "relative flex flex-col items-start justify-between p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 text-left w-full aspect-square lg:aspect-auto lg:h-[min(18vh,130px)]";
+    return "relative flex flex-col items-start justify-between p-3 sm:p-5 rounded-2xl border-2 transition-all duration-300 text-left w-full h-[90px] sm:aspect-square lg:aspect-auto lg:h-[min(18vh,130px)]";
   }
 
   function tileStyle(choice: string) {
@@ -197,10 +197,10 @@ export default function BadgeQuiz() {
   // ── INTRO ────────────────────────────────────────────────────────────────────
   if (phase === "intro") {
     return (
-      <div className={`min-h-screen flex flex-col ${bg}`}>
+      <div className={`h-screen overflow-hidden flex flex-col ${bg}`}>
         <Navbar />
 
-        <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center px-6 py-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
@@ -208,7 +208,7 @@ export default function BadgeQuiz() {
             className="w-full max-w-lg flex flex-col items-center"
           >
             {/* Three badges */}
-            <div className="flex items-end justify-center gap-10 mb-10">
+            <div className="flex items-end justify-center gap-4 sm:gap-10 mb-5 sm:mb-10">
               {(["bronze", "gold", "silver"] as Badge[]).map((b, i) => (
                 <motion.div
                   key={b}
@@ -224,21 +224,21 @@ export default function BadgeQuiz() {
                       className="absolute rounded-full blur-md"
                       style={{
                         background: BADGE_GLOW[b],
-                        width:  b === "gold" ? "4rem" : "2.8rem",
-                        height: b === "gold" ? "4rem" : "2.8rem",
+                        width:  b === "gold" ? "3rem" : "2rem",
+                        height: b === "gold" ? "3rem" : "2rem",
                       }}
                     />
                     <img
                       src={`/images/${b}-badge.svg`}
                       alt={b}
-                      className={`relative drop-shadow-xl ${b === "gold" ? "w-36 h-36" : "w-24 h-24 opacity-80"}`}
+                      className={`relative drop-shadow-xl ${b === "gold" ? "w-24 h-24 sm:w-36 sm:h-36" : "w-16 h-16 sm:w-24 sm:h-24 opacity-80"}`}
                       style={b === "silver" ? { filter: "brightness(1.4) contrast(1.1)" } : undefined}
                     />
                   </div>
-                  <span className="font-comic text-sm font-bold capitalize" style={{ color: BADGE_COLOR[b] }}>
+                  <span className="font-comic text-xs sm:text-sm font-bold capitalize" style={{ color: BADGE_COLOR[b] }}>
                     {BADGE_CONFIG[b].label}
                   </span>
-                  <span className="font-comic text-[11px] uppercase tracking-widest text-white/55">
+                  <span className="font-comic text-[10px] sm:text-[11px] uppercase tracking-widest text-white/55">
                     {BADGE_CONFIG[b].range}
                   </span>
                 </motion.div>
@@ -266,13 +266,13 @@ export default function BadgeQuiz() {
                 </span>
               </motion.div>
             )}
-            {!bestBadge && <div className="mb-12" />}
+            {!bestBadge && <div className="mb-6 sm:mb-12" />}
 
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               onClick={startQuiz}
-              className="w-full max-w-xs font-comic text-sm uppercase tracking-[0.2em] px-12 py-4 rounded-full font-bold shadow-2xl transition-colors duration-300 bg-[#65F0CD] text-[#1E3D2A] hover:bg-[#4FD4B3]"
+              className="w-full max-w-xs font-comic text-sm uppercase tracking-[0.2em] px-12 py-3 sm:py-4 rounded-full font-bold shadow-2xl transition-colors duration-300 bg-[#65F0CD] text-[#1E3D2A] hover:bg-[#4FD4B3]"
             >
               Start
             </motion.button>
@@ -285,7 +285,7 @@ export default function BadgeQuiz() {
   // ── COUNTDOWN ────────────────────────────────────────────────────────────────
   if (phase === "countdown") {
     return (
-      <div className={`min-h-screen overflow-hidden flex flex-col items-center justify-center ${bg}`}>
+      <div className={`h-screen overflow-hidden flex flex-col items-center justify-center ${bg}`}>
         <Navbar />
         <div className="relative w-[96vw] h-[96vw] sm:w-[80vw] sm:h-[80vw] max-w-[800px] max-h-[800px]">
           {/* Big flower — fills container, rotates one way */}
@@ -332,9 +332,9 @@ export default function BadgeQuiz() {
     const cfg = BADGE_CONFIG[badge];
     return (
       <>
-      <div className={`min-h-screen flex flex-col ${bg}`}>
+      <div className={`h-screen overflow-hidden flex flex-col ${bg}`}>
         <Navbar />
-        <div className="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center px-6 py-4 sm:py-16 text-center">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -346,20 +346,20 @@ export default function BadgeQuiz() {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
-              className="relative flex items-center justify-center mb-6"
+              className="relative flex items-center justify-center mb-3 sm:mb-6"
             >
               {/* Glow ring */}
               <motion.div
                 animate={{ scale: [1, 1.25, 1], opacity: [0.45, 0.75, 0.45] }}
                 transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
-                className="absolute w-28 h-28 rounded-full blur-2xl"
+                className="absolute w-20 h-20 sm:w-28 sm:h-28 rounded-full blur-2xl"
                 style={{ background: BADGE_GLOW[badge] }}
               />
               {/* Badge image */}
               <motion.img
                 src={`/images/${badge}-badge.svg`}
                 alt={badge}
-                className="relative w-28 h-28 drop-shadow-2xl"
+                className="relative w-20 h-20 sm:w-28 sm:h-28 drop-shadow-2xl"
                 initial={{ scale: 0, rotate: -20 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: "spring", stiffness: 300, damping: 13, delay: 0.25 }}
@@ -373,7 +373,7 @@ export default function BadgeQuiz() {
             <p className="font-caveat font-bold text-[#65F0CD] mb-1" style={{ fontSize: "clamp(2rem,8vw,3rem)" }}>
               {score} <span className="text-white/30">/ 10</span>
             </p>
-            <p className="font-comic text-sm max-w-xs mx-auto mb-6 text-white/50">
+            <p className="font-comic text-sm max-w-xs mx-auto mb-3 sm:mb-6 text-white/50">
               {cfg.message}
             </p>
 
@@ -383,7 +383,7 @@ export default function BadgeQuiz() {
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.1, duration: 0.4 }}
-                className="mb-8"
+                className="mb-3 sm:mb-8"
               >
                 <Link
                   href="/profile"
@@ -413,7 +413,7 @@ export default function BadgeQuiz() {
               </div>
             )}
 
-            <div className="flex items-center gap-5 mt-8">
+            <div className="flex items-center gap-5 mt-4 sm:mt-8">
               <motion.button
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
@@ -463,10 +463,10 @@ export default function BadgeQuiz() {
 
   // ── QUIZ ─────────────────────────────────────────────────────────────────────
   return (
-    <div className={`min-h-screen lg:h-screen flex flex-col lg:overflow-hidden ${bg}`}>
+    <div className={`h-screen overflow-hidden flex flex-col ${bg}`}>
       <Navbar />
 
-      <div className="flex-1 flex flex-col relative px-4 sm:px-8 pt-20 pb-6 lg:pt-4 lg:pb-4 max-w-2xl w-full mx-auto justify-start lg:justify-center lg:overflow-hidden">
+      <div className="flex-1 flex flex-col relative px-4 sm:px-8 pt-20 pb-4 lg:pt-4 lg:pb-4 max-w-2xl w-full mx-auto justify-start lg:justify-center overflow-hidden">
 
 
         {/* Flower progress garden */}
@@ -487,7 +487,7 @@ export default function BadgeQuiz() {
                   key={i}
                   src={darkMode ? "/images/darkMode-flora.svg" : "/images/lightMode-flora.svg"}
                   alt=""
-                  className="w-8 h-8 sm:w-9 sm:h-9"
+                  className="w-6 h-6 sm:w-9 sm:h-9"
                   animate={{
                     opacity: bloomed ? 1 : 0.15,
                     filter: bloomed

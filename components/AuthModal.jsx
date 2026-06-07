@@ -108,8 +108,9 @@ export default function AuthModal({ type = "login", onClose, reason }) {
   }`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className={`w-[92%] max-w-md rounded-2xl shadow-2xl p-8 relative ${
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm">
+      <div className="flex min-h-full items-center justify-center p-4">
+      <div className={`w-full max-w-md rounded-2xl shadow-2xl p-8 relative ${
         darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#1E3D2A]"
       }`}>
         <button
@@ -133,7 +134,8 @@ export default function AuthModal({ type = "login", onClose, reason }) {
                   ? "bg-[#65F0CD]/10 text-[#65F0CD] border border-[#65F0CD]/20"
                   : "bg-[#1E3D2A]/8 text-[#1E3D2A] border border-[#1E3D2A]/20"
               }`}>
-                🏆 Create your free account to earn your plant badge and save your results!
+                <img src="/images/flora-outside.svg" alt="" className="inline-block w-6 h-6 mr-1 align-middle" />
+                Create your free account to earn your plant badge and save your results!
               </div>
             )}
 
@@ -207,6 +209,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
             </p>
           </>
         )}
+      </div>
       </div>
     </div>
   );
