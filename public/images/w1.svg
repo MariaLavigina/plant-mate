@@ -1,9 +1,1 @@
-<svg width="2721" height="2022" viewBox="0 0 2721 2022" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path opacity="0.4" d="M0 236.139C0 236.139 248.739 811.258 1360.5 330.399C2472.26 -150.459 2721 35.2825 2721 35.2825V1844.05C2721 1844.05 2407.56 1443.66 1360.5 1844.05C313.444 2244.44 0 1844.05 0 1844.05V236.139Z" fill="url(#paint0_linear_1094_482)" fill-opacity="0.6"/>
-<defs>
-<linearGradient id="paint0_linear_1094_482" x1="1360.5" y1="-52.256" x2="1360.5" y2="1874.79" gradientUnits="userSpaceOnUse">
-<stop stop-color="#00EEFF"/>
-<stop offset="1" stop-color="#004C5B"/>
-</linearGradient>
-</defs>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="2721" height="2022" fill="none" viewBox="0 0 2721 2022"><path fill="url(#a)" fill-opacity=".6" d="M0 236.139s248.739 575.119 1360.5 94.26C2472.26-150.459 2721 35.283 2721 35.283V1844.05s-313.44-400.39-1360.5 0c-1047.056 400.39-1360.5 0-1360.5 0z" opacity=".4"/><defs><linearGradient id="a" x1="1360.5" x2="1360.5" y1="-52.256" y2="1874.79" gradientUnits="userSpaceOnUse"><stop stop-color="#0ef"/><stop offset="1" stop-color="#004c5b"/></linearGradient></defs></svg>

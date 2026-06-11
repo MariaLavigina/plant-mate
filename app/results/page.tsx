@@ -830,6 +830,7 @@ export default function Results() {
                 <img
                   src={tappedPlant.image.replace(".webp", "-rightPanel.webp")}
                   alt={tappedPlant.name}
+                  loading="lazy"
                   className="w-full object-contain rounded-xl"
                   style={{ height: "60vw", maxHeight: "360px" }}
                 />
@@ -862,6 +863,7 @@ export default function Results() {
                 <img
                   src={tappedPlant.image.replace(".webp", "-rightPanel.webp")}
                   alt={tappedPlant.name}
+                  loading="lazy"
                   className="w-full h-full object-contain rounded-xl"
                 />
               </div>

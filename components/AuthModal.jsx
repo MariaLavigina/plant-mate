@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
+import { createPortal } from "react-dom";
 import { DarkModeContext } from "../app/ClientProviders";
 import { USER_KEY, QUIZ_RESULTS_KEY } from "../lib/constants";
 
@@ -107,15 +108,21 @@ export default function AuthModal({ type = "login", onClose, reason }) {
     darkMode ? "text-[#65F0CD] hover:text-white" : "text-[#1E3D2A]/70 hover:text-[#1E3D2A]"
   }`;
 
-  return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm">
-      <div className="flex min-h-full items-center justify-center p-4">
-      <div className={`w-full max-w-md rounded-2xl shadow-2xl p-8 relative ${
-        darkMode ? "bg-[#210E4A] text-white" : "bg-white text-[#1E3D2A]"
-      }`}>
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  if (!mounted) return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[200]"
+      style={{ background: darkMode ? "linear-gradient(160deg, #210E4A 0%, #5A1B27 100%)" : "linear-gradient(160deg, #F4FBF0 0%, #C8DEBA 100%)" }}
+    >
+      <div className="h-full overflow-y-auto">
+      <div className="min-h-full flex items-center justify-center p-6 py-20">
+      <div className={`w-full max-w-md relative`}>
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 text-xl transition hover:scale-110 ${
+          className={`fixed top-4 right-4 z-10 text-xl transition hover:scale-110 ${
             darkMode ? "text-white/50 hover:text-white" : "text-[#1E3D2A]/40 hover:text-[#1E3D2A]"
           }`}
         >
@@ -124,7 +131,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
 
         {!showReset ? (
           <>
-            <h2 className="text-2xl font-bold mb-4 text-center font-caveat">
+            <h2 className={`text-3xl font-bold mb-6 text-center font-caveat ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
               {type === "login" ? "Welcome Back" : "Create Account"}
             </h2>
 
@@ -193,7 +200,7 @@ export default function AuthModal({ type = "login", onClose, reason }) {
           </>
         ) : (
           <>
-            <h2 className="text-2xl font-bold mb-6 text-center font-caveat">Reset Password</h2>
+            <h2 className={`text-3xl font-bold mb-6 text-center font-caveat ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>Reset Password</h2>
 
             <form onSubmit={handleReset} noValidate className="flex flex-col gap-4">
               <input placeholder="Enter your email" type="email" value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} required className={inputClass} />
@@ -211,6 +218,8 @@ export default function AuthModal({ type = "login", onClose, reason }) {
         )}
       </div>
       </div>
-    </div>
+      </div>
+    </div>,
+    document.body
   );
 }

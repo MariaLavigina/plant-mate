@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import AuthModal from "./AuthModal";
 import RegisterWelcomeAnimation from "./RegisterWelcomeAnimation";
 import { DarkModeContext } from "../app/ClientProviders";
 import { USER_KEY, QUIZ_RESULTS_KEY } from "../lib/constants";
@@ -29,8 +29,8 @@ function DarkModeIcon({ darkMode }) {
 
 export default function Navbar() {
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [authModal, setAuthModal] = useState(null);
   const [user, setUser] = useState(null);
   const [toast, setToast] = useState(null);
   const [welcomeAnim, setWelcomeAnim] = useState(null);
@@ -39,6 +39,15 @@ export default function Navbar() {
     localStorage.removeItem(USER_KEY);
     const stored = sessionStorage.getItem(USER_KEY);
     if (stored) setUser(JSON.parse(stored));
+
+    // Fire welcome animation after redirect from auth page
+    const justAuthed = sessionStorage.getItem("plant-mate-just-authed");
+    if (justAuthed && stored) {
+      const parsed = JSON.parse(stored);
+      const isRegister = justAuthed === "register";
+      sessionStorage.removeItem("plant-mate-just-authed");
+      setWelcomeAnim(parsed.first_name);
+    }
 
     const onLogin = () => {
       const s = sessionStorage.getItem(USER_KEY);
@@ -58,22 +67,6 @@ export default function Navbar() {
     const t = setTimeout(() => setToast(null), 3500);
     return () => clearTimeout(t);
   }, [toast]);
-
-  const handleAuthClose = () => {
-    const type = authModal;
-    setAuthModal(null);
-    const stored = sessionStorage.getItem(USER_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      setUser(parsed);
-      window.dispatchEvent(new Event("plant-mate-login"));
-      setToast(type === "register"
-        ? `Welcome, ${parsed.first_name}! Account created.`
-        : `Welcome back, ${parsed.first_name}!`
-      );
-      setWelcomeAnim(parsed.first_name);
-    }
-  };
 
   const handleLogout = () => {
     sessionStorage.removeItem(USER_KEY);
@@ -135,8 +128,8 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
-                    <button onClick={() => setAuthModal("register")} className={authButtonClass}>Register</button>
-                    <button onClick={() => setAuthModal("login")} className={authButtonClass}>Login</button>
+                    <button onClick={() => router.push("/auth?type=register")} className={authButtonClass}>Register</button>
+                    <button onClick={() => router.push("/auth?type=login")} className={authButtonClass}>Login</button>
                   </>
                 )}
                 <button onClick={toggleDarkMode} className={`focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
@@ -222,7 +215,7 @@ export default function Navbar() {
               ) : (
                 <div className="flex gap-3">
                   <button
-                    onClick={() => { setAuthModal("register"); setIsOpen(false); }}
+                    onClick={() => { router.push("/auth?type=register"); setIsOpen(false); }}
                     className={`flex-1 py-3 rounded-full font-heading text-sm font-bold tracking-wide border-2 transition-all duration-200 ${
                       darkMode
                         ? "border-[#65F0CD] text-[#65F0CD] hover:bg-[#65F0CD] hover:text-[#210E4A]"
@@ -232,7 +225,7 @@ export default function Navbar() {
                     Register
                   </button>
                   <button
-                    onClick={() => { setAuthModal("login"); setIsOpen(false); }}
+                    onClick={() => { router.push("/auth?type=login"); setIsOpen(false); }}
                     className={`flex-1 py-3 rounded-full font-heading text-sm font-bold tracking-wide border-2 transition-all duration-200 ${
                       darkMode
                         ? "border-white/30 text-white/60 hover:border-white/60 hover:text-white"
@@ -289,8 +282,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {authModal && <AuthModal type={authModal} onClose={handleAuthClose} />}
 
       {welcomeAnim && (
         <RegisterWelcomeAnimation
