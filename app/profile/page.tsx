@@ -3,6 +3,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { USER_KEY, QUIZ_RESULTS_KEY } from "../../lib/constants";
 import { motion } from "motion/react";
 import Navbar from "../../components/Navbar";
 import { DarkModeContext } from "../ClientProviders";
@@ -79,6 +80,13 @@ export default function ProfilePage() {
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
+  const handleLogout = () => {
+    sessionStorage.removeItem(USER_KEY);
+    localStorage.removeItem(QUIZ_RESULTS_KEY);
+    window.dispatchEvent(new Event("plant-mate-logout"));
+    router.replace("/");
+  };
+
   const matchedPlant = profile?.matched_plant
     ? (plants as Plant[]).find(p => p.name === profile.matched_plant) ?? null
     : null;
@@ -113,6 +121,16 @@ export default function ProfilePage() {
 
           {/* ── Hero ── */}
           <div className="relative w-full overflow-hidden shrink-0" style={{ minHeight: 160 }}>
+            <button
+              onClick={handleLogout}
+              className={`md:hidden absolute top-[94px] right-4 z-10 font-comic text-sm px-4 py-1.5 rounded-full border transition-all duration-200 ${
+                darkMode
+                  ? "border-white/25 text-white/45 hover:border-white/60 hover:text-white/80"
+                  : "border-[#1E3D2A]/25 text-[#1E3D2A]/50 hover:border-[#1E3D2A]/60 hover:text-[#1E3D2A]/80"
+              }`}
+            >
+              Sign out
+            </button>
             {matchedPlant && (
               <img src={matchedPlant.image} alt="" aria-hidden
                 className="absolute inset-0 w-full h-full object-cover object-center scale-125 blur-2xl opacity-20 pointer-events-none"
@@ -289,6 +307,19 @@ export default function ProfilePage() {
               </div>
             </motion.div>
 
+          </div>
+
+          <div className="hidden md:flex justify-center pb-8 shrink-0">
+            <button
+              onClick={handleLogout}
+              className={`font-comic text-sm px-6 py-2 rounded-full border transition-all duration-200 ${
+                darkMode
+                  ? "border-white/25 text-white/45 hover:border-white/60 hover:text-white/80"
+                  : "border-[#1E3D2A]/25 text-[#1E3D2A]/50 hover:border-[#1E3D2A]/60 hover:text-[#1E3D2A]/80"
+              }`}
+            >
+              Sign out
+            </button>
           </div>
           </div>
         </motion.div>

@@ -2,6 +2,7 @@
 
 import { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import Navbar from "../../components/Navbar";
 import { DarkModeContext } from "../ClientProviders";
@@ -116,14 +117,15 @@ export default function Quiz() {
       <div className={`flex flex-col h-[100dvh] overflow-hidden ${pageBg(darkMode)}`}>
         <Navbar />
 
-        <div className="flex flex-1 items-center justify-center px-3 sm:px-6 lg:px-8 py-3 sm:py-6 min-h-0">
-          <div className={`max-w-xl w-full rounded-2xl shadow-2xl border-2 p-5 sm:p-8 lg:p-10 ${
+        <div className="flex flex-1 items-start sm:items-center justify-center px-3 sm:px-6 lg:px-8 pt-20 sm:pt-6 pb-4 sm:pb-[clamp(0px,6vh,3rem)] min-h-0 overflow-y-auto">
+          <div className="max-w-xl w-full flex flex-col gap-3">
+          <div className={`w-full rounded-2xl shadow-2xl border-2 p-5 sm:p-8 lg:p-10 ${
             darkMode ? "bg-white/10 border-[#65F0CD]/30 backdrop-blur-md" : "bg-white/90 border-[#1E3D2A]/20"
           }`}>
 
             {/* Progress */}
             <div className="mb-4 sm:mb-6">
-              <h2 className={`text-sm sm:text-2xl font-bold mb-2 sm:mb-3 ${primaryText(darkMode)}`}>
+              <h2 className={`text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 font-heading ${primaryText(darkMode)}`}>
                 Question {currentQuestionIndex + 1} of {quizQuestions.length}
               </h2>
               <div className={`w-full h-2 sm:h-2.5 rounded-full ${darkMode ? "bg-white/10" : "bg-[#1E3D2A]/10"}`}>
@@ -135,7 +137,7 @@ export default function Quiz() {
             </div>
 
             {/* Question */}
-            <p className={`mb-4 sm:mb-6 text-sm sm:text-lg font-semibold leading-snug ${primaryText(darkMode)}`}>
+            <p className={`mb-4 sm:mb-6 text-xl sm:text-3xl font-heading font-normal leading-snug ${primaryText(darkMode)}`}>
               {currentQuestion.question}
             </p>
 
@@ -192,7 +194,18 @@ export default function Quiz() {
             </div>
 
           </div>
+
+          <div className="flex justify-center mt-10">
+            <Link href="/" className={`font-comic text-lg transition-colors duration-200 ${
+              darkMode ? "text-[#65F0CD] hover:text-[#65F0CD]/80" : "text-[#0F032B] hover:text-[#0F032B]/70"
+            }`}>
+              ← exit quiz
+            </Link>
+          </div>
+
+          </div>
         </div>
+
       </div>
     </>
   );

@@ -37,7 +37,7 @@ const TIMELINE = [
     date: "2023 – Present",
     label: "Postcode Lottery",
     sublabel: "Edinburgh Napier University",
-    text: "Working as a junior developer at Postcode Lottery and building full-stack projects from the ground up.",
+    text: "Working as a developer at Postcode Lottery and building full-stack projects from the ground up.",
   },
   {
     id: 6,

@@ -132,16 +132,13 @@ export default function Contact() {
         </div>
 
         {/* Right - contact form */}
-        <div className="flex-1 flex items-center justify-center px-6 sm:px-10 pt-20 pb-4 md:py-0">
+        <div className="flex-1 flex items-start md:items-center justify-center px-6 sm:px-10 pt-20 pb-4 md:py-0 md:overflow-y-auto md:max-h-full">
           <div className="w-full max-w-md">
             {!submitted && (
               <>
-                <h1 className={`text-[clamp(2rem,3vw,2.75rem)] font-caveat mb-2 ${primaryText(darkMode)}`}>
+                <h1 className={`text-[clamp(2rem,3vw,2.75rem)] font-caveat mb-2 ${darkMode ? "text-[#00D0FF]" : "text-[#210E4A]"}`}>
                   Get in Touch
                 </h1>
-                <p className={`text-sm mb-4 sm:mb-10 ${primaryText(darkMode)} opacity-60`}>
-                  Drop me a message - I&apos;d love to hear from you!
-                </p>
               </>
             )}
 
@@ -155,87 +152,102 @@ export default function Contact() {
                 </p>
               </div>
             ) : (
-              <form name="contact" data-netlify="true" netlify-honeypot="bot-field" className="flex flex-col gap-4 sm:gap-8" onSubmit={handleSubmit}>
+              <form name="contact" data-netlify="true" netlify-honeypot="bot-field" className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <input type="hidden" name="form-name" value="contact" />
                 <input type="hidden" name="bot-field" />
 
                 {/* Name */}
-                <div className="relative">
+                <div className="flex flex-col gap-1.5">
+                  <label className={`text-xs font-semibold uppercase tracking-widest ${darkMode ? "text-[#00D0FF]" : "text-[#210E4A]"}`}>
+                    Name
+                  </label>
                   <input
                     type="text"
                     value={form.name}
                     onChange={e => setForm(s => ({ ...s, name: e.target.value }))}
                     onFocus={() => setFocused(s => ({ ...s, name: true }))}
                     onBlur={() => setFocused(s => ({ ...s, name: false }))}
-                    className={`w-full bg-transparent border-0 border-b-2 pb-2 pt-5 text-sm outline-none transition-all duration-300 ${
+                    className={`w-full rounded-lg px-4 py-3 text-sm outline-none transition-all duration-200 border ${
                       darkMode
-                        ? `text-white ${focused.name ? "border-[#65F0CD]" : "border-white/20"}`
-                        : `text-[#1E3D2A] ${focused.name ? "border-[#1E3D2A]" : "border-[#1E3D2A]/25"}`
+                        ? `bg-white/8 text-white placeholder-white/25 ${focused.name ? "border-[#00D0FF] shadow-[0_0_0_2px_rgba(0,208,255,0.15)]" : "border-[#00D0FF]/30"}`
+                        : `bg-white/60 text-[#1E3D2A] placeholder-[#1E3D2A]/30 ${focused.name ? "border-[#210E4A] shadow-[0_0_0_2px_rgba(33,14,74,0.15)]" : "border-[#210E4A]/30"}`
                     }`}
+                    placeholder="Your name"
                   />
-                  <label className={`absolute left-0 transition-all duration-200 pointer-events-none ${
-                    focused.name || form.name
-                      ? `top-0 text-[10px] uppercase tracking-[0.18em] font-semibold ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]/60"}`
-                      : `top-5 text-sm ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`
-                  }`}>Name</label>
                 </div>
 
                 {/* Email */}
-                <div className="relative">
+                <div className="flex flex-col gap-1.5">
+                  <label className={`text-xs font-semibold uppercase tracking-widest ${darkMode ? "text-[#00D0FF]" : "text-[#210E4A]"}`}>
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={form.email}
                     onChange={e => setForm(s => ({ ...s, email: e.target.value }))}
                     onFocus={() => setFocused(s => ({ ...s, email: true }))}
                     onBlur={() => setFocused(s => ({ ...s, email: false }))}
-                    className={`w-full bg-transparent border-0 border-b-2 pb-2 pt-5 text-sm outline-none transition-all duration-300 ${
+                    className={`w-full rounded-lg px-4 py-3 text-sm outline-none transition-all duration-200 border ${
                       darkMode
-                        ? `text-white ${focused.email ? "border-[#65F0CD]" : "border-white/20"}`
-                        : `text-[#1E3D2A] ${focused.email ? "border-[#1E3D2A]" : "border-[#1E3D2A]/25"}`
+                        ? `bg-white/8 text-white placeholder-white/25 ${focused.email ? "border-[#00D0FF] shadow-[0_0_0_2px_rgba(0,208,255,0.15)]" : "border-[#00D0FF]/30"}`
+                        : `bg-white/60 text-[#1E3D2A] placeholder-[#1E3D2A]/30 ${focused.email ? "border-[#210E4A] shadow-[0_0_0_2px_rgba(33,14,74,0.15)]" : "border-[#210E4A]/30"}`
                     }`}
+                    placeholder="your@email.com"
                   />
-                  <label className={`absolute left-0 transition-all duration-200 pointer-events-none ${
-                    focused.email || form.email
-                      ? `top-0 text-[10px] uppercase tracking-[0.18em] font-semibold ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]/60"}`
-                      : `top-5 text-sm ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`
-                  }`}>Email</label>
                 </div>
 
                 {/* Message */}
-                <div className="relative">
+                <div className="flex flex-col gap-1.5">
+                  <label className={`text-xs font-semibold uppercase tracking-widest ${darkMode ? "text-[#00D0FF]" : "text-[#210E4A]"}`}>
+                    Message
+                  </label>
                   <textarea
-                    rows={3}
+                    rows={6}
                     value={form.message}
                     onChange={e => setForm(s => ({ ...s, message: e.target.value }))}
                     onFocus={() => setFocused(s => ({ ...s, message: true }))}
                     onBlur={() => setFocused(s => ({ ...s, message: false }))}
-                    className={`w-full bg-transparent border-0 border-b-2 pb-2 pt-5 text-sm outline-none resize-none transition-all duration-300 ${
+                    className={`w-full rounded-lg px-4 py-3 text-sm outline-none resize-none transition-all duration-200 border ${
                       darkMode
-                        ? `text-white ${focused.message ? "border-[#65F0CD]" : "border-white/20"}`
-                        : `text-[#1E3D2A] ${focused.message ? "border-[#1E3D2A]" : "border-[#1E3D2A]/25"}`
+                        ? `bg-white/8 text-white placeholder-white/25 ${focused.message ? "border-[#00D0FF] shadow-[0_0_0_2px_rgba(0,208,255,0.15)]" : "border-[#00D0FF]/30"}`
+                        : `bg-white/60 text-[#1E3D2A] placeholder-[#1E3D2A]/30 ${focused.message ? "border-[#210E4A] shadow-[0_0_0_2px_rgba(33,14,74,0.15)]" : "border-[#210E4A]/30"}`
                     }`}
+                    placeholder="What's on your mind?"
                   />
-                  <label className={`absolute left-0 transition-all duration-200 pointer-events-none ${
-                    focused.message || form.message
-                      ? `top-0 text-[10px] uppercase tracking-[0.18em] font-semibold ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]/60"}`
-                      : `top-5 text-sm ${darkMode ? "text-white/35" : "text-[#1E3D2A]/40"}`
-                  }`}>Message</label>
                 </div>
 
                 {error && (
-                  <p className="text-red-400 text-xs text-center -mt-2">Something went wrong. Please try again.</p>
+                  <p className="text-red-400 text-xs text-center">Something went wrong. Please try again.</p>
                 )}
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className={`mt-2 w-full py-3.5 rounded-full font-semibold text-sm tracking-wide transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                    darkMode
-                      ? "bg-[#65F0CD] text-[#210E4A] hover:bg-[#4FD4B3] shadow-[#65F0CD]/20"
-                      : "bg-[#1E3D2A] text-white hover:bg-[#2D5A3D] shadow-[#1E3D2A]/20"
-                  }`}
-                >
-                  {submitting ? "Sending..." : "Send Message"}
-                </button>
+
+                <div className="flex justify-start mt-1">
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className={`group flex items-center gap-2.5 px-6 py-2 rounded-full font-semibold text-sm tracking-wide transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed border-2 ${
+                      darkMode
+                        ? "bg-white/5 border-[#00D0FF] text-[#00D0FF] hover:bg-[#00D0FF]/15"
+                        : "bg-white/5 border-[#210E4A] text-[#210E4A] hover:bg-[#210E4A]/10"
+                    }`}
+                  >
+                    {submitting ? (
+                      <>
+                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"/>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                        </svg>
+                        Sending
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M5 12h14M13 6l6 6-6 6"/>
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                </div>
               </form>
             )}
           </div>

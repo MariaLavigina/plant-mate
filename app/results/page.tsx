@@ -819,9 +819,11 @@ export default function Results() {
                 <div className="w-10 h-1 rounded-full bg-white/20 mx-auto" />
                 <button
                   onClick={() => setTappedPlant(null)}
-                  className="absolute top-3 right-4 text-white/40 hover:text-white transition-colors text-lg leading-none"
+                  className="absolute top-3 right-4 w-9 h-9 rounded-full flex items-center justify-center bg-[#65F0CD] text-[#210E4A] hover:scale-110 transition-all duration-200"
                 >
-                  ✕
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    <path d="M1 1l12 12M13 1L1 13"/>
+                  </svg>
                 </button>
               </div>
               <div className="px-4 pt-2 pb-1">

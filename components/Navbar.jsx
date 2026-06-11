@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import AuthModal from "./AuthModal";
+import RegisterWelcomeAnimation from "./RegisterWelcomeAnimation";
 import { DarkModeContext } from "../app/ClientProviders";
 import { USER_KEY, QUIZ_RESULTS_KEY } from "../lib/constants";
 
@@ -31,6 +32,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [authModal, setAuthModal] = useState(null);
   const [user, setUser] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [welcomeAnim, setWelcomeAnim] = useState(null);
 
   useEffect(() => {
     localStorage.removeItem(USER_KEY);
@@ -50,12 +53,25 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 3500);
+    return () => clearTimeout(t);
+  }, [toast]);
+
   const handleAuthClose = () => {
+    const type = authModal;
     setAuthModal(null);
     const stored = sessionStorage.getItem(USER_KEY);
     if (stored) {
-      setUser(JSON.parse(stored));
+      const parsed = JSON.parse(stored);
+      setUser(parsed);
       window.dispatchEvent(new Event("plant-mate-login"));
+      setToast(type === "register"
+        ? `Welcome, ${parsed.first_name}! Account created.`
+        : `Welcome back, ${parsed.first_name}!`
+      );
+      setWelcomeAnim(parsed.first_name);
     }
   };
 
@@ -129,10 +145,23 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Mobile/Tablet Dark Mode Toggle */}
-            <button onClick={toggleDarkMode} className={`lg:hidden ml-auto focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
-              <DarkModeIcon darkMode={darkMode} />
-            </button>
+            {/* Mobile/Tablet right controls */}
+            <div className="lg:hidden ml-auto flex items-center gap-1">
+              {user && (
+                <Link
+                  href="/profile"
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold font-heading shrink-0 transition-opacity hover:opacity-80 ${
+                    darkMode ? "bg-[#FFBD06] text-[#210E4A]" : "bg-[#6B2FA0] text-white"
+                  }`}
+                  title={`Logged in as ${user.first_name}`}
+                >
+                  {user.first_name[0].toUpperCase()}
+                </Link>
+              )}
+              <button onClick={toggleDarkMode} className={`focus:outline-none p-2 ${iconClass}`} aria-label="Toggle dark mode">
+                <DarkModeIcon darkMode={darkMode} />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -147,7 +176,7 @@ export default function Navbar() {
             exit={{ x: "-100%" }}
             transition={{ duration: 0.35, ease: "easeOut" }}
             className="lg:hidden fixed inset-0 z-[60] flex flex-col overflow-hidden"
-            style={{ background: darkMode ? "linear-gradient(160deg, #210E4A 0%, #5A1B27 100%)" : "linear-gradient(160deg, #A75B2B 0%, #F4E5FB 100%)" }}
+            style={{ background: darkMode ? "linear-gradient(160deg, #210E4A 0%, #5A1B27 100%)" : "linear-gradient(160deg, #F4E5FB 0%, #A75B2B 100%)" }}
           >
             {/* Top bar */}
             <div className="flex items-center justify-between px-6 h-16 shrink-0">
@@ -242,7 +271,33 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className={`fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[200] flex items-center gap-3 px-7 py-4 rounded-2xl shadow-2xl text-base font-semibold whitespace-nowrap pointer-events-none ${
+              darkMode ? "bg-[#65F0CD] text-[#210E4A]" : "bg-[#210E4A] text-white"
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {authModal && <AuthModal type={authModal} onClose={handleAuthClose} />}
+
+      {welcomeAnim && (
+        <RegisterWelcomeAnimation
+          userName={welcomeAnim}
+          onClose={() => setWelcomeAnim(null)}
+        />
+      )}
     </>
   );
 }
