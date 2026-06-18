@@ -349,19 +349,22 @@ export default function Home() {
 
       {/* Mobile Layout */}
       <div
-        className="md:hidden relative z-20 flex flex-col items-center text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12"
+        className="md:hidden relative z-20 flex flex-col items-center text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16"
         style={{ opacity: isAnimating ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}
       >
         {user?.first_name && (
-          <p className={`font-heading text-3xl sm:text-4xl mb-1 mt-10 ${darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}`}>
+          <p className={`font-heading text-3xl sm:text-4xl mb-1 mt-2 ${darkMode ? "text-[#FFBD06]" : "text-[#6B2FA0]"}`}>
             Hi, {user.first_name}
           </p>
         )}
-        <h1 className={`font-heading text-4xl sm:text-5xl lg:text-7xl mb-6 ${user?.first_name ? "" : "mt-10"} ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
+        <h1 className={`font-heading text-4xl sm:text-5xl lg:text-7xl mb-4 ${user?.first_name ? "" : "mt-2"} ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
           PlantMate+
         </h1>
         <p className={`font-sans text-base sm:text-lg mb-8 ${primaryText(darkMode)}`}>
-          <span className="font-heading text-[1.4em]">PlantMate+</span> matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just plants you'll actually keep alive. Take our quick quiz and meet your perfect plant match.
+          {user
+            ? <span className="text-xl sm:text-2xl">Ready to find your next perfect plant? Take the quiz.</span>
+            : <><span className="font-heading text-[1.4em]">PlantMate+</span> matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just plants you'll actually keep alive. Take our quick quiz and meet your perfect plant match.</>
+          }
         </p>
       </div>
 
