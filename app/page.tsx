@@ -216,7 +216,7 @@ export default function Home() {
                 Hi, {user.first_name}
               </p>
             )}
-            <h1 className={`font-heading mb-4 leading-snug text-[clamp(2rem,5vw,5rem)] ${primaryText(darkMode)}`}>
+            <h1 className={`font-heading mb-4 leading-snug text-[clamp(2rem,5vw,5rem)] ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
               PlantMate+
             </h1>
 
@@ -357,7 +357,7 @@ export default function Home() {
             Hi, {user.first_name}
           </p>
         )}
-        <h1 className={`font-heading text-4xl sm:text-5xl lg:text-7xl mb-6 ${user?.first_name ? "" : "mt-10"} ${primaryText(darkMode)}`}>
+        <h1 className={`font-heading text-4xl sm:text-5xl lg:text-7xl mb-6 ${user?.first_name ? "" : "mt-10"} ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
           PlantMate+
         </h1>
         <p className={`font-sans text-base sm:text-lg mb-8 ${primaryText(darkMode)}`}>

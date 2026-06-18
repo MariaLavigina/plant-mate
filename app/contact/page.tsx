@@ -133,10 +133,10 @@ export default function Contact() {
 
         {/* Right - contact form */}
         <div className="flex-1 flex items-start md:items-center justify-center px-6 sm:px-10 pt-20 pb-4 md:py-0 md:overflow-y-auto md:max-h-full">
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-sm">
             {!submitted && (
               <>
-                <h1 className={`text-[clamp(2rem,3vw,2.75rem)] font-caveat mb-2 ${darkMode ? "text-[#00D0FF]" : "text-[#210E4A]"}`}>
+                <h1 className={`text-[clamp(1.6rem,2.5vw,2.25rem)] font-caveat mb-2 ${darkMode ? "text-[#00D0FF]" : "text-[#210E4A]"}`}>
                   Get in Touch
                 </h1>
               </>
@@ -144,15 +144,15 @@ export default function Contact() {
 
             {submitted ? (
               <div className="flex flex-col gap-3 py-8">
-                <h1 className={`text-[clamp(2.5rem,4vw,3.5rem)] font-caveat leading-tight ${primaryText(darkMode)}`}>
+                <h1 className={`text-[clamp(2rem,3vw,3rem)] font-caveat leading-tight ${primaryText(darkMode)}`}>
                   Message sent!
                 </h1>
-                <p className={`text-base ${primaryText(darkMode)} opacity-60`}>
+                <p className={`text-sm ${primaryText(darkMode)} opacity-60`}>
                   Thanks for reaching out. I'll get back to you soon.
                 </p>
               </div>
             ) : (
-              <form name="contact" data-netlify="true" netlify-honeypot="bot-field" className="flex flex-col gap-4" onSubmit={handleSubmit}>
+              <form name="contact" data-netlify="true" netlify-honeypot="bot-field" className="flex flex-col gap-3" onSubmit={handleSubmit}>
                 <input type="hidden" name="form-name" value="contact" />
                 <input type="hidden" name="bot-field" />
 
