@@ -624,7 +624,7 @@ export default function Results() {
               </div>
 
               {/* RIGHT: why text + best plant's trait pills + comparison + retake */}
-              <div className="flex flex-col justify-end w-[540px] xl:w-[580px] shrink-0 pl-12 pr-4 pb-12">
+              <div className="flex flex-col justify-end w-[540px] xl:w-[580px] shrink-0 min-h-0 overflow-y-auto pl-12 pr-4 pb-12">
                 {whyText.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}

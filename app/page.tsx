@@ -348,6 +348,23 @@ export default function Home() {
       </div>
 
       {/* Mobile Layout */}
+
+      {/* Legibility scrim - mobile only. Sits above the palm image (z-10) but below
+          the hero text (z-20), so the text stays readable even where the leaves
+          reach up behind it. Color flips with theme: dark mode matches the
+          darkPurple gradient, light mode is plain white. */}
+      <div
+        className="md:hidden absolute top-0 left-0 right-0 z-[15] pointer-events-none"
+        style={{
+          height: darkMode ? "440px" : "620px",
+          background: darkMode
+            ? "linear-gradient(180deg, #0C031F 0%, transparent 100%)"
+            : "linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 45%, transparent 100%)",
+          opacity: isAnimating ? 0 : 1,
+          transition: "opacity 0.3s ease-in-out",
+        }}
+      />
+
       <div
         className="md:hidden relative z-20 flex flex-col items-center text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16"
         style={{ opacity: isAnimating ? 0 : 1, transition: "opacity 0.3s ease-in-out" }}
@@ -357,18 +374,32 @@ export default function Home() {
             Hi, {user.first_name}
           </p>
         )}
-        <h1 className={`font-heading text-4xl sm:text-5xl lg:text-7xl mb-4 ${user?.first_name ? "" : "mt-2"} ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
+        <h1 className={`font-heading text-[clamp(2.75rem,11vw,3.75rem)] mb-4 ${user?.first_name ? "" : "mt-2"} ${darkMode ? "text-[#65F0CD]" : "text-[#1E3D2A]"}`}>
           PlantMate+
         </h1>
-        <p className={`font-sans text-base sm:text-lg mb-8 ${primaryText(darkMode)}`}>
-          {user
-            ? <span className="text-xl sm:text-2xl">Ready to find your next perfect plant? Take the quiz.</span>
-            : <><span className="font-heading text-[1.4em]">PlantMate+</span> matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just plants you'll actually keep alive. Take our quick quiz and meet your perfect plant match.</>
-          }
-        </p>
+        {user ? (
+          <p className={`font-sans text-[clamp(1rem,4.2vw,1.35rem)] mb-8 ${primaryText(darkMode)}`}>
+            <span className="text-[1.3em]">Ready to find your next perfect plant? Take the quiz.</span>
+          </p>
+        ) : (
+          <>
+            <p className={`font-sans text-[clamp(1rem,4.2vw,1.35rem)] mb-3 ${primaryText(darkMode)}`}>
+              <span className="font-heading text-[1.4em]">PlantMate+</span> matches you with plants that fit your lifestyle, personality, and home. No guilt. No guesswork. Just plants you'll actually keep alive.
+            </p>
+            <p className={`font-sans font-bold text-[clamp(1rem,4.2vw,1.35rem)] mb-8 ${primaryText(darkMode)}`}>
+              Take our quick quiz and meet your perfect plant match.
+            </p>
+          </>
+        )}
       </div>
 
-      <div className="block md:hidden absolute bottom-0 left-0 right-0 overflow-hidden z-10">
+      {/* No z-index here on purpose: giving this wrapper its own z-index would trap the
+          button (z-30) inside it as a capped stacking layer, making the button render
+          below the scrim/text no matter how high its own z-index is. Leaving it at the
+          default z-index:auto lets the img (unpositioned, always paints bottom-most),
+          the animation overlays, and the button each compare directly against the
+          scrim (z-15) and text (z-20) siblings - so the button correctly wins. */}
+      <div className="block md:hidden absolute bottom-0 left-0 right-0 overflow-hidden">
         {/* Static base image - fades out when animation starts */}
         <img
           src={user ? (darkMode ? "/images/login-mobile-darkmode-01.svg" : "/images/login-mobile-lightmode-01.svg") : (darkMode ? "/images/mobile-images/plant-dark-mobile.svg" : "/images/mobile-images/plant-light-mobile1.svg")}

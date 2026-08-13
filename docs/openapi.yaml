@@ -1,0 +1,242 @@
+openapi: 3.0.3
+info:
+  title: PlantMate+ API
+  version: 1.0.0
+  description: Auto-generated from app/api routes in this repo.
+servers:
+  - url: http://localhost:3000/api
+    description: Local dev
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        first_name: { type: string }
+        last_name: { type: string }
+        email: { type: string, format: email }
+        badge: { type: string, enum: [bronze, silver, gold], nullable: true }
+    Error:
+      type: object
+      properties:
+        error: { type: string }
+
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [firstName, lastName, email, password, phone]
+              properties:
+                firstName: { type: string }
+                lastName: { type: string }
+                email: { type: string, format: email }
+                password:
+                  type: string
+                  description: Min 8 chars, must include uppercase, lowercase, digit, and one of !@#$%^&*
+                phone:
+                  type: string
+                  description: UK phone number, e.g. 07911123456 or +447911123456
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user: { $ref: '#/components/schemas/User' }
+                  token: { type: string }
+        '400': { description: Validation error, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '409': { description: Email already in use, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '500': { description: Server error }
+
+  /login:
+    post:
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200':
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user: { $ref: '#/components/schemas/User' }
+                  token: { type: string }
+        '400': { description: Missing fields }
+        '401': { description: Invalid credentials }
+        '500': { description: Server error }
+
+  /forgot-password:
+    post:
+      summary: Request a password reset email (link valid 1 hour)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        '200':
+          description: Generic success message (does not reveal whether the email exists)
+        '400': { description: Email required }
+        '500': { description: Server error }
+
+  /reset-password:
+    post:
+      summary: Set a new password using a reset token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, newPassword]
+              properties:
+                token: { type: string }
+                newPassword: { type: string }
+      responses:
+        '200': { description: Password updated }
+        '400': { description: Missing fields, or token expired/invalid }
+        '500': { description: Server error }
+
+  /user/me:
+    get:
+      summary: Get the logged-in user's profile
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                      - $ref: '#/components/schemas/User'
+                      - type: object
+                        properties:
+                          matched_plant: { type: string, nullable: true }
+                          match_pct: { type: integer, nullable: true }
+        '401': { description: No/invalid token }
+        '404': { description: User not found }
+        '500': { description: Server error }
+
+  /user/plant:
+    patch:
+      summary: Save the logged-in user's matched plant
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [plantName]
+              properties:
+                plantName: { type: string }
+                matchPct: { type: integer, nullable: true }
+      responses:
+        '200': { description: Saved }
+        '400': { description: plantName required }
+        '401': { description: No token }
+        '500': { description: Server error }
+
+  /play/submit:
+    post:
+      summary: Submit a badge-quiz score (also bumps the user's badge if it's an improvement)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [score]
+              properties:
+                score:
+                  type: integer
+                  description: "Badge thresholds: >=8 gold, >=5 silver, else bronze"
+      responses:
+        '200':
+          description: Badge awarded for this attempt
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  badge: { type: string, enum: [bronze, silver, gold] }
+        '400': { description: Score required }
+        '401': { description: No token }
+        '500': { description: Server error }
+
+  /play/scores:
+    get:
+      summary: List the logged-in user's past play scores (newest first)
+      security: [{ bearerAuth: [] }]
+      responses:
+        '200':
+          description: Score history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scores:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        score: { type: integer }
+                        badge_earned: { type: string }
+                        created_at: { type: string, format: date-time }
+        '401': { description: No token }
+        '500': { description: Server error }
+
+  /play/badge/{userId}:
+    get:
+      summary: Get a user's current badge by id
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Badge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  badge: { type: string, nullable: true }
+        '401': { description: No token }
+        '404': { description: User not found }
+        '500': { description: Server error }
